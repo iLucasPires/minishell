@@ -11,7 +11,7 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c
+SOURCES = main.c create_repl.c
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
