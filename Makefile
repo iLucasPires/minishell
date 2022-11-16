@@ -1,4 +1,4 @@
-NAME = minishell_lern
+NAME = minishell
 
 # Directories
 OBJECTS_DIR = ./objects
