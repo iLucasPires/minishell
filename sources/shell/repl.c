@@ -10,7 +10,6 @@ static void	error_readline(void *ptr)
 	}
 }
 
-
 void	read_eval_print_loop(t_repl *repl)
 {
 	while (true)
@@ -18,7 +17,6 @@ void	read_eval_print_loop(t_repl *repl)
 		repl->line = readline(PROMPT);
 		error_readline(repl->line);
 		add_history(repl->line);
-		// get_path(repl->line);
 		free(repl->line);
 	}
 }
