@@ -6,7 +6,7 @@
 /*   By:  lpires-n < lpires-n@student.42sp.org.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:14:06 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/11/15 03:08:28 by  lpires-n        ###   ########.fr       */
+/*   Updated: 2022/11/16 21:14:53 by  lpires-n        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,4 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	if (s)
 		write(fd, s, ft_strlen(s));
-	
 }

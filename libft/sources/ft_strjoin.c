@@ -6,7 +6,7 @@
 /*   By:  lpires-n < lpires-n@student.42sp.org.b    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:48:52 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/11/15 03:13:14 by  lpires-n        ###   ########.fr       */
+/*   Updated: 2022/11/16 21:15:01 by  lpires-n        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
-	size_t size;
+	size_t	size;
 	char	*str;
-	
-	
+
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	len = 0;
