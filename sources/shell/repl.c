@@ -1,32 +1,31 @@
 #include <minishell.h>
 
-
 char	*get_acess_cmd(const char *path, char **dirs)
 {
-	t_command	c;
-	int 		index;
+	char	*aux;
+	int		index;
 
 	index = 0;
 	while (dirs[index])
 	{
-		c.path = ft_strjoin(dirs[index], path);
-		if (!access(c.path, F_OK))
-			return (c.path);
-		free(c.path);
+		aux = ft_strjoin(dirs[index], path);
+		if (!access(aux, F_OK))
+			return (aux);
+		free(aux);
 		index++;
 	}
 	return (NULL);
 }
 
-char	*get_cmd_path(char *line)
+t_command	get_cmd_path(char *line, char **dirs)
 {
-	char *command;
-	char **dirs;
+	char		*path;
+	t_command	command;
 
-	dirs = ft_split(getenv("PATH"), ':');
-	command = get_acess_cmd(ft_strjoin("/", line), dirs);
-	
-
+	command.name = ft_strtrim(line, " ");
+	path = ft_strjoin("/", command.name);
+	command.path = get_acess_cmd(path, dirs);
+	command.args = ft_split(line, ' ');
 	return (command);
 }
 
@@ -40,14 +39,25 @@ static void	error_readline(void *ptr)
 	}
 }
 
-void	read_eval_print_loop(t_repl *repl)
+void	excute_comand(t_command command, char **envp)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+		execve(command.path, command.args, envp);
+	waitpid(pid, &status, 0);
+}
+
+void	read_eval_print_loop(t_repl *data)
 {
 	while (true)
 	{
-		repl->line = readline(PROMPT);
-		error_readline(repl->line);
-		add_history(repl->line);
-		printf("path command: %s\n", get_cmd_path(repl->line));
-		free(repl->line);
+		data->line = readline(PROMPT);
+		error_readline(data->line);
+		add_history(data->line);
+		excute_comand(get_cmd_path(data->line, data->dirs), data->envp);
+		free(data->line);
 	}
 }
