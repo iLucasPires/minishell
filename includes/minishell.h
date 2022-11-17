@@ -5,6 +5,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -23,23 +25,18 @@ typedef struct s_repl
 {
 	char	*line;
 	int		status;
-}			t_repl;
-
-typedef struct s_data
-{
 	char	**envp;
-	t_repl	repl;
-}			t_data;
+	char	**dirs;
+}			t_repl;
 
 typedef struct s_command
 {
 	char	*name;
 	char	*path;
 	char	**args;
-	struct s_command *next;
 }			t_command;
 
 // prototypes
-void		read_eval_print_loop(t_repl *repl);
+void		read_eval_print_loop(t_repl *data);
 void		get_path(char *line);
 #endif

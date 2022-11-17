@@ -6,14 +6,19 @@ static void error_arguments(void)
 	exit(EXIT_FAILURE);
 }
 
+void init_data(t_repl *data, char **envp)
+{
+	data->envp = envp;
+	data->dirs = ft_split(getenv("PATH"), ':');
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_repl	data;
 
 	if (argc != 1 || argv[1] != NULL)
 		error_arguments();
-	data.envp = envp;
-	read_eval_print_loop(&data.repl);
+	init_data(&data, envp);
+	read_eval_print_loop(&data); 
 	return (0);
 }
