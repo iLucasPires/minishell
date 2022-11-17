@@ -1,11 +1,19 @@
 #include <minishell.h>
 
-int main(void)
+static void error_arguments(void)
 {
-    t_data data;
+	ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
 
-    init_repl(&data.repl);
-    printf("Hello World!");
 
-    return 0;
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+
+	if (argc != 1 || argv[1] != NULL)
+		error_arguments();
+	data.envp = envp;
+	read_eval_print_loop(&data.repl);
+	return (0);
 }

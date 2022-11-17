@@ -3,6 +3,7 @@
 
 // libraries
 
+
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -23,11 +24,12 @@ typedef struct s_repl
 
 typedef struct s_data
 {
+	char	**envp;
 	t_repl	repl;
 
 }			t_data;
 
 // prototypes
-void		init_repl(t_repl *repl);
-
+void		read_eval_print_loop(t_repl *repl);
+void	get_path(char *line);
 #endif
