@@ -11,7 +11,7 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c 
+SOURCES = main.c repl.c error.c
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
@@ -23,7 +23,15 @@ INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 MAKEFLAGS = --no-print-directory
 
 # Rules
+
 all: $(LIBFT) $(NAME)
+
+valgrind: $(NAME)
+	valgrind --leak-check=full ./$(NAME)
+
+rb:
+	rm -rf $(NAME)
+	make all
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
