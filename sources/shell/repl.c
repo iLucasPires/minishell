@@ -1,63 +1,113 @@
 #include <minishell.h>
 
-char	*get_acess_cmd(const char *path, char **dirs)
+void	destruct_command(t_command *command)
 {
-	char	*aux;
+	char	**array_bi_dimensional;
+
+	array_bi_dimensional = command->args;
+	while (*array_bi_dimensional != NULL)
+	{
+		free(*array_bi_dimensional);
+		array_bi_dimensional++;
+	}
+	free(command->args);
+	free(command->command_name);
+	free(command->path);
+}
+
+void	excute_comand(t_repl *repl, t_command *command)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == CHILD_PROCESS)
+	{
+		if (execve(command->path, command->args, repl->envp) == EXE_FALL)
+			error_generic(ERROR_EXECVE);
+	}
+	else
+	{
+		waitpid(pid, &repl->status, 0);
+		destruct_command(command);
+	}
+}
+
+char	*parse_path(char *command, char **dirs)
+{
 	int		index;
+	char	*aux_path;
 
 	index = 0;
-	while (dirs[index])
+	while (dirs[index] != NULL)
 	{
-		aux = ft_strjoin(dirs[index], path);
-		if (!access(aux, F_OK))
-			return (aux);
-		free(aux);
+		aux_path = ft_strjoin(dirs[index], command);
+		if (access(aux_path, F_OK) != NO_ACCESS)
+			return (aux_path);
+		free(aux_path);
 		index++;
 	}
 	return (NULL);
 }
 
-t_command	get_cmd_path(char *line, char **dirs)
+int	parse_command(t_repl *data, t_command *command)
 {
-	char		*path;
-	t_command	command;
+	char	*aux_command;
 
-	command.name = ft_strtrim(line, " ");
-	path = ft_strjoin("/", command.name);
-	command.path = get_acess_cmd(path, dirs);
-	command.args = ft_split(line, ' ');
-	return (command);
-}
-
-static void	error_readline(void *ptr)
-{
-	if (ptr == NULL)
+	command->command_name = ft_strtrim(data->line, " ");
+	aux_command = ft_strjoin("/", command->command_name);
+	command->path = parse_path(aux_command, data->dirs);
+	command->args = ft_split(data->line, ' ');
+	if (command->path == NULL)
 	{
-		ft_putstr_fd(ERROR_READLINE, STDERR_FILENO);
-		free(ptr);
-		exit(EXIT_FAILURE);
+		printf(ERROR_COMMAND, command->command_name);
+		free(aux_command);
+		return (false);
 	}
+	free(aux_command);
+	return (true);
 }
 
-void	excute_comand(t_command command, char **envp)
+void	excute_command(t_repl *repl, t_command *command)
 {
 	pid_t	pid;
-	int		status;
 
 	pid = fork();
-	if (pid == 0)
-		execve(command.path, command.args, envp);
-	waitpid(pid, &status, 0);
+	if (pid == CHILD_PROCESS)
+	{
+		if (execve(command->path, command->args, repl->envp) == EXE_FALL)
+		{
+			destruct_command(command);
+			printf(ERROR_EXECVE);
+			exit(EXIT_FAILURE);
+		}
+	}
+	waitpid(pid, &repl->status, CHILD_PROCESS);
 }
 
 void	read_eval_print_loop(t_repl *data)
 {
+	t_command	command;
+
 	while (true)
 	{
 		data->line = readline(PROMPT);
-		error_readline(data->line);
-		add_history(data->line);
-		excute_comand(get_cmd_path(data->line, data->dirs), data->envp);
+		if (data->line == NULL)
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			rl_clear_history();
+			free(data->line);
+			exit(EXIT_FAILURE);
+		}
+		if (*data->line != '\0')
+		{
+			add_history(data->line);
+			if (parse_command(data, &command) != false)
+			{
+				excute_command(data, &command);
+				destruct_command(&command);
+			}
+				
+		}
 		free(data->line);
 	}
 }
