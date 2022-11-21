@@ -11,7 +11,7 @@
 # include <readline/readline.h>
 
 // libraries local
-# include <define.h>
+# include "./define.h"
 # include "../libft/includes/libft.h"
 
 enum			e_bool

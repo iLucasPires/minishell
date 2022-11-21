@@ -1,35 +1,38 @@
 NAME = run
 
 SOURCE_DIR = sources
-BUILD_DIR = build
-INCLUDE_DIR = -I includes -I ../includes
+OBJ_DIR = build
+INCLUDE_DIR = -I includes
 VPATH = $(SUBDIRS)
 LIBFT = ../libft/libft.a
-
+MINISHELL == ../minishell
 UNITY_FILE = config/unity.c
 
-SOURCE_FILES = main.c test_string.c
-BUILD_FILES = $(addprefix $(BUILD_DIR)/, $(SOURCE_FILES:.c=.o))
+SOURCE_FILES = $(shell ls $(SOURCE_DIR) | grep .c)
+BUILD_FILES = $(addprefix $(OBJ_DIR)/, $(SOURCE_FILES:.c=.o))
 SUBDIRS = $(wildcard $(shell find $(SOURCE_DIR) -type d))
 
 CC = cc
 
 MAKEFLAGS = --no-print-directory
 
-all: $(NAME)
+all: $(NAME) libft
 	@./$(NAME)
+
+libft:
+	@make -C ../libft
 
 $(NAME): $(BUILD_FILES)
 	@make -C ../ $(MAKEFLAGS)
 	@$(CC) $(INCLUDE_DIR) -o $(NAME) $(UNITY_FILE) $(BUILD_FILES) $(LIBFT)
 
-$(BUILD_DIR)/%.o: %.c
-	@mkdir -p $(BUILD_DIR)
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(INCLUDE_DIR) -c $< -o $@
 
 clean:
-	@rm -rf $(BUILD_DIR)
-	@rm -rf $(BUILD_DIR)/*.o
+	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)/*.o
 
 fclean: clean
 	@rm -rf $(NAME)
