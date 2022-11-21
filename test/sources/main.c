@@ -1,17 +1,18 @@
 #include <test.h>
-#include <minishell.h>
 
-void setUp(void)
+void	setUp(void)
 {
 }
 
-void tearDown(void)
+void	tearDown(void)
 {
 }
 
-int main(void)
+int	main(void)
 {
-    UNITY_BEGIN();
-    RUN_TEST(test_string);
-    return UNITY_END();
+	UNITY_BEGIN();
+
+	test_lexer();
+
+	return (UNITY_END());
 }
