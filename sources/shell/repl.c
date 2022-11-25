@@ -17,10 +17,22 @@
 // 	waitpid(pid, &repl->status, CHILD_PROCESS);
 // }
 
-void	read_eval_print_loop(t_repl *data)
+void handle_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void read_eval_print_loop(t_repl *data)
 {
 	while (true)
 	{
+		signal(SIGINT, handle_signal);
 		data->line = readline(PROMPT);
 		if (data->line == NULL)
 		{
@@ -33,10 +45,6 @@ void	read_eval_print_loop(t_repl *data)
 		{
 			add_history(data->line);
 			printf("line: %s\n", data->line);
-			// if (parse_command(data, &command) != false)
-			// {
-			// 	excute_command(data, &command);
-			// }
 		}
 		free(data->line);
 	}
