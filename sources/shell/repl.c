@@ -32,7 +32,7 @@ void read_eval_print_loop(t_repl *data)
 {
 	while (true)
 	{
-		signal(SIGINT, handle_signal);
+    signal(SIGINT, handle_signal);
 		data->line = readline(PROMPT);
 		if (data->line == NULL)
 		{

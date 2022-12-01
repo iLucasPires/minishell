@@ -16,7 +16,7 @@ OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
 CC = cc
-CFLAGS = -lreadline -Wall -Wextra -Werror -g3
+CFLAGS = -g3 -lreadline -Wall -Wextra -Werror
 INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 
 # Makefile
@@ -38,12 +38,12 @@ $(LIBFT):
 
 $(NAME): $(OBJECTS) 
 	@echo -e "$(YELLOW)Creating $(NAME)$(RESET)"
-	@$(CC) $(INCLUDE) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJECTS) $(LIBFT) -o $(NAME)
 
 $(OBJECTS_DIR)/%.o: %.c
 	@echo -e "$(GREEN)Compiling: $(RESET)$<"
-	@mkdir -p $(OBJECTS_DIR)
-	@$(CC) $(INCLUDE) $(CFLAGS) -c $< -o $@
+	@mkdir -p $(OBJECTS_DIR) 
+	@$(CC) $(CFLAGS) $(INCLUDE)  -c $< -o $@
 
 re: fclean all
 

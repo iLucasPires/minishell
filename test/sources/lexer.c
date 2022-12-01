@@ -1,89 +1,87 @@
 #include <test.h>
 
-int counter_string(char *str)
+int ft_is_special(char c)
 {
-  int count = 0;
-  int index = 0;
+  if (c == '>' || c == '<' || c == '|')
+    return (1);
+  return (0);
+}
 
-  while (str[index])
+int counter_special(char *str)
+{
+  int i;
+  int count;
+
+  i = 0;
+  count = 0;
+  while (str[i])
   {
-    if (str[index] == '>' || str[index] == '<' || str[index] == '|')
-      count += 2;
-    count++;
-    index++;
+    if (ft_is_special(str[i]))
+      count++;
+    i++;
   }
   return (count);
 }
 
-char *add_spaces(char *str)
+char *add_spaces(char *line)
 {
-  char *new_str;
   int index;
+  int size_string;
   int new_index;
+  char *new_line;
 
   index = 0;
   new_index = 0;
-  new_str = malloc(sizeof(char) * counter_string(str) + 1);
-  while (str[index] != '\0')
+  size_string = ft_strlen(line) + counter_special(line);
+  new_line = calloc(sizeof(char), size_string);
+  while (line[index] != '\0')
   {
-    if (str[index] == '>' || str[index] == '<' || str[index] == '|')
+    if (ft_is_special(line[index]))
     {
-      if (str[index + 1] == '>' || str[index + 1] == '<' || str[index + 1] == '|')
-      {
-        new_str[new_index++] = INVISIBLE_CHAR;
-        new_str[new_index++] = str[index];
-        new_str[new_index++] = str[index++ + 1];
-        new_str[new_index++] = INVISIBLE_CHAR;
-      }
-      else
-      {
-        new_str[new_index++] = INVISIBLE_CHAR;
-        new_str[new_index++] = str[index];
-        new_str[new_index++] = INVISIBLE_CHAR;
-      }
+      new_line[new_index++] = INVISIBLE_CHAR;
+      new_line[new_index++] = line[index];
+      if (ft_is_special(line[index + 1]))
+        new_line[new_index++] = line[++index];
+      new_line[new_index++] = INVISIBLE_CHAR;
     }
     else
-      new_str[new_index++] = str[index];
+      new_line[new_index++] = line[index];
     index++;
   }
-  new_str[new_index] = '\0';
-  return (new_str);
+  new_line[new_index] = '\0';
+  return (new_line);
 }
 
-void mapping_space(char *line)
+char *mapping_space(char *line)
 {
   int index = 0;
-  int active_quote = true;
+  int active_quote;
+  char *new_line;
 
-  while (line[index])
+  active_quote = true;
+  new_line = add_spaces(line);
+  while (new_line[index])
   {
-    if (line[index] == '\'' || line[index] == '\"')
-      active_quote = !active_quote;
-    else if (line[index] == ' ' && active_quote)
-      line[index] = INVISIBLE_CHAR;
-    index++;
+    if (new_line[index] == '\'')
+			active_quote = !active_quote;
+		else if (new_line[index] == ' ' && active_quote)
+			new_line[index] = INVISIBLE_CHAR;
+		index++;
   }
+  return (new_line);
 }
 
 char **lexer(char *line)
 {
-  int index;
-  char *temp;
+  char *new_line;
   char **tokens;
-  
-  index = 0;
-  temp = add_spaces(line);
-  mapping_space(temp);
-  tokens = ft_split(temp, INVISIBLE_CHAR);
-  while (tokens[index])
-  {
-    tokens[index] = ft_strtrim(tokens[index], "\"");
-    tokens[index] = ft_strtrim(tokens[index], "\'");
-    index++;
-  }
 
+  new_line = mapping_space(line);
+  tokens = ft_split(new_line, INVISIBLE_CHAR);
+  free(new_line);
   return (tokens);
 }
+
 
 void test_token_simple(void)
 {
@@ -216,7 +214,7 @@ void test_token_space(void)
   TEST_ASSERT_EQUAL_STRING("<", args[2]);
   TEST_ASSERT_EQUAL_STRING("tr", args[3]);
   TEST_ASSERT_EQUAL_STRING("a", args[4]);
-  TEST_ASSERT_EQUAL_STRING("   ", args[5]);
+  TEST_ASSERT_EQUAL_STRING(" ", args[5]);
   TEST_ASSERT_EQUAL_STRING("|", args[6]);
   TEST_ASSERT_EQUAL_STRING("tr", args[7]);
   TEST_ASSERT_EQUAL_STRING(" ", args[8]);
@@ -225,16 +223,14 @@ void test_token_space(void)
   TEST_ASSERT_EQUAL_STRING("outfile", args[11]);
 }
 
-
 void test_lexer(void)
 {
-  // RUN_TEST(test_token_simple);
-  // RUN_TEST(test_token_simple_pipe);
-  // RUN_TEST(test_token_simple_command);
-  // RUN_TEST(test_token_simple_quote);
-  // RUN_TEST(test_token_simple_quote2);
-  // RUN_TEST(test_token_double_quote);
-  // RUN_TEST(test_token_mix_quote);
-
+  RUN_TEST(test_token_simple);
+  RUN_TEST(test_token_simple_pipe);
+  RUN_TEST(test_token_simple_command);
+  RUN_TEST(test_token_simple_quote);
+  RUN_TEST(test_token_simple_quote2);
+  RUN_TEST(test_token_double_quote);
+  RUN_TEST(test_token_mix_quote);
   RUN_TEST(test_token_space);
 }
