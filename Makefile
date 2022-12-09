@@ -16,7 +16,7 @@ OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
 CC = cc
-CFLAGS = -g3 -lreadline -Wall -Wextra -Werror
+CFLAGS = -g3 -Wall -Wextra -Werror
 INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 
 # Makefile
@@ -25,6 +25,9 @@ MAKEFLAGS = --no-print-directory
 # Rules
 
 all: $(LIBFT) $(NAME)
+
+test: all
+	make run2 -C test
 
 valgrind: $(NAME)
 	valgrind --leak-check=full ./$(NAME)
@@ -38,7 +41,7 @@ $(LIBFT):
 
 $(NAME): $(OBJECTS) 
 	@echo -e "$(YELLOW)Creating $(NAME)$(RESET)"
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJECTS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)
 
 $(OBJECTS_DIR)/%.o: %.c
 	@echo -e "$(GREEN)Compiling: $(RESET)$<"

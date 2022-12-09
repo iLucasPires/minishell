@@ -13,6 +13,12 @@
 #include <readline/readline.h>
 #include "../../includes/minishell.h"
 
+#define DQUOTE '\"'
+#define SQUOTE '\''
+#define BSLASH '\\'
+#define PLUSTHAN '>'
+#define LESSTHAN '<'
+
 /*
 Functions to be tested
 */
@@ -21,5 +27,7 @@ void test_lexer(void);
 void test_check_line(void);
 void token(void);
 char **lexer(char *line);
+void test_make_token(void);
+
 
 #endif
