@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.excalidraw": "json",
+        "*.excalidrawlib": "json",
+        "test.h": "c",
+        "readline.h": "c",
+        "libft.h": "c",
+        "unistd.h": "c",
+        "fcntl.h": "c"
+    }
+}
