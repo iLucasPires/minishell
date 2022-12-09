@@ -15,6 +15,8 @@
 # include "./define.h"
 # include "../libft/includes/libft.h"
 
+
+
 enum			e_bool
 {
 	false,
