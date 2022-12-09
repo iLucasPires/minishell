@@ -23,6 +23,21 @@
 Functions to be tested
 */
 
+typedef struct s_token
+{
+    char *value;
+    int type;
+    struct s_token *next;
+} t_token;
+
+enum e_type
+{
+    REDIRECTION,
+    WORD,
+    COUPLE_REDIRECTION,
+};
+
+
 void test_lexer(void);
 void test_check_line(void);
 void token(void);
