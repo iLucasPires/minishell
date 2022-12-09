@@ -1,49 +1,54 @@
-NAME = run
+NAME    = minishell_test
 
-SOURCE_DIR = sources
-OBJ_DIR = build
-INCLUDE_DIR = -I includes
-VPATH = $(SUBDIRS)
-LIBFT = ../libft/libft.a
-MINISHELL == ../minishell
-UNITY_FILE = config/unity.c
+HEADER    = $(shell ls . unity | grep .h$)
 
-SOURCE_FILES = $(shell ls $(SOURCE_DIR) | grep .c)
-BUILD_FILES = $(addprefix $(OBJ_DIR)/, $(SOURCE_FILES:.c=.o))
-SUBDIRS = $(wildcard $(shell find $(SOURCE_DIR) -type d))
+SRCS    = $(shell ls . unity sources | grep .c$)
 
-CC = cc
+LIBFT_PATH    = ../libft
+LIBFT     = $(LIBFT_PATH)/libft.a
 
-MAKEFLAGS = --no-print-directory
+MINISHELL_PATH = ../
+MINISHELL = $(MINISHELL_PATH)/minishell.a
 
-all: $(NAME) libft
-	@./$(NAME)
+MINISHELL_OBJS = $(shell find ../objects -type f | grep .o$ | grep -v main)
 
-libft:
-	@make -C ../libft
+OBJ_DIR    = ./build
+OBJS    = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(MINISHELL_OBJS)
 
-$(NAME): $(BUILD_FILES)
-	@make -C ../ $(MAKEFLAGS)
-	@$(CC) $(INCLUDE_DIR) -o $(NAME) $(UNITY_FILE) $(BUILD_FILES) $(LIBFT)
+CFLAGS    = -Wall -Wextra -g3
+IFLAGS    = -I. -Iunity -I../libft/includes -Iincludes
+VPATH    =  unity sources
+LDFLAGS    = -L$(LIBFT_PATH) -lft
 
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(INCLUDE_DIR) -c $< -o $@
+all: $(NAME)
 
 clean:
-	@rm -rf $(OBJ_DIR)
-	@rm -rf $(OBJ_DIR)/*.o
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -rf $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
-#colors
-RED=\033[0;31m
-GREEN=\033[0;32m
-YELLOW=\033[0;33m
-BLUE=\033[0;34m
-PURPLE=\033[0;35m
+$(LIBFT):
+	make -C $(LIBFT_PATH)
 
-.PHONY: all clean fclean re
+$(MINISHELL):
+	make -C $(MINISHELL_PATH)
+
+$(NAME): $(LIBFT) $(MINISHELL) $(OBJS) $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $(OBJS) $(LDFLAGS) -lreadline
+
+$(OBJ_DIR)/%.o: %.c $(HEADER) Makefile | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $@
+
+run: all
+	./$(NAME) 2> error.log
+
+val: all
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+.PHONY: all clean fclean re run

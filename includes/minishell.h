@@ -46,4 +46,8 @@ void			get_path(char *line);
 void			error_generic(char *message);
 void			error_pointer(char *message, void *pointer);
 void			error_command(char *command);
+
+// echo builtins
+char *echo_builtins(char *str, char *to_comp, int size);
+
 #endif
