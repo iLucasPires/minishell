@@ -4,6 +4,7 @@ void init_data(t_repl *data, char **envp)
 {
 	data->envp = envp;
 	data->dirs = ft_split(getenv("PATH"), ':');
+	data->head = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -3,53 +3,79 @@
 
 // libraries
 # include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <signal.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 
 // libraries local
-# include "./define.h"
 # include "../libft/includes/libft.h"
+# include "./define.h"
 
-
-
-enum			e_bool
+enum				e_bool
 {
 	false,
 	true
 };
+typedef struct s_token
+{
+	char			*value;
+	int				type;
+	struct s_token	*next;
+}					t_token;
 
 // structs
 typedef struct s_repl
 {
-	char		*line;
-	int			status;
-	char		**envp;
-	char		**dirs;
-}				t_repl;
+	char			*line;
+	int				status;
+	char			**envp;
+	char			**dirs;
+	t_token			*head;
+}					t_repl;
+/*
+Functions to be tested
+*/
 
-typedef struct s_command
+enum				e_type
 {
-	char		*command_name;
-	char		*path;
-	char		**args;
-	enum e_bool	is_valid;
-}				t_command;
+	WORD,
+	REDIRECTION_IN,
+	REDIRECTION_OUT,
+	REDIRECTION_APPEND,
+	HEREDOC,
+	PIPE,
+};
 
 // prototypes
-void			read_eval_print_loop(t_repl *data);
-void			get_path(char *line);
+void				read_eval_print_loop(t_repl *data);
+void				get_path(char *line);
 
 // prototypes_error
-void			error_generic(char *message);
-void			error_pointer(char *message, void *pointer);
-void			error_command(char *command);
+void				error_generic(char *message);
+void				error_pointer(char *message, void *pointer);
+void				error_command(char *command);
 
 // echo builtins
-char *echo_builtins(char *str, char *to_comp, int size);
+char				*echo_builtins(char *str, char *to_comp, int size);
+void				parser_and_tokenize(char *str, t_token **head);
+
+
+// prototypes_list_linked
+t_token				*create_item(char *value, int type);
+void				add_item_end(t_token **head, char *value, int type);
+void				show_list_linked(t_token *head);
+void				free_list_linked(t_token **head);
+char				*next_item_list_linked(t_token **head);
+
+// prototypes_parser_and_tokenize
+void				add_token_word(t_token **head, char *str, int *i, int *limit);
+void				add_token_couple_special(t_token **head, char *str, int *index);
+void				add_token_special(t_token **head, char *str, int index);
+int					check_is_special(char letter, char next_letter);
+void				parser_and_tokenize(char *str, t_token **head);
 
 #endif
