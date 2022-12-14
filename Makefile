@@ -11,7 +11,7 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c error.c
+SOURCES = main.c repl.c error.c parser_and_tokenize.c list_linked.c
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
@@ -27,7 +27,7 @@ MAKEFLAGS = --no-print-directory
 all: $(LIBFT) $(NAME)
 
 test: all
-	make run2 -C test
+	make run -C test
 
 valgrind: $(NAME)
 	valgrind --leak-check=full ./$(NAME)
@@ -36,31 +36,34 @@ rb:
 	rm -rf $(NAME)
 	make all
 
+run: $(NAME)
+	./$(NAME)
+
 $(LIBFT):
-	@make -C $(LIBFT_DIR)
+	@make $(MAKEFLAGS) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJECTS) 
-	@echo -e "$(YELLOW)Creating $(NAME)$(RESET)"
+	@echo "$(YELLOW)Creating $(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)
 
 $(OBJECTS_DIR)/%.o: %.c
-	@echo -e "$(GREEN)Compiling: $(RESET)$<"
+	@echo "$(GREEN)Compiling: $(RESET)$<"
 	@mkdir -p $(OBJECTS_DIR) 
 	@$(CC) $(CFLAGS) $(INCLUDE)  -c $< -o $@
 
 re: fclean all
 
 clean:
-	@echo -e "\033[0;31mCleaning objects...\033[0m"
+	@echo "\033[0;31mCleaning objects...\033[0m"
 	@rm -fr $(OBJECTS) $(OBJECTS_DIR)
 	@make clean -C $(LIBFT_DIR) $(MAKEFLAGS)
-	@echo -e "\033[0;32mDone\033[0m"
+	@echo "\033[0;32mDone\033[0m"
 
 fclean: clean
-	@echo -e "\033[0;31mCleaning $(NAME)...\033[0m"
+	@echo "\033[0;31mCleaning $(NAME)...\033[0m"
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) $(MAKEFLAGS)
-	@echo -e "\033[0;32mDone\033[0m"
+	@echo "\033[0;32mDone\033[0m"
 
 .PHONY: all clean fclean re 
 

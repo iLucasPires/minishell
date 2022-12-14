@@ -1,118 +1,108 @@
-#include "../test.h"
+#include "../unity/test.h"
 
-t_token *create_list_token(char *value, int type)
+void test_check_is_special(void)
 {
-    t_token *new;
-
-    new = malloc(sizeof(t_token));
-    new->value = value;
-    new->type = type;
-    new->next = NULL;
-    return (new);
+    TEST_ASSERT_EQUAL_INT(PIPE, check_is_special('|', '|'));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_OUT, check_is_special('>', ' '));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_IN, check_is_special('<', ' '));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_APPEND, check_is_special('>', '>'));
+    TEST_ASSERT_EQUAL_INT(HEREDOC, check_is_special('<', '<'));
+    
 }
 
-void add_token_end(t_token **head, char *value, int type)
+void test_add_item_end(void)
 {
-    t_token *temp_token;
+    t_token *head;
 
-    if (!*head)
-        *head = create_list_token(value, type);
-    else
-    {
-        temp_token = *head;
-        while (temp_token->next)
-            temp_token = temp_token->next;
-        temp_token->next = create_list_token(value, type);
-    }
+    head = NULL;
+    add_item_end(&head, ft_strdup("ls"), WORD);
+    add_item_end(&head, ft_strdup("|"), PIPE);
+    add_item_end(&head, ft_strdup(">"), PLUSTHAN);
+    add_item_end(&head, ft_strdup("<"), LESSTHAN);
+    add_item_end(&head, ft_strdup("$dsad-l"), WORD);
+    add_item_end(&head, ft_strdup(">>"), PLUSTHAN);
+    add_item_end(&head, ft_strdup("test"), WORD);
+    add_item_end(&head, ft_strdup("file\"    \""), WORD);
 }
 
-int is_redirection(char letter)
-{
-    if (letter == PLUSTHAN || letter == LESSTHAN)
-        return (true);
-    return (false);
-}
-
-int is_couple_redirection(char letter, char next_letter)
-{
-    if (letter == PLUSTHAN || letter == LESSTHAN)
-        if (letter == next_letter)
-            return (true);
-    return (false);
-}
-
-int is_space_or_null(char letter)
-{
-    if (letter == SPACE || !letter)
-        return (true);
-    return (false);
-}
-
-void print_token(t_token *head)
-{
-    t_token *temp_token;
-
-    temp_token = head;
-    while (temp_token)
-    {
-        printf("value: %s\n", temp_token->value);
-        temp_token = temp_token->next;
-    }
-}
-
-// if (is_space_or_null(str[index]) && !is_redirection(str[index - 1]))
-void make_token(char *str, t_token **head)
-{
-    char *value = NULL;
-    int index = 0;
-    int count = 0;
-    int check_quote = true;
-
-    while (str[index] == ' ')
-    {
-        index++;
-        count++;
-    }
-    while (str[index])
-    {
-        if (str[index] == DQUOTE || str[index] == SQUOTE)
-            check_quote = !check_quote;
-        if ((is_space_or_null(str[index]) && check_quote) || is_redirection(str[index]))
-        {
-            if (count > 0)
-            {
-                value = ft_substr(str, index - count, count);
-                add_token_end(head, value, WORD);
-                count = 0;
-            }
-            if (is_redirection(str[index]))
-            {
-                if (is_couple_redirection(str[index], str[index + 1]))
-                {
-                    value = ft_substr(str, index, 2);
-                    add_token_end(head, value, COUPLE_REDIRECTION);
-                    index++;
-                }
-                else
-                {
-                    value = ft_substr(str, index, 1);
-                    add_token_end(head, value, REDIRECTION);
-                }
-            }
-        }
-        else
-            count++;
-        index++;
-    }
-}
-
-void test_make_token(void)
+void test_parser_and_tokenize_all_together(void)
 {
     char *str;
     t_token *token;
 
     token = NULL;
-    str = ft_strdup("ls > < $dsad-l >>test file\"    \" ");
-    make_token(str, &token);
-    print_token(token);
+    str = ft_strdup("ls|><$dsad-l>>test file\"    \" ");
+    parser_and_tokenize(str, &token);
+    TEST_ASSERT_EQUAL_INT(WORD, token->type);
+    TEST_ASSERT_EQUAL_STRING("ls", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(PIPE, token->type);
+    TEST_ASSERT_EQUAL_STRING("|", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_OUT, token->type);
+    TEST_ASSERT_EQUAL_STRING(">", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_IN, token->type);
+    TEST_ASSERT_EQUAL_STRING("<", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(WORD, token->type);
+    TEST_ASSERT_EQUAL_STRING("$dsad-l", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(REDIRECTION_APPEND, token->type);
+    TEST_ASSERT_EQUAL_STRING(">>", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(WORD, token->type);
+    TEST_ASSERT_EQUAL_STRING("test", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_INT(WORD, token->type);
+    TEST_ASSERT_EQUAL_STRING("file\"    \"", next_item_list_linked(&token));
+
+    free_list_linked(&token);
+}
+
+void test_parser_and_tokenize_all_separator(void)
+{
+	char *str;
+	t_token *token;
+
+	token = NULL;
+	str = ft_strdup("ls |> < $dsad-l >> test file\"    \" ");
+	parser_and_tokenize(str, &token);
+	TEST_ASSERT_EQUAL_STRING("ls", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING("|", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING(">", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING("<", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING("$dsad-l", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING(">>", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING("test", next_item_list_linked(&token));
+	TEST_ASSERT_EQUAL_STRING("file\"    \"", next_item_list_linked(&token));
+	free_list_linked(&token);
+}
+
+void test_parser_and_tokenize_quote(void)
+{
+    char *str;
+    t_token *token;
+
+    token = NULL;
+    str = ft_strdup("                                 echo \" \" \" ");
+    parser_and_tokenize(str, &token);
+    TEST_ASSERT_EQUAL_STRING("echo", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_STRING("\" \"", next_item_list_linked(&token));
+    TEST_ASSERT_EQUAL_STRING("\"", next_item_list_linked(&token));
+    free_list_linked(&token);
+}
+
+void test_parser_and_tokenize_one(void)
+{
+    char *str;
+    t_token *token;
+
+    token = NULL;
+    str = ft_strdup("echo");
+    parser_and_tokenize(str, &token);
+    TEST_ASSERT_EQUAL_STRING("echo", next_item_list_linked(&token));
+    free_list_linked(&token);
+}
+
+void run_test_token(void)
+{
+    RUN_TEST(test_parser_and_tokenize_one);
+    RUN_TEST(test_check_is_special);
+	RUN_TEST(test_add_item_end);
+	RUN_TEST(test_parser_and_tokenize_all_together);
+	RUN_TEST(test_parser_and_tokenize_all_separator);
 }

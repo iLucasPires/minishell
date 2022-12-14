@@ -17,4 +17,13 @@
 # define NO_ACCESS -1
 # define INVISIBLE_CHAR -1
 
+#define DQUOTE '\"'
+#define SQUOTE '\''
+#define BSLASH '\\'
+#define PLUSTHAN '>'
+#define LESSTHAN '<'
+#define BAR '|'
+#define NULL_CHAR '\0'
+
+
 #endif

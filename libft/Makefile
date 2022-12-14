@@ -29,15 +29,15 @@ all:
 ifneq ($(NAME), $(wildcard $(NAME)))
 	@make $(NAME)
 else
-	@echo -e "$(GREEN)$(NAME) $(YELLOW)already exists$(RESET)"
+	@echo "$(GREEN)$(NAME) $(YELLOW)already exists$(RESET)"
 endif
 
 $(NAME): $(OBJECTS)
-	@echo -e "$(YELLOW)Creating $(NAME)$(RESET)"
+	@echo "$(YELLOW)Creating $(NAME)$(RESET)"
 	@$(AR) $(NAME) $(OBJECTS)
 
 $(OBJECTS_DIR)/%.o: $(SOURCE_DIR)/%.c
-	@echo -e "$(GREEN)Compiling: $(YELLOW)$<$(RESET)"
+	@echo "$(GREEN)Compiling: $(YELLOW)$<$(RESET)"
 	@mkdir -p $(OBJECTS_DIR)
 	@$(CC) $(INCLUDE) $(CFLAGS) -c $< -o $@
 
