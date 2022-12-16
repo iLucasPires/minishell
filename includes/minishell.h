@@ -20,10 +20,12 @@ enum				e_bool
 	false,
 	true
 };
+
 typedef struct s_token
 {
 	char			*value;
 	int				type;
+	int				is_space;
 	struct s_token	*next;
 }					t_token;
 
@@ -48,6 +50,8 @@ enum				e_type
 	REDIRECTION_APPEND,
 	HEREDOC,
 	PIPE,
+	QUOTE,
+	N_EXPAND,
 };
 
 // prototypes
@@ -63,19 +67,24 @@ void				error_command(char *command);
 char				*echo_builtins(char *str, char *to_comp, int size);
 void				parser_and_tokenize(char *str, t_token **head);
 
-
 // prototypes_list_linked
-t_token				*create_item(char *value, int type);
-void				add_item_end(t_token **head, char *value, int type);
+t_token				*create_item(char *value, int type, int is_space);
+void				add_item_end(t_token **head, char *value, int type,
+						int is_space);
 void				show_list_linked(t_token *head);
 void				free_list_linked(t_token **head);
 char				*next_item_list_linked(t_token **head);
 
 // prototypes_parser_and_tokenize
-void				add_token_word(t_token **head, char *str, int *i, int *limit);
-void				add_token_couple_special(t_token **head, char *str, int *index);
+void				add_token_word(t_token **head, char *str, int *i,
+						int *limit);
+void				add_token_couple_special(t_token **head, char *str,
+						int *index);
 void				add_token_special(t_token **head, char *str, int index);
 int					check_is_special(char letter, char next_letter);
 void				parser_and_tokenize(char *str, t_token **head);
+
+// prototypes_expansion
+void				expansion(t_repl *data);
 
 #endif
