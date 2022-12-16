@@ -1,15 +1,5 @@
 #include "../unity/test.h"
 
-void test_check_is_special(void)
-{
-    TEST_ASSERT_EQUAL_INT(PIPE, check_is_special('|', '|'));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_OUT, check_is_special('>', ' '));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_IN, check_is_special('<', ' '));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_APPEND, check_is_special('>', '>'));
-    TEST_ASSERT_EQUAL_INT(HEREDOC, check_is_special('<', '<'));
-    
-}
-
 void test_add_item_end(void)
 {
     t_token *head;
@@ -101,7 +91,6 @@ void test_parser_and_tokenize_one(void)
 void run_test_token(void)
 {
     RUN_TEST(test_parser_and_tokenize_one);
-    RUN_TEST(test_check_is_special);
 	RUN_TEST(test_add_item_end);
 	RUN_TEST(test_parser_and_tokenize_all_together);
 	RUN_TEST(test_parser_and_tokenize_all_separator);

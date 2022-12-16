@@ -14,7 +14,14 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "string": "c"
+        "string": "c",
+        "history.h": "c",
+        "signal.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "wait.h": "c",
+        "*.tcc": "c",
+        "stdbool.h": "c"
     },
     "files.exclude": {
         "**/.git": true,
@@ -25,7 +32,7 @@
         "**/Thumbs.db": true,
         "**/objects": true,
         "test/unity": true,
-        "libft" : true,
+
         ".vscode": true,
     }
     

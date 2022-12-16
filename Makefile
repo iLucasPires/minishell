@@ -11,7 +11,7 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c error.c parser_and_tokenize.c list_linked.c
+SOURCES = main.c repl.c error.c parser_and_tokenize.c list_linked.c expansion.c
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
@@ -30,7 +30,7 @@ test: all
 	make run -C test
 
 valgrind: $(NAME)
-	valgrind --leak-check=full ./$(NAME)
+	valgrind -s --leak-check=full --show-leak-kinds=all --suppressions=readline.supp  ./$(NAME)
 
 rb:
 	rm -rf $(NAME)
