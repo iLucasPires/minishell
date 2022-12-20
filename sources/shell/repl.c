@@ -35,8 +35,7 @@ void	handle_line(t_repl *data)
 	if (*data->line != NULL_CHAR)
 	{
 		add_history(data->line);
-		// verify_quotes(data->line);
-		parser_and_tokenize(data->line, &data->head);
+		finite_state_machine(data->line, &data->head);
 		expansion(data);
 		show_list_linked(data->head);
 	}
