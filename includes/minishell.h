@@ -21,6 +21,15 @@ enum				e_bool
 	true
 };
 
+typedef struct s_fsmachine
+{
+	int				state;
+	int				index;
+	int				limit;
+	int				check_quote;
+	char			key;
+}					t_fsmachine;
+
 typedef struct s_token
 {
 	char			*value;
@@ -38,6 +47,7 @@ typedef struct s_repl
 	char			**dirs;
 	t_token			*head;
 }					t_repl;
+
 /*
 Functions to be tested
 */
@@ -76,13 +86,11 @@ void				free_list_linked(t_token **head);
 char				*next_item_list_linked(t_token **head);
 
 // prototypes_parser_and_tokenize
-void				add_token_word(t_token **head, char *str, int *i,
-						int *limit);
-void				add_token_couple_special(t_token **head, char *str,
-						int *index);
+void				add_token_word(t_token **head, char *str, int *index, int *limit);
+void				add_token_couple_special(t_token **head, char *str, int *index);
 void				add_token_special(t_token **head, char *str, int index);
 int					check_is_special(char letter, char next_letter);
-void				parser_and_tokenize(char *str, t_token **head);
+void				finite_state_machine(char *str, t_token **head);
 
 // prototypes_expansion
 void				expansion(t_repl *data);
