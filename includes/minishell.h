@@ -28,6 +28,7 @@ typedef struct s_fsmachine
 	int				limit;
 	int				check_quote;
 	char			key;
+	char			quote_type;
 }					t_fsmachine;
 
 typedef struct s_token
