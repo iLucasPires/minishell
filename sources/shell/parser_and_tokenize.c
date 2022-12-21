@@ -2,18 +2,20 @@
 
 int check_is_state(char *str, int index)
 {
-	if (str[index] == DQUOTE || str[index] == SQUOTE)
-		return (QUOTE);
-	else if (str[index] == REDIRECTION_IN)
-		return (REDIRECTION_IN);
-	else if (str[index] == REDIRECTION_OUT)
+	if (str[index] == PLUSTHAN)
+	{
+		if (str[index + 1] == PLUSTHAN)
+			return (REDIRECTION_APPEND);
 		return (REDIRECTION_OUT);
-	else if (str[index] == PIPE)
+	}
+	else if (str[index] == LESSTHAN)
+	{
+		if (str[index + 1] == LESSTHAN)
+			return (REDIRECTION_IN);
+		return (REDIRECTION_IN);
+	}
+	else if (str[index] == BAR)
 		return (PIPE);
-	else if (str[index] == REDIRECTION_APPEND)
-		return (REDIRECTION_APPEND);
-	else if (str[index] == HEREDOC)
-		return (HEREDOC);
 	else
 		return (0);
 }
@@ -32,6 +34,7 @@ void	filter_word(t_token **head, char *str, int index, int *limit)
 	begin = index - *limit;
 	if (*limit > 0)
 	{
+	
 		add_item_end(head, ft_substr(str, begin, *limit), WORD, 0);
 		*limit = 0;
 	}
@@ -74,22 +77,31 @@ void	finite_state_machine(char *str, t_token **head)
 
 	var.index = 0;
 	var.limit = 0;
-	var.check_quote = true;
+	var.check_quote = false;
+	var.quote_type = 0;
 	while (true)
 	{
 		if (str[var.index] == DQUOTE || str[var.index] == SQUOTE)
-			var.check_quote = !var.check_quote;
-		if ((check_is_space(str, var.index) || check_is_state(str, var.index))
-			&& var.check_quote)
+		{
+			if (var.check_quote && str[var.index] == var.quote_type) {
+				var.check_quote = false;
+			}
+			else if (!var.check_quote) {
+				var.check_quote = true;
+				var.quote_type = str[var.index];
+			}
+		}
+		if (!var.check_quote && (check_is_space(str, var.index) || check_is_state(str, var.index)))
 		{
 			filter_word(head, str, var.index, &var.limit);
 			filter_special(head, str, var.index);
 			filter_couple_special(head, str, &var.index);
 		}
 		else
-			var.limit = var.limit + 1;
+    		var.limit++;
 		if (str[var.index] == NULL_CHAR)
 			break ;
 		var.index = var.index + 1;
 	}
 }
+

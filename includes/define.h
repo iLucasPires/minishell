@@ -24,6 +24,5 @@
 #define LESSTHAN '<'
 #define BAR '|'
 #define NULL_CHAR '\0'
-#define RM_QUOTES "\"\'"
 
 #endif

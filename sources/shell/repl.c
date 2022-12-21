@@ -36,7 +36,7 @@ void	handle_line(t_repl *data)
 	{
 		add_history(data->line);
 		finite_state_machine(data->line, &data->head);
-		expansion(data);
+		// expansion(data);
 		show_list_linked(data->head);
 	}
 }

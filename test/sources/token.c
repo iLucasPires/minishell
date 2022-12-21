@@ -1,97 +1,80 @@
 #include "../unity/test.h"
 
-void test_add_item_end(void)
+void test_finite_state_machine_with_string_in_double_quotes(void)
 {
-    t_token *head;
+	t_token *head = NULL;
+	char *input = "This is a \"string in double quotes\"";
+	finite_state_machine(input, &head);
 
-    head = NULL;
-    add_item_end(&head, ft_strdup("ls"), WORD);
-    add_item_end(&head, ft_strdup("|"), PIPE);
-    add_item_end(&head, ft_strdup(">"), PLUSTHAN);
-    add_item_end(&head, ft_strdup("<"), LESSTHAN);
-    add_item_end(&head, ft_strdup("$dsad-l"), WORD);
-    add_item_end(&head, ft_strdup(">>"), PLUSTHAN);
-    add_item_end(&head, ft_strdup("test"), WORD);
-    add_item_end(&head, ft_strdup("file\"    \""), WORD);
+	TEST_ASSERT_EQUAL_STRING("This", head->value);
+	TEST_ASSERT_EQUAL_STRING("is", head->next->value);
+	TEST_ASSERT_EQUAL_STRING("a", head->next->next->value);
+	TEST_ASSERT_EQUAL_STRING("string in double quotes", head->next->next->next->value);
+	TEST_ASSERT_NULL(head->next->next->next->next);
 }
 
-void test_parser_and_tokenize_all_together(void)
+void test_finite_state_machine_with_string_in_single_quotes(void)
 {
-    char *str;
-    t_token *token;
+	t_token *head = NULL;
+	char *input = "This is a 'string in single quotes'";
+	finite_state_machine(input, &head);
 
-    token = NULL;
-    str = ft_strdup("ls|><$dsad-l>>test file\"    \" ");
-    parser_and_tokenize(str, &token);
-    TEST_ASSERT_EQUAL_INT(WORD, token->type);
-    TEST_ASSERT_EQUAL_STRING("ls", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(PIPE, token->type);
-    TEST_ASSERT_EQUAL_STRING("|", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_OUT, token->type);
-    TEST_ASSERT_EQUAL_STRING(">", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_IN, token->type);
-    TEST_ASSERT_EQUAL_STRING("<", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(WORD, token->type);
-    TEST_ASSERT_EQUAL_STRING("$dsad-l", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(REDIRECTION_APPEND, token->type);
-    TEST_ASSERT_EQUAL_STRING(">>", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(WORD, token->type);
-    TEST_ASSERT_EQUAL_STRING("test", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_INT(WORD, token->type);
-    TEST_ASSERT_EQUAL_STRING("file\"    \"", next_item_list_linked(&token));
-
-    free_list_linked(&token);
+	TEST_ASSERT_EQUAL_STRING("This", head->value);
+	TEST_ASSERT_EQUAL_STRING("is", head->next->value);
+	TEST_ASSERT_EQUAL_STRING("a", head->next->next->value);
+	TEST_ASSERT_EQUAL_STRING("string in single quotes", head->next->next->next->value);
+	TEST_ASSERT_NULL(head->next->next->next->next);
 }
 
-void test_parser_and_tokenize_all_separator(void)
+void test_finite_state_machine_with_redirection_in(void)
 {
-	char *str;
-	t_token *token;
+	t_token *head = NULL;
+	char *input = "This is a < redirect";
+	finite_state_machine(input, &head);
 
-	token = NULL;
-	str = ft_strdup("ls |> < $dsad-l >> test file\"    \" ");
-	parser_and_tokenize(str, &token);
-	TEST_ASSERT_EQUAL_STRING("ls", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING("|", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING(">", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING("<", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING("$dsad-l", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING(">>", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING("test", next_item_list_linked(&token));
-	TEST_ASSERT_EQUAL_STRING("file\"    \"", next_item_list_linked(&token));
-	free_list_linked(&token);
+	TEST_ASSERT_EQUAL_STRING("This", head->value);
+	TEST_ASSERT_EQUAL_STRING("is", head->next->value);
+	TEST_ASSERT_EQUAL_STRING("a", head->next->next->value);
+	TEST_ASSERT_EQUAL_STRING("<", head->next->next->next->value);
+	TEST_ASSERT_EQUAL_STRING("redirect", head->next->next->next->next->value);
+	TEST_ASSERT_NULL(head->next->next->next->next->next);
 }
 
-void test_parser_and_tokenize_quote(void)
+void test_finite_state_machine_with_complex_input(void)
 {
-    char *str;
-    t_token *token;
+	t_token *head = NULL;
+	char *input = "This is a 'string in single quotes' with < redirection in and > redirection out, plus some \"mixed quotes\" and a | pipe";
+	finite_state_machine(input, &head);
 
-    token = NULL;
-    str = ft_strdup("                                 echo \" \" \" ");
-    parser_and_tokenize(str, &token);
-    TEST_ASSERT_EQUAL_STRING("echo", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_STRING("\" \"", next_item_list_linked(&token));
-    TEST_ASSERT_EQUAL_STRING("\"", next_item_list_linked(&token));
-    free_list_linked(&token);
+	TEST_ASSERT_EQUAL_STRING("This", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("is", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("a", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("string in single quotes", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("with", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("<", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("redirection", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("in", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("and", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING(">", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("redirection", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("out", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("plus", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("some", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("mixed quotes", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("and", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("a", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("|", next_item_list_linked(&head));
+	TEST_ASSERT_EQUAL_STRING("pipe", next_item_list_linked(&head));
+    TEST_ASSERT_NULL(head);
 }
 
-void test_parser_and_tokenize_one(void)
-{
-    char *str;
-    t_token *token;
 
-    token = NULL;
-    str = ft_strdup("echo");
-    parser_and_tokenize(str, &token);
-    TEST_ASSERT_EQUAL_STRING("echo", next_item_list_linked(&token));
-    free_list_linked(&token);
-}
+
 
 void run_test_token(void)
 {
-    RUN_TEST(test_parser_and_tokenize_one);
-	RUN_TEST(test_add_item_end);
-	RUN_TEST(test_parser_and_tokenize_all_together);
-	RUN_TEST(test_parser_and_tokenize_all_separator);
+    RUN_TEST(test_finite_state_machine_with_string_in_double_quotes);
+    RUN_TEST(test_finite_state_machine_with_string_in_single_quotes);
+    RUN_TEST(test_finite_state_machine_with_redirection_in);
+    RUN_TEST(test_finite_state_machine_with_complex_input);
 }
