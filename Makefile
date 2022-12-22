@@ -11,7 +11,8 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c error.c parser_and_tokenize.c list_linked.c expansion.c
+SOURCES = main.c repl.c error.c list_linked.c 
+SOURCES += aux_finite_state_machine.c finite_state_machine.c 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
@@ -58,12 +59,14 @@ clean:
 	@rm -fr $(OBJECTS) $(OBJECTS_DIR)
 	@make clean -C $(LIBFT_DIR) $(MAKEFLAGS)
 	@echo "\033[0;32mDone\033[0m"
+	make clean -C test
 
 fclean: clean
 	@echo "\033[0;31mCleaning $(NAME)...\033[0m"
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) $(MAKEFLAGS)
 	@echo "\033[0;32mDone\033[0m"
+	make fclean -C test
 
 .PHONY: all clean fclean re 
 
