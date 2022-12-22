@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-t_token	*create_item(char *value, int type, int is_space)
+t_token	*create_item(char *value, int type)
 {
 	t_token	*new;
 
@@ -8,34 +8,33 @@ t_token	*create_item(char *value, int type, int is_space)
 	new->value = value;
 	new->type = type;
 	new->next = NULL;
-	new->is_space = is_space;
 	return (new);
 }
 
-void	add_item_end(t_token **head, char *value, int type, int is_space)
+void	add_item_end(t_token **head, char *value, int type)
 {
 	t_token	*tmp_head;
 
 	if (*head == NULL)
-		*head = create_item(value, type, is_space);
+		*head = create_item(value, type);
 	else
 	{
 		tmp_head = *head;
 		while (tmp_head->next)
 			tmp_head = tmp_head->next;
-		tmp_head->next = create_item(value, type, is_space);
+		tmp_head->next = create_item(value, type);
 	}
 }
 
 void	show_list_linked(t_token *head)
 {
-	t_token	*tmp_head;
+	t_token	*tokens;
 
-	tmp_head = head;
-	while (tmp_head)
+	tokens = head;
+	while (tokens)
 	{
-		printf("value: %s type: %d is_space: %d \n", tmp_head->value, tmp_head->type, tmp_head->is_space);
-		tmp_head = tmp_head->next;
+		fprintf(stderr, TOKENS_VIEW, tokens->value, tokens->type);
+		tokens = tokens->next;
 	}
 }
 

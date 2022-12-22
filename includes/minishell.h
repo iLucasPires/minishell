@@ -23,11 +23,11 @@ enum				e_bool
 
 typedef struct s_fsmachine
 {
-	int				state;
 	int				index;
+	int				state;
 	int				limit;
+	char			*line;
 	int				check_quote;
-	char			key;
 	char			quote_type;
 }					t_fsmachine;
 
@@ -35,7 +35,6 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
-	int				is_space;
 	struct s_token	*next;
 }					t_token;
 
@@ -56,9 +55,9 @@ Functions to be tested
 enum				e_type
 {
 	WORD,
-	REDIRECTION_IN,
-	REDIRECTION_OUT,
-	REDIRECTION_APPEND,
+	RED_IN,
+	RED_OUT,
+	RED_APPEND,
 	HEREDOC,
 	PIPE,
 	QUOTE,
@@ -79,18 +78,16 @@ char				*echo_builtins(char *str, char *to_comp, int size);
 void				parser_and_tokenize(char *str, t_token **head);
 
 // prototypes_list_linked
-t_token				*create_item(char *value, int type, int is_space);
-void				add_item_end(t_token **head, char *value, int type,
-						int is_space);
+t_token				*create_item(char *value, int type);
+void				add_item_end(t_token **head, char *value, int type);
 void				show_list_linked(t_token *head);
 void				free_list_linked(t_token **head);
 char				*next_item_list_linked(t_token **head);
 
 // prototypes_parser_and_tokenize
-void				add_token_word(t_token **head, char *str, int *index, int *limit);
-void				add_token_couple_special(t_token **head, char *str, int *index);
-void				add_token_special(t_token **head, char *str, int index);
-int					check_is_special(char letter, char next_letter);
+int					is_state(char *str, int index);
+int					is_space(char *str, int index);
+int					is_special(char *str, int index);
 void				finite_state_machine(char *str, t_token **head);
 
 // prototypes_expansion

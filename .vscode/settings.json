@@ -21,7 +21,14 @@
         "stdlib.h": "c",
         "wait.h": "c",
         "*.tcc": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "cstdlib": "c",
+        "define.h": "c",
+        "deque": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "string_view": "c",
+        "initializer_list": "c"
     },
     "files.exclude": {
         "**/.git": true,
