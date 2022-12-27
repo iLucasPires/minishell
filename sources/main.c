@@ -4,6 +4,8 @@ void init_data(t_repl *data, char **envp)
 {
 	data->envp = envp;
 	data->head = NULL;
+	data->status = 0;
+	data->loop = true;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -14,6 +16,7 @@ int	main(int argc, char **argv, char **envp)
 		error_generic(ERROR_ARGUMENTS);
 	init_data(&data, envp);
 	read_eval_print_loop(&data);
+	
 
 	return (0);
 }

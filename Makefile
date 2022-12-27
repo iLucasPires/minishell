@@ -11,7 +11,7 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c error.c list_linked.c 
+SOURCES = main.c repl.c list_linked.c list_error.c
 SOURCES += aux_finite_state_machine.c finite_state_machine.c 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 

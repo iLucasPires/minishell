@@ -5,7 +5,7 @@ t_token	*create_item(char *value, int type)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	new->value = value;
+	new->value = ft_strdup(value);
 	new->type = type;
 	new->next = NULL;
 	return (new);

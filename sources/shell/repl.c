@@ -16,7 +16,7 @@ void	verify_quotes(char *line)
 			while (line[index] && line[index] != value)
 				index = index + 1;
 			if (line[index] == NULL_CHAR)
-				ft_putstr_fd("test", 2);
+				error_generic(ERROR_SYNTAX);
 		}
 		index = index + 1;
 	}
@@ -28,15 +28,14 @@ void	handle_line(t_repl *data)
 	{
 		ft_putendl_fd("exit", 1);
 		rl_clear_history();
-		free_list_linked(&data->head);
-		free(data->line);
-		exit(EXIT_SUCCESS);
+		data->loop = false;
+		return ;
 	}
 	if (*data->line != NULL_CHAR)
 	{
 		add_history(data->line);
+		verify_quotes(data->line);
 		finite_state_machine(data->line, &data->head);
-		// expansion(data);
 		show_list_linked(data->head);
 	}
 }
@@ -56,11 +55,12 @@ void	read_eval_print_loop(t_repl *data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
-	while (true)
+	while (data->loop == true)
 	{
 		data->line = readline(PROMPT);
 		handle_line(data);
 		free_list_linked(&data->head);
 		free(data->line);
 	}
+	exit(EXIT_SUCCESS);
 }
