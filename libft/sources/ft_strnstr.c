@@ -3,16 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By:  lpires-n < lpires-n@student.42sp.org.b    +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 19:15:59 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/11/15 03:15:53 by  lpires-n        ###   ########.fr       */
+/*   Updated: 2022/12/27 00:48:27 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
-#include <string.h>
-#include "libft.h"
 
 #include "libft.h"
 

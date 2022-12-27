@@ -21,22 +21,25 @@ enum				e_bool
 	true
 };
 
-typedef struct s_fsmachine
-{
-	int				index;
-	int				state;
-	int				limit;
-	char			*line;
-	int				check_quote;
-	char			quote_type;
-}					t_fsmachine;
-
 typedef struct s_token
 {
 	char			*value;
 	int				type;
 	struct s_token	*next;
 }					t_token;
+
+typedef struct s_fsmachine
+{
+	int				index;
+	int				state;
+	int				limit;
+	int				begin;
+	int				check_quote;
+	char			quote_type;
+	char			*temp;
+	char			*line;
+	t_token			**head;
+}					t_fsmachine;
 
 // structs
 typedef struct s_repl
@@ -45,6 +48,7 @@ typedef struct s_repl
 	int				status;
 	char			**envp;
 	char			**dirs;
+	int				loop;
 	t_token			*head;
 }					t_repl;
 
@@ -62,6 +66,7 @@ enum				e_type
 	PIPE,
 	QUOTE,
 	N_EXPAND,
+	EXPAND,
 };
 
 // prototypes
