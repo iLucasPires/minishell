@@ -31,13 +31,10 @@ typedef struct s_token
 typedef struct s_fsmachine
 {
 	int				index;
-	int				state;
 	int				limit;
 	int				begin;
 	int				check_quote;
 	char			quote_type;
-	char			*temp;
-	char			*line;
 	t_token			**head;
 }					t_fsmachine;
 
