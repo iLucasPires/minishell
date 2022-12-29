@@ -2,6 +2,7 @@
 # define DEFINE_H
 
 # define PROMPT "\033[1;32mminishell\033[0m$ "
+# define HERE_FILE "./tmp_file"
 # define MAX_LINE 80
 
 // color define

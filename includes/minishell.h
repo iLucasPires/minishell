@@ -52,6 +52,12 @@ typedef struct s_repl
 	t_token			*head;
 }					t_repl;
 
+typedef struct s_file
+{
+	char			*keepli;
+	int				fd;
+}					t_file;
+
 /*
 Functions to be tested
 */
