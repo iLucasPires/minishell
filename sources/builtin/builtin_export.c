@@ -34,12 +34,10 @@ void	substitute_env(t_token *token_current, char *value)
 
 void	add_env(t_token **env, char *value)
 {
-	
 	if (ft_strchr(value, EQUAL) != NULL)
 		add_item_end(env, value, true);
 	else
 		add_item_end(env, value, false);
-	
 }
 
 int	builtin_export(t_repl *data)

@@ -7,8 +7,11 @@ t_token	*get_node_list_linked(t_token **head, char *value)
 	token = *head;
 	while (token)
 	{
-		if (!ft_strncmp(token->value, value, ft_strtlen(token->value, EQUAL)))
+		if (!ft_strncmp(token->value, value, ft_strtlen(value, EQUAL)) &&
+			!ft_strncmp(value, token->value, ft_strtlen(token->value, EQUAL)))
+		{
 			return (token);
+		}
 		token = token->next;
 	}
 	return (NULL);
@@ -21,8 +24,11 @@ char	*get_value_list_linked(t_token **head, char *value)
 	token = *head;
 	while (token)
 	{
-		if (!ft_strncmp(token->value, value, ft_strtlen(token->value, EQUAL)))
+		if (!ft_strncmp(token->value, value, ft_strtlen(value, EQUAL)) &&
+			!ft_strncmp(value, token->value, ft_strtlen(token->value, EQUAL)))
+		{
 			return (token->value);
+		}
 		token = token->next;
 	}
 	return (NULL);

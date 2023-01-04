@@ -88,6 +88,7 @@ int					builtin_pwd(t_repl *data);
 int					builtin_exit(t_repl *data);
 int					builtin_env(t_repl *data);
 int					builtin_export(t_repl *data);
+int					builtin_unset(t_repl *data);
 
 // prototypes_list_linked
 void				add_item_end(t_token **head, char *value, int type);
