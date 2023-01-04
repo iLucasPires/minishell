@@ -39,6 +39,12 @@ typedef struct s_fsmachine
 }					t_fsmachine;
 
 // structs
+typedef struct s_file
+{
+	char			*keepli;
+	int				fd;
+}					t_file;
+
 typedef struct s_repl
 {
 	char			*line;
@@ -47,13 +53,8 @@ typedef struct s_repl
 	char			**dirs;
 	int				loop;
 	t_token			*head;
+	t_file			file;
 }					t_repl;
-
-typedef struct s_file
-{
-	char			*keepli;
-	int				fd;
-}					t_file;
 
 /*
 Functions to be tested
@@ -100,5 +101,9 @@ void				finite_state_machine(char *str, t_token **head);
 
 // prototypes_expansion
 void				expansion(t_repl *data);
+
+// here_doc
+void				make_heredoc(t_file *file, t_token *list);
+void				write_in_file(t_file *file, t_token *list);
 
 #endif

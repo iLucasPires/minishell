@@ -13,6 +13,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
 SOURCES = main.c repl.c list_linked.c list_error.c
 SOURCES += aux_finite_state_machine.c finite_state_machine.c 
+SOURCES += heredoc.c
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
