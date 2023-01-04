@@ -13,9 +13,10 @@ SOURCES += ft_bzero.c ft_strlcpy.c ft_strlcat.c	ft_toupper.c
 SOURCES += ft_tolower.c ft_strchr.c ft_strrchr.c ft_strncmp.c	
 SOURCES += ft_memchr.c	ft_memcmp.c	ft_strnstr.c ft_atoi.c		
 SOURCES += ft_calloc.c ft_strdup.c ft_isprint.c	ft_substr.c		
-SOURCES += ft_strjoin.c	ft_strtrim.c ft_split.c ft_itoa.c		
+SOURCES += ft_strjoin.c	ft_strtrim.c ft_split.c ft_itoa.c	
 SOURCES += ft_strmapi.c	ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c	
-SOURCES += ft_putendl_fd.c ft_putnbr_fd.c
+SOURCES += ft_putendl_fd.c ft_putnbr_fd.c ft_strcmp.c ft_strtlen.c
+SOURCES += ft_putlstr_fd.c
 OBJECTS = $(patsubst %.c, $(OBJECTS_DIR)/%.o, $(SOURCES))
 
 # Compiler
