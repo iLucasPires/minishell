@@ -36,4 +36,9 @@
 # define TILDE '~'
 # define EQUAL '='
 
+// heredoc define
+
+# define HERE_FILE	"./tmp_file"
+
+
 #endif
