@@ -17,6 +17,12 @@
 # include "./colors.h"
 # include "./define.h"
 
+typedef struct s_file
+{
+	char			*keepli;
+	int				fd;
+}					t_file;
+
 enum				e_bool
 {
 	false,
@@ -49,6 +55,7 @@ typedef struct s_repl
 	t_token			*env;
 	t_token			*head;
 	int				status;
+	t_file			file;
 }					t_repl;
 
 enum				e_type
@@ -115,5 +122,9 @@ void				expansion(t_repl *data);
 void				free_minishell(t_repl *data);
 void				free_repl(t_repl *data);
 void				free_exit_minishell(t_repl *data, int status);
+
+// here_doc
+void				make_heredoc(t_file *file, t_token *list);
+void				write_in_file(t_file *file, t_token *list);
 
 #endif

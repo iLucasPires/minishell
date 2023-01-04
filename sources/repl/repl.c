@@ -8,6 +8,8 @@ void	handle_line(t_repl *data)
 		add_history(data->line);
 		verify_quotes(data->line);
 		finite_state_machine(data->line, &data->head);
+		if (ft_strncmp(data->head->value, "<<", 3) == 0)
+			make_heredoc(&data->file, data->head);
 		verify_command(data);
 	}
 }

@@ -16,7 +16,8 @@ SOURCES = main.c repl.c path.c signal.c verify.c free.c
 LIST_LINKED += create_destroy_list.c get_list.c show_list.c
 FSMACHINE += aux_finite_state_machine.c finite_state_machine.c  
 BUILTIN += builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c builtin_env.c builtin_export.c builtin_unset.c
-SOURCES += $(FSMACHINE) $(BUILTIN) $(LIST_LINKED)
+HEREDOC += heredoc.c
+SOURCES += $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(HEREDOC)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
