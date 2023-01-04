@@ -11,8 +11,13 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 # Sources
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
-SOURCES = main.c repl.c list_linked.c list_error.c
-SOURCES += aux_finite_state_machine.c finite_state_machine.c 
+
+SOURCES = main.c repl.c path.c signal.c verify.c free.c
+LIST_LINKED += create_destroy_list.c get_list.c show_list.c
+FSMACHINE += aux_finite_state_machine.c finite_state_machine.c  
+BUILTIN += builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c builtin_env.c builtin_export.c
+SOURCES += $(FSMACHINE) $(BUILTIN) $(LIST_LINKED)
+
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
 # Compiler
@@ -22,16 +27,17 @@ INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 
 # Makefile
 MAKEFLAGS = --no-print-directory
+VALGRINDFLAGS = -s --leak-check=full --show-leak-kinds=all 
+VALGRIDSUPP = --suppressions=readline.txt
 
 # Rules
-
 all: $(LIBFT) $(NAME)
 
 test: all
 	make run -C test
 
 valgrind: $(NAME)
-	valgrind -s --leak-check=full --show-leak-kinds=all --suppressions=readline.supp  ./$(NAME)
+	valgrind $(VALGRINDFLAGS) $(VALGRIDSUPP) ./$(NAME)
 
 rb:
 	rm -rf $(NAME)
