@@ -39,4 +39,6 @@ void	verify_command(t_repl *data)
 		builtin_env(data);
 	else if (ft_strncmp(data->head->value, "export", 7) == 0)
 		builtin_export(data);
+	else if (ft_strncmp(data->head->value, "unset", 6) == 0)
+		builtin_unset(data);
 }
