@@ -21,24 +21,24 @@ void	error_exit_str(char *str)
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 }
 
-int	builtin_exit(t_repl *data)
+int	builtin_exit(t_minishell *data)
 {
-	t_token *token;
+	t_list *token;
 
-	token = data->head;
+	token = data->envs;
 	if (token->next == NULL)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
-		free_exit_minishell(data, 0);
+		destroy_exit_minishell(data, 0);
 	}
 	else if (token->next->next == NULL)
 	{
 		if (is_numeric(token->next->value))
-			free_exit_minishell(data, ft_atoi(token->next->value));
+			destroy_exit_minishell(data, ft_atoi(token->next->value));
 		else
 		{
 			error_exit_str(token->next->value);
-			free_exit_minishell(data, 255);
+			destroy_exit_minishell(data, 255);
 		}
 	}
 	else

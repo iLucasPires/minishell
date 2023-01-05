@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	print_tokens(t_token *tokens)
+void	print_lists(t_list *tokens)
 {
 	while (tokens)
 	{
@@ -10,20 +10,20 @@ void	print_tokens(t_token *tokens)
 	}
 }
 
-int	builtin_echo(t_repl *data)
+int	builtin_echo(t_minishell *data)
 {
-	t_token *token;
+	t_list *token;
 
-	token = data->head;
+	token = data->tokens;
 	if (token->next == NULL)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	else
 	{
 		if (ft_strncmp(token->next->value, "-n", 2) == 0)
-			print_tokens(token->next->next);
+			print_lists(token->next->next);
 		else
 		{
-			print_tokens(token->next);
+			print_lists(token->next);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 	}

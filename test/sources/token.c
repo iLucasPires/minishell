@@ -2,7 +2,7 @@
 
 void test_finite_state_machine_with_string_in_double_quotes(void)
 {
-	t_token *head = NULL;
+	t_list *head = NULL;
 	char *input = "This is a \"string in double quotes\"";
 	finite_state_machine(input, &head);
 
@@ -15,7 +15,7 @@ void test_finite_state_machine_with_string_in_double_quotes(void)
 
 void test_finite_state_machine_with_string_in_single_quotes(void)
 {
-	t_token *head = NULL;
+	t_list *head = NULL;
 	char *input = "This is a 'string in single quotes'";
 	finite_state_machine(input, &head);
 
@@ -28,7 +28,7 @@ void test_finite_state_machine_with_string_in_single_quotes(void)
 
 void test_finite_state_machine_with_redirection_in(void)
 {
-	t_token *head = NULL;
+	t_list *head = NULL;
 	char *input = "This is a < redirect";
 	finite_state_machine(input, &head);
 
@@ -42,7 +42,7 @@ void test_finite_state_machine_with_redirection_in(void)
 
 void test_finite_state_machine_with_complex_input(void)
 {
-	t_token *head = NULL;
+	t_list *head = NULL;
 	char *input = "This is a 'string in single quotes' with < redirection in and > redirection out, plus some \"mixed quotes\" and a | pipe";
 	finite_state_machine(input, &head);
 
@@ -71,7 +71,7 @@ void test_finite_state_machine_with_complex_input(void)
 
 
 
-void run_test_token(void)
+void run_test_list(void)
 {
     RUN_TEST(test_finite_state_machine_with_string_in_double_quotes);
     RUN_TEST(test_finite_state_machine_with_string_in_single_quotes);

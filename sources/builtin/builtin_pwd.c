@@ -1,11 +1,11 @@
 #include <minishell.h>
 
-int	builtin_pwd(t_repl *data)
+int	builtin_pwd(t_minishell *data)
 {
 	char *path;
-	t_token *token;
+	t_list *token;
 
-	token = data->head;
+	token = data->tokens;
 	path = getcwd(NULL, 0);
 	if (path == NULL || path[0] == '\0' || token->next != NULL)
 	{

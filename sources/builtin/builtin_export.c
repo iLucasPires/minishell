@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	show_env(t_token *tokens)
+void	show_env(t_list *tokens)
 {
 	char	*value;
 
@@ -21,7 +21,7 @@ void	show_env(t_token *tokens)
 	}
 }
 
-void	substitute_env(t_token *token_current, char *value)
+void	substitute_env(t_list *token_current, char *value)
 {
 	if (ft_strchr(value, EQUAL) != NULL)
 	{
@@ -32,29 +32,21 @@ void	substitute_env(t_token *token_current, char *value)
 	}
 }
 
-void	add_env(t_token **env, char *value)
+int	builtin_export(t_minishell *data)
 {
-	if (ft_strchr(value, EQUAL) != NULL)
-		add_item_end(env, value, true);
-	else
-		add_item_end(env, value, false);
-}
+	t_list *temp;
+	t_list *token_current;
 
-int	builtin_export(t_repl *data)
-{
-	t_token *temp;
-	t_token *token_current;
-
-	temp = data->head;
+	temp = data->tokens;
 	if (temp->next == NULL)
-		show_env(data->env);
+		show_env(data->envs);
 	else if (temp->next)
 	{
 		while (temp->next)
 		{
-			token_current = get_node_list_linked(&data->env, temp->next->value);
+			token_current = get_node(&data->envs, temp->next->value);
 			if (token_current == NULL)
-				add_env(&data->env, temp->next->value);
+				add_env(&data->envs, temp->next->value);
 			else if (token_current != NULL)
 				substitute_env(token_current, temp->next->value);
 			temp = temp->next;

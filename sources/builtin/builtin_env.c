@@ -1,13 +1,13 @@
 #include <minishell.h>
 
-int	builtin_env(t_repl *data)
+int	builtin_env(t_minishell *data)
 {
-	t_token *token;
+	t_list *token;
 
-	token = data->env;
+	token = data->envs;
 	while (token)
 	{
-		if (token->type == true && token->next != NULL)
+		if (token->type == true)
 			printf("%s \n", token->value);
 		token = token->next;
 	}
