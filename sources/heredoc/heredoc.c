@@ -7,7 +7,7 @@ void init_file(t_file *file)
         exit(1);
 }
 
-void write_in_file(t_file *file, t_token *list)
+void write_in_file(t_file *file, t_list *list)
 {
 	while (true)
 	{
@@ -28,7 +28,7 @@ void write_in_file(t_file *file, t_token *list)
 	}
 }
 
-void	make_heredoc(t_file *file, t_token *list)
+void	make_heredoc(t_file *file, t_list *list)
 {
 	int	pid;
 	int	status;

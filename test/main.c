@@ -14,7 +14,7 @@ int main(void)
 	// test_lexer();
   
   // test_check_line();
-	RUN_TEST(run_test_token);
+	RUN_TEST(run_test_list);
 	// RUN_TEST(test_expander);
 	return (UNITY_END());
 }

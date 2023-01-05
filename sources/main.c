@@ -1,41 +1,39 @@
 #include <minishell.h>
 
-void	init_env(t_repl *data, char **envp)
+void	init_env(t_minishell *data, char **envp)
 {
 	int	index;
 
 	index = 0;
 	while (envp[index] != NULL)
 	{
-		if (ft_strchr(envp[index], '='))
-			add_item_end(&data->env , envp[index], true);
-		else
-			add_item_end(&data->env , envp[index], false);
+		add_env(&data->envs, envp[index]);
 		index++;
 	}
 }
 
-void	init_data(t_repl *data)
+void	init_data(t_minishell *data, char **envp)
 {
-	data->head = NULL;
+	data->tokens = NULL;
 	data->line = NULL;
-	data->env = NULL;
-	data->status = EXIT_SUCCESS;
+	data->envs = NULL;
 	data->home = getenv("HOME");
+	data->envp = envp;
+	data->paths = ft_split(getenv("PATH"), ':');
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_repl	data;
+	t_minishell	data;
 
 	if (argc != 1 || argv[1] != NULL)
 	{
 		ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	init_data(&data);
-	path_current(&data);
+	init_data(&data, envp);
 	init_env(&data, envp);
+	path_current(&data);
 	read_eval_print_loop(&data);
 	return (EXIT_SUCCESS);
 }

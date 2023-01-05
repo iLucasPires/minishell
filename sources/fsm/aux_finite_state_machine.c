@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_state(char *str, int index)
+int	fsm_is_state(char *str, int index)
 {
 	if (str[index] == PLUSTHAN)
 	{
@@ -20,16 +20,16 @@ int	is_state(char *str, int index)
 		return (false);
 }
 
-int	is_space(char *str, int index)
+int	fsm_is_space(char *str, int index)
 {
 	if (str[index] == SPACE || str[index] == NULL_CHAR)
 		return (true);
 	return (false);
 }
 
-int	is_special(char *str, int index)
+int	fsm_is_special(char *str, int index)
 {
-	if (is_state(str, index) || is_space(str, index))
+	if (fsm_is_state(str, index) || fsm_is_space(str, index))
 		return (true);
 	return (false);
 }

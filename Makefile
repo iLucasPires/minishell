@@ -12,12 +12,14 @@ VPATH = $(OBJECTS_DIR) $(SOURCE_DIR) $(SUB_DIRS)
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
 
-SOURCES = main.c repl.c path.c signal.c verify.c free.c
-LIST_LINKED += create_destroy_list.c get_list.c show_list.c
+MAIN = main.c
+MINISHELL = minishell.c minishell_signal.c minishell_destroy.c minishell_syntax.c
+LIST_LINKED += list_linked_create.c list_linked_get.c list_linked_destroy.c
 FSMACHINE += aux_finite_state_machine.c finite_state_machine.c  
 BUILTIN += builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c builtin_env.c builtin_export.c builtin_unset.c
 HEREDOC += heredoc.c
-SOURCES += $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(HEREDOC)
+EXECUTOR += choose_command.c executor.c
+SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(HEREDOC) $(EXECUTOR)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 

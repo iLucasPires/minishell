@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	change_directory(char *path, t_repl *data)
+void	change_directory(char *path, t_minishell *data)
 {
 	int	status;
 
@@ -14,12 +14,12 @@ void	change_directory(char *path, t_repl *data)
 	}
 }
 
-int	builtin_cd(t_repl *data)
+int	builtin_cd(t_minishell *data)
 {
 	char	*path;
-	t_token	*token;
+	t_list	*token;
 
-	token = data->head;
+	token = data->tokens;
 	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))
 	{
 		path = getenv("HOME");
