@@ -1,19 +1,38 @@
 #include <minishell.h>
 
-static void error_arguments(void)
+void	init_env(t_minishell *data, char **envp)
 {
-	ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
-	exit(EXIT_FAILURE);
+	int	index;
+
+	index = 0;
+	while (envp[index] != NULL)
+	{
+		add_env(&data->envs, envp[index]);
+		index++;
+	}
 }
 
+void	init_data(t_minishell *data, char **envp)
+{
+	data->tokens = NULL;
+	data->line = NULL;
+	data->envs = NULL;
+	data->home = getenv("HOME");
+	data->envp = envp;
+	data->paths = ft_split(getenv("PATH"), ':');
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_minishell	data;
 
 	if (argc != 1 || argv[1] != NULL)
-		error_arguments();
-	data.envp = envp;
-	read_eval_print_loop(&data.repl);
-	return (0);
+	{
+		ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	init_data(&data, envp);
+	init_env(&data, envp);
+	read_eval_print_loop(&data);
+	return (EXIT_SUCCESS);
 }
