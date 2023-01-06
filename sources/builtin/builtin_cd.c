@@ -9,8 +9,8 @@ void	change_directory(char *path, t_minishell *data)
 		perror("cd");
 	else
 	{
+		substitute_env(get_node(&data->envs, "OLDPWD"), data->path);
 		free(data->path);
-		path_current(data);
 	}
 }
 
@@ -22,12 +22,12 @@ int	builtin_cd(t_minishell *data)
 	token = data->tokens;
 	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))
 	{
-		path = getenv("HOME");
+		path = get_value_env(&data->envs, "HOME");
 		change_directory(path, data);
 	}
 	else if (!ft_strncmp(token->next->value, "-", 2))
 	{
-		path = getenv("OLDPWD");
+		path = get_value_env(&data->envs, "OLDPWD");
 		change_directory(path, data);
 	}
 	else if (token->next->next == NULL)

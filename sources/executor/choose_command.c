@@ -2,13 +2,15 @@
 
 int	count_tokens(t_list *tokens)
 {
-	int	count;
+	int		count;
+	t_list	*temp;
 
 	count = 0;
-	while (tokens && !fsm_is_state(tokens->value, 0))
+	temp = tokens;
+	while (temp && !fsm_is_state(temp->value, 0))
 	{
 		count++;
-		tokens = tokens->next;
+		temp = temp->next;
 	}
 	return (count);
 }
@@ -24,8 +26,12 @@ char	*get_commando(t_minishell *data)
 	while (data->paths[index])
 	{
 		comand_path = ft_strjoin(data->paths[index], command);
-		if (access(comand_path, F_OK) == 0)
+		if (!access(comand_path, F_OK | X_OK))
+		{
+			free(command);
 			return (comand_path);
+		}
+		free(comand_path);
 		index++;
 	}
 	return (NULL);
@@ -35,17 +41,19 @@ char	**get_arguments(t_minishell *data)
 {
 	int		size;
 	char	**arguments;
+	t_list	*tokens_temp;
 
-	size = count_tokens(data->tokens);
+	tokens_temp = data->tokens;
+	size = count_tokens(tokens_temp);
 	arguments = malloc(sizeof(char *) * (size + 1));
 	if (!arguments)
 		return (NULL);
 	arguments[size] = NULL;
 	size = 0;
-	while (data->tokens && !fsm_is_state(data->tokens->value, 0))
+	while (tokens_temp && !fsm_is_state(tokens_temp->value, 0))
 	{
-		arguments[size] = data->tokens->value;
-		data->tokens = data->tokens->next;
+		arguments[size] = tokens_temp->value;
+		tokens_temp = tokens_temp->next;
 		size++;
 	}
 	return (arguments);
@@ -62,18 +70,23 @@ int	system_command(t_minishell *data)
 	{
 		ft_putstr_fd(data->tokens->value, STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		return (1);
+		free(command);
+		return (EXIT_FAILURE);
 	}
 	arguments = get_arguments(data);
 	pid = fork();
 	if (pid == 0)
 	{
 		execve(command, arguments, data->envp);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
-	return (0);
+		free(arguments);
+		free(command);
+	}
+	return (EXIT_SUCCESS);
 }
 
 void	choose_command(t_minishell *data)
