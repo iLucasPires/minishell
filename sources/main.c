@@ -17,8 +17,8 @@ void	init_data(t_minishell *data, char **envp)
 	data->tokens = NULL;
 	data->line = NULL;
 	data->envs = NULL;
-	data->home = getenv("HOME");
 	data->envp = envp;
+	data->home = getenv("HOME");
 	data->paths = ft_split(getenv("PATH"), ':');
 }
 

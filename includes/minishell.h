@@ -118,5 +118,7 @@ void				write_in_file(t_file *file, t_list *list);
 
 // prototypes_exec
 void				executor(t_minishell *data);
+char				*get_commando(t_minishell *data);
+char				**get_arguments(t_minishell *data);
 
 #endif
