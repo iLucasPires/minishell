@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	show_env(t_token *tokens)
+void	show_env(t_list *tokens)
 {
 	char	*value;
 
@@ -21,7 +21,7 @@ void	show_env(t_token *tokens)
 	}
 }
 
-void	substitute_env(t_token *token_current, char *value)
+void	substitute_env(t_list *token_current, char *value)
 {
 	if (ft_strchr(value, EQUAL) != NULL)
 	{
@@ -32,7 +32,7 @@ void	substitute_env(t_token *token_current, char *value)
 	}
 }
 
-void	add_env(t_token **env, char *value)
+void	add_env(t_list **env, char *value)
 {
 	if (ft_strchr(value, EQUAL) != NULL)
 		add_item_end(env, value, true);
@@ -42,8 +42,8 @@ void	add_env(t_token **env, char *value)
 
 int	builtin_export(t_repl *data)
 {
-	t_token *temp;
-	t_token *token_current;
+	t_list *temp;
+	t_list *token_current;
 
 	temp = data->head;
 	if (temp->next == NULL)

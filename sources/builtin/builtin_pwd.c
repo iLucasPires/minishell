@@ -3,7 +3,7 @@
 int	builtin_pwd(t_repl *data)
 {
 	char *path;
-	t_token *token;
+	t_list *token;
 
 	token = data->head;
 	path = getcwd(NULL, 0);

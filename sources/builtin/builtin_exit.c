@@ -23,7 +23,7 @@ void	error_exit_str(char *str)
 
 int	builtin_exit(t_repl *data)
 {
-	t_token *token;
+	t_list *token;
 
 	token = data->head;
 	if (token->next == NULL)

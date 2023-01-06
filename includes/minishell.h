@@ -34,7 +34,7 @@ typedef struct s_token
 	int				type;
 	char			*value;
 	struct s_token	*next;
-}					t_token;
+}					t_list;
 
 typedef struct s_fsmachine
 {
@@ -43,7 +43,7 @@ typedef struct s_fsmachine
 	int				begin;
 	int				check_quote;
 	char			quote_type;
-	t_token			**head;
+	t_list			**head;
 }					t_fsmachine;
 
 // structs
@@ -52,8 +52,8 @@ typedef struct s_repl
 	char			*line;
 	char			*home;
 	char			*path;
-	t_token			*env;
-	t_token			*head;
+	t_list			*env;
+	t_list			*head;
 	int				status;
 	t_file			file;
 }					t_repl;
@@ -98,22 +98,22 @@ int					builtin_export(t_repl *data);
 int					builtin_unset(t_repl *data);
 
 // prototypes_list_linked
-void				add_item_end(t_token **head, char *value, int type);
-void				free_list_linked(t_token **head);
+void				add_item_end(t_list **head, char *value, int type);
+void				free_list_linked(t_list **head);
 
-char				*next_item_list_linked(t_token **head);
-void				free_item(t_token **head, t_token *item);
-void				show_list_linked_filter(t_token **head, int type);
-void				show_list_linked(t_token **head);
-t_token				*get_node_list_linked(t_token **head, char *value);
-char				*get_value_list_linked(t_token **head, char *value);
-char				*get_value_env(t_token **head, char *value);
+char				*next_item_list_linked(t_list **head);
+void				free_item(t_list **head, t_list *item);
+void				show_list_linked_filter(t_list **head, int type);
+void				show_list_linked(t_list **head);
+t_list				*get_node_list_linked(t_list **head, char *value);
+char				*get_value_list_linked(t_list **head, char *value);
+char				*get_value_env(t_list **head, char *value);
 
 // prototypes_parser_and_tokenize
 int					is_state(char *str, int index);
 int					is_space(char *str, int index);
 int					is_special(char *str, int index);
-void				finite_state_machine(char *str, t_token **head);
+void				finite_state_machine(char *str, t_list **head);
 
 // prototypes_expansion
 void				expansion(t_repl *data);
@@ -124,7 +124,7 @@ void				free_repl(t_repl *data);
 void				free_exit_minishell(t_repl *data, int status);
 
 // here_doc
-void				make_heredoc(t_file *file, t_token *list);
-void				write_in_file(t_file *file, t_token *list);
+void				make_heredoc(t_file *file, t_list *list);
+void				write_in_file(t_file *file, t_list *list);
 
 #endif

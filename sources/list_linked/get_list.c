@@ -1,8 +1,8 @@
 #include <minishell.h>
 
-t_token	*get_node_list_linked(t_token **head, char *value)
+t_list	*get_node_list_linked(t_list **head, char *value)
 {
-	t_token	*token;
+	t_list	*token;
 
 	token = *head;
 	while (token)
@@ -17,9 +17,9 @@ t_token	*get_node_list_linked(t_token **head, char *value)
 	return (NULL);
 }
 
-char	*get_value_list_linked(t_token **head, char *value)
+char	*get_value_list_linked(t_list **head, char *value)
 {
-	t_token	*token;
+	t_list	*token;
 
 	token = *head;
 	while (token)
@@ -34,7 +34,7 @@ char	*get_value_list_linked(t_token **head, char *value)
 	return (NULL);
 }
 
-char	*get_value_env(t_token **head, char *value)
+char	*get_value_env(t_list **head, char *value)
 {
 	char	*temp;
 	char	*temp2;

@@ -17,7 +17,7 @@ void	change_directory(char *path, t_repl *data)
 int	builtin_cd(t_repl *data)
 {
 	char	*path;
-	t_token	*token;
+	t_list	*token;
 
 	token = data->head;
 	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))

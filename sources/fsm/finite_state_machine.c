@@ -81,7 +81,7 @@ void	is_inside_quote(t_fsmachine *var, char *line)
 	}
 }
 
-void	finite_state_machine(char *line, t_token **head)
+void	finite_state_machine(char *line, t_list **head)
 {
 	t_fsmachine	var;
 

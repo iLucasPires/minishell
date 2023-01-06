@@ -1,19 +1,19 @@
 #include <minishell.h>
 
-static t_token	*create_item(char *value, int type)
+static t_list	*create_item(char *value, int type)
 {
-	t_token	*new_node;
+	t_list	*new_node;
 
-	new_node = malloc(sizeof(t_token));
+	new_node = malloc(sizeof(t_list));
 	new_node->value = ft_strdup(value);
 	new_node->type = type;
 	new_node->next = NULL;
 	return (new_node);
 }
 
-void	add_item_end(t_token **head, char *value, int type)
+void	add_item_end(t_list **head, char *value, int type)
 {
-	t_token	*token;
+	t_list	*token;
 
 	if (*head == NULL)
 		*head = create_item(value, type);
@@ -26,9 +26,9 @@ void	add_item_end(t_token **head, char *value, int type)
 	}
 }
 
-void free_item(t_token **head, t_token *item)
+void free_item(t_list **head, t_list *item)
 {
-	t_token	*token;
+	t_list	*token;
 
 	token = *head;
 	if (token == item)
@@ -48,9 +48,9 @@ void free_item(t_token **head, t_token *item)
 }
 
 
-void	free_list_linked(t_token **head)
+void	free_list_linked(t_list **head)
 {
-	t_token	*token;
+	t_list	*token;
 
 	token = *head;
 	while (token)

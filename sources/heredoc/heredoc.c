@@ -1,5 +1,18 @@
 #include <minishell.h>
 
+int check_difference(int a, int b)
+{
+	int result_a;
+	int result_b;
+
+	result_a = a - b;
+	result_b = b - a;
+	if (result_a == 0 && result_b == 0)
+		return (1);
+	else
+		return (0);
+}
+
 void init_file(t_file *file)
 {
     file->fd = open(HERE_FILE, O_CREAT | O_RDWR | O_TRUNC, 0664);
@@ -7,7 +20,7 @@ void init_file(t_file *file)
         exit(1);
 }
 
-void write_in_file(t_file *file, t_token *list)
+void write_in_file(t_file *file, t_list *list)
 {
 	while (true)
 	{
@@ -18,17 +31,18 @@ void write_in_file(t_file *file, t_token *list)
 			close(file->fd);
 			exit(0);
 		}
-		if (!ft_strncmp(file->keepli, list->next->value, ft_strlen(file->keepli)))
+		if (!ft_strncmp(file->keepli, list->next->value, ft_strlen(list->next->value)) \
+		&& check_difference(ft_strlen(list->next->value), ft_strlen(file->keepli)))
 		{
 			free(file->keepli);
 			close(file->fd);
-			break ;
+			exit(0);
 		}
     	ft_putendl_fd(file->keepli, file->fd);
 	}
 }
 
-void	make_heredoc(t_file *file, t_token *list)
+void	make_heredoc(t_file *file, t_list *list)
 {
 	int	pid;
 	int	status;

@@ -1,8 +1,8 @@
 #include <minishell.h>
 
-void	show_list_linked(t_token **head)
+void	show_list_linked(t_list **head)
 {
-	t_token	*tokens;
+	t_list	*tokens;
 
 	tokens = *head;
 	while (tokens)
@@ -14,9 +14,9 @@ void	show_list_linked(t_token **head)
 	}
 }
 
-void	show_list_linked_filter(t_token **head, int type)
+void	show_list_linked_filter(t_list **head, int type)
 {
-	t_token *tokens;
+	t_list *tokens;
 
 	tokens = *head;
 	while (tokens)

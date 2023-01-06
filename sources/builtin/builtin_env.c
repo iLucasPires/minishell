@@ -2,7 +2,7 @@
 
 int	builtin_env(t_repl *data)
 {
-	t_token *token;
+	t_list *token;
 
 	token = data->env;
 	while (token)

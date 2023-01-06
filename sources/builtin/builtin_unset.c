@@ -2,8 +2,8 @@
 
 int	builtin_unset(t_repl *data)
 {
-	t_token *temp;
-	t_token *token_current;
+	t_list *temp;
+	t_list *token_current;
 
 	temp = data->head;
 	while (temp->next)
