@@ -113,8 +113,7 @@ void				destroy_exit_minishell(t_minishell *data, int status);
 void				free_all(char **pointer);
 
 // here_doc
-void				make_heredoc(t_file *file, t_list *list);
-void				write_in_file(t_file *file, t_list *list);
+void				make_heredoc(t_minishell *data);
 
 // prototypes_exec
 void				executor(t_minishell *data);

@@ -32,7 +32,9 @@ int	system_command(t_minishell *data)
 
 void	choose_command(t_minishell *data)
 {
-	if (ft_strncmp(data->tokens->value, "cd", 3) == 0)
+	if (ft_strncmp(data->tokens->value, "<<", 3) == 0)
+		make_heredoc(data);
+	else if (ft_strncmp(data->tokens->value, "cd", 3) == 0)
 		builtin_cd(data);
 	else if (ft_strncmp(data->tokens->value, "echo", 5) == 0)
 		builtin_echo(data);
