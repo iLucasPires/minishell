@@ -1,5 +1,25 @@
 #include <minishell.h>
 
+void	destroy_heredoc(void)
+{
+	rl_clear_history();
+	destroy_list(&g_minishell.envs);
+	destroy_list(&g_minishell.tokens);
+	free(g_minishell.path);
+	free(g_minishell.file.keepli);
+}
+
+void	heredoc_stop(int signal)
+{
+    (void)signal;
+	destroy_heredoc();
+    ft_putchar_fd('\n', STDOUT_FILENO);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_clear_history();
+    exit(130);
+}
+
 void	init_file(t_file *file)
 {
 	file->fd = open(HERE_FILE, O_CREAT | O_RDWR | O_TRUNC, 0664);
@@ -9,21 +29,22 @@ void	init_file(t_file *file)
 
 void	write_in_file(t_file *file, t_list *list)
 {
+	signal(SIGINT, heredoc_stop);
 	while (true)
 	{
 		file->keepli = readline("> ");
 		if (!file->keepli)
 		{
-			free(file->keepli);
+			destroy_heredoc();
 			close(file->fd);
 			exit(0);
 		}
 		if (!ft_strncmp(file->keepli, list->next->value,
 				ft_strlen(file->keepli)))
 		{
-			free(file->keepli);
+			destroy_heredoc();
 			close(file->fd);
-			break ;
+			exit(0);
 		}
 		ft_putendl_fd(file->keepli, file->fd);
 	}
@@ -34,6 +55,7 @@ void	make_heredoc(t_file *file, t_list *list)
 	int pid;
 	int status;
 
+	signal(SIGINT, SIG_IGN);
 	init_file(file);
 	pid = fork();
 	if (pid < 0)

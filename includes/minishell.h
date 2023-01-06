@@ -58,6 +58,8 @@ typedef struct s_minishell
 	t_file			file;
 }					t_minishell;
 
+t_minishell g_minishell;
+
 enum				e_type
 {
 	WORD,
