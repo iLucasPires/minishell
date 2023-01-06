@@ -68,9 +68,6 @@ void test_finite_state_machine_with_complex_input(void)
     TEST_ASSERT_NULL(head);
 }
 
-
-
-
 void run_test_list(void)
 {
     RUN_TEST(test_finite_state_machine_with_string_in_double_quotes);

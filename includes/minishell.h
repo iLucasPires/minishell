@@ -72,9 +72,7 @@ enum				e_type
 };
 
 // prototypes
-void				path_current(t_minishell *data);
 void				read_eval_print_loop(t_minishell *data);
-void				get_path(char *line);
 void				choose_command(t_minishell *data);
 void				syntax_quotes(char *line);
 
@@ -95,14 +93,12 @@ int					builtin_unset(t_minishell *data);
 void				new_node(t_list **head, char *value, int type);
 void				destroy_list(t_list **head);
 
-char				*next_item_list_linked(t_list **head);
 void				delete_node(t_list **head, t_list *item);
-void				show_list_linked_filter(t_list **head, int type);
-void				show_list_linked(t_list **head);
 t_list				*get_node(t_list **head, char *target);
 char				*get_value(t_list **head, char *target);
 char				*get_value_env(t_list **head, char *target);
 void				add_env(t_list **env, char *value);
+void				substitute_env(t_list *token_current, char *value);
 
 // prototypes_parser_and_tokenize
 int					fsm_is_state(char *str, int index);
@@ -110,13 +106,11 @@ int					fsm_is_space(char *str, int index);
 int					fsm_is_special(char *str, int index);
 void				finite_state_machine(t_minishell *data);
 
-// prototypes_expansion
-void				expansion(t_minishell *data);
-
 // free prototypes
 void				destroy_minishell(t_minishell *data);
 void				destroy_repl(t_minishell *data);
 void				destroy_exit_minishell(t_minishell *data, int status);
+void				free_all(char **pointer);
 
 // here_doc
 void				make_heredoc(t_file *file, t_list *list);

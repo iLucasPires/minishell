@@ -3,9 +3,9 @@
 char	*identified_type(int identifier)
 {
 	if (identifier == RED_IN)
-		return (">");
-	if (identifier == RED_OUT)
 		return ("<");
+	if (identifier == RED_OUT)
+		return (">");
 	if (identifier == PIPE)
 		return ("|");
 	if (identifier == RED_APPEND)

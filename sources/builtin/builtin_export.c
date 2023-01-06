@@ -21,17 +21,6 @@ void	show_env(t_list *tokens)
 	}
 }
 
-void	substitute_env(t_list *token_current, char *value)
-{
-	if (ft_strchr(value, EQUAL) != NULL)
-	{
-		free(token_current->value);
-		token_current->value = ft_strdup(value);
-		if (token_current->type == false)
-			token_current->type = true;
-	}
-}
-
 int	builtin_export(t_minishell *data)
 {
 	t_list *temp;

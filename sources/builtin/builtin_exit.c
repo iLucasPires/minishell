@@ -25,11 +25,11 @@ int	builtin_exit(t_minishell *data)
 {
 	t_list *token;
 
-	token = data->envs;
+	token = data->tokens;
 	if (token->next == NULL)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
-		destroy_exit_minishell(data, 0);
+		exit(0);
 	}
 	else if (token->next->next == NULL)
 	{

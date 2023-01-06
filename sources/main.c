@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_data(&data, envp);
 	init_env(&data, envp);
-	path_current(&data);
 	read_eval_print_loop(&data);
 	return (EXIT_SUCCESS);
 }
