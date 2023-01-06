@@ -1,12 +1,12 @@
 #include <minishell.h>
 
-void	handle_sigquit(t_repl *data)
+void	handle_sigquit(t_minishell *data)
 {
 	if (data->line == NULL)
 	{
 		ft_putstr_fd(ERROR_EXIT, STDERR_FILENO);
 		rl_clear_history();
-		free_minishell(data);
+		destroy_minishell(data);
 		exit(EXIT_FAILURE);
 	}
 }

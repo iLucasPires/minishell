@@ -10,11 +10,11 @@ void	print_lists(t_list *tokens)
 	}
 }
 
-int	builtin_echo(t_repl *data)
+int	builtin_echo(t_minishell *data)
 {
 	t_list *token;
 
-	token = data->head;
+	token = data->tokens;
 	if (token->next == NULL)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	else

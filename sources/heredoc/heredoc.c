@@ -1,26 +1,13 @@
 #include <minishell.h>
 
-int check_difference(int a, int b)
+void	init_file(t_file *file)
 {
-	int result_a;
-	int result_b;
-
-	result_a = a - b;
-	result_b = b - a;
-	if (result_a == 0 && result_b == 0)
-		return (1);
-	else
-		return (0);
+	file->fd = open(HERE_FILE, O_CREAT | O_RDWR | O_TRUNC, 0664);
+	if (file->fd == -1)
+		exit(1);
 }
 
-void init_file(t_file *file)
-{
-    file->fd = open(HERE_FILE, O_CREAT | O_RDWR | O_TRUNC, 0664);
-    if (file->fd == -1)
-        exit(1);
-}
-
-void write_in_file(t_file *file, t_list *list)
+void	write_in_file(t_file *file, t_list *list)
 {
 	while (true)
 	{
@@ -31,23 +18,23 @@ void write_in_file(t_file *file, t_list *list)
 			close(file->fd);
 			exit(0);
 		}
-		if (!ft_strncmp(file->keepli, list->next->value, ft_strlen(list->next->value)) \
-		&& check_difference(ft_strlen(list->next->value), ft_strlen(file->keepli)))
+		if (!ft_strncmp(file->keepli, list->next->value,
+				ft_strlen(file->keepli)))
 		{
 			free(file->keepli);
 			close(file->fd);
-			exit(0);
+			break ;
 		}
-    	ft_putendl_fd(file->keepli, file->fd);
+		ft_putendl_fd(file->keepli, file->fd);
 	}
 }
 
 void	make_heredoc(t_file *file, t_list *list)
 {
-	int	pid;
-	int	status;
+	int pid;
+	int status;
 
-    init_file(file);
+	init_file(file);
 	pid = fork();
 	if (pid < 0)
 		exit(0);

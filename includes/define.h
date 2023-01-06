@@ -35,6 +35,7 @@
 # define DOLLAR '$'
 # define TILDE '~'
 # define EQUAL '='
+# define UNDERSCORE '_'
 
 // heredoc define
 

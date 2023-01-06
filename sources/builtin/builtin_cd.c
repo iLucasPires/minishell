@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	change_directory(char *path, t_repl *data)
+void	change_directory(char *path, t_minishell *data)
 {
 	int	status;
 
@@ -9,25 +9,25 @@ void	change_directory(char *path, t_repl *data)
 		perror("cd");
 	else
 	{
+		substitute_env(get_node(&data->envs, "OLDPWD"), data->path);
 		free(data->path);
-		path_current(data);
 	}
 }
 
-int	builtin_cd(t_repl *data)
+int	builtin_cd(t_minishell *data)
 {
 	char	*path;
 	t_list	*token;
 
-	token = data->head;
+	token = data->tokens;
 	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))
 	{
-		path = getenv("HOME");
+		path = get_value_env(&data->envs, "HOME");
 		change_directory(path, data);
 	}
 	else if (!ft_strncmp(token->next->value, "-", 2))
 	{
-		path = getenv("OLDPWD");
+		path = get_value_env(&data->envs, "OLDPWD");
 		change_directory(path, data);
 	}
 	else if (token->next->next == NULL)

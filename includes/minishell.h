@@ -36,27 +36,27 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_list;
 
-typedef struct s_fsmachine
+typedef struct s_fsm
 {
 	int				index;
 	int				limit;
 	int				begin;
 	int				check_quote;
 	char			quote_type;
-	t_list			**head;
-}					t_fsmachine;
+}					t_fsm;
 
 // structs
-typedef struct s_repl
+typedef struct s_minishell
 {
 	char			*line;
 	char			*home;
 	char			*path;
-	t_list			*env;
-	t_list			*head;
-	int				status;
+	char			**paths;
+	char			**envp;
+	t_list			*envs;
+	t_list			*tokens;
 	t_file			file;
-}					t_repl;
+}					t_minishell;
 
 enum				e_type
 {
@@ -72,59 +72,51 @@ enum				e_type
 };
 
 // prototypes
-void				path_current(t_repl *data);
-void				read_eval_print_loop(t_repl *data);
-void				get_path(char *line);
-void				verify_command(t_repl *data);
-void				verify_quotes(char *line);
-
-// prototypes_error
-void				error_generic_with_arg(char *message, char *arg);
-void				error_generic(char *message);
-void				error_command(char *command);
-void				error_malloc(char *message, void *ptr);
+void				read_eval_print_loop(t_minishell *data);
+void				choose_command(t_minishell *data);
+void				syntax_quotes(char *line);
 
 // prototypes_signal
 void				handle_sigint(int signum);
-void				handle_sigquit(t_repl *data);
+void				handle_sigquit(t_minishell *data);
 
 // echo builtins
-int					builtin_cd(t_repl *data);
-int					builtin_echo(t_repl *data);
-int					builtin_pwd(t_repl *data);
-int					builtin_exit(t_repl *data);
-int					builtin_env(t_repl *data);
-int					builtin_export(t_repl *data);
-int					builtin_unset(t_repl *data);
+int					builtin_cd(t_minishell *data);
+int					builtin_echo(t_minishell *data);
+int					builtin_pwd(t_minishell *data);
+int					builtin_exit(t_minishell *data);
+int					builtin_env(t_minishell *data);
+int					builtin_export(t_minishell *data);
+int					builtin_unset(t_minishell *data);
 
 // prototypes_list_linked
-void				add_item_end(t_list **head, char *value, int type);
-void				free_list_linked(t_list **head);
+void				new_node(t_list **head, char *value, int type);
+void				destroy_list(t_list **head);
 
-char				*next_item_list_linked(t_list **head);
-void				free_item(t_list **head, t_list *item);
-void				show_list_linked_filter(t_list **head, int type);
-void				show_list_linked(t_list **head);
-t_list				*get_node_list_linked(t_list **head, char *value);
-char				*get_value_list_linked(t_list **head, char *value);
-char				*get_value_env(t_list **head, char *value);
+void				delete_node(t_list **head, t_list *item);
+t_list				*get_node(t_list **head, char *target);
+char				*get_value(t_list **head, char *target);
+char				*get_value_env(t_list **head, char *target);
+void				add_env(t_list **env, char *value);
+void				substitute_env(t_list *token_current, char *value);
 
 // prototypes_parser_and_tokenize
-int					is_state(char *str, int index);
-int					is_space(char *str, int index);
-int					is_special(char *str, int index);
-void				finite_state_machine(char *str, t_list **head);
-
-// prototypes_expansion
-void				expansion(t_repl *data);
+int					fsm_is_state(char *str, int index);
+int					fsm_is_space(char *str, int index);
+int					fsm_is_special(char *str, int index);
+void				finite_state_machine(t_minishell *data);
 
 // free prototypes
-void				free_minishell(t_repl *data);
-void				free_repl(t_repl *data);
-void				free_exit_minishell(t_repl *data, int status);
+void				destroy_minishell(t_minishell *data);
+void				destroy_repl(t_minishell *data);
+void				destroy_exit_minishell(t_minishell *data, int status);
+void				free_all(char **pointer);
 
 // here_doc
 void				make_heredoc(t_file *file, t_list *list);
 void				write_in_file(t_file *file, t_list *list);
+
+// prototypes_exec
+void				executor(t_minishell *data);
 
 #endif
