@@ -44,8 +44,6 @@ char	*get_value_env(t_list **head, char *target)
 
 	temp_value = get_value(head, target);
 	if (temp_value)
-	{
 		return (temp_value + ft_strtlen(temp_value, EQUAL) + 1);
-	}
 	return (NULL);
 }

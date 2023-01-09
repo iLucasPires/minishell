@@ -6,7 +6,7 @@
 /*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 20:05:44 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/01/03 12:31:26 by lucas            ###   ########.fr       */
+/*   Updated: 2023/01/07 02:28:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
+size_t	ft_tablen(char **tab);
 size_t	ft_strlen(const char *s);
 size_t	ft_strtlen(const char *str, char c);
 size_t	ft_strlcpy(char *dest, const char *src, int size);
