@@ -17,17 +17,17 @@
 # include "./colors.h"
 # include "./define.h"
 
-typedef struct s_file
-{
-	char			*keepli;
-	int				fd;
-}					t_file;
-
 enum				e_bool
 {
-	false,
-	true
+	FALSE,
+	TRUE
 };
+
+typedef struct s_file
+{
+	int				fd;
+	char			*keepli;
+}					t_file;
 
 typedef struct s_token
 {
@@ -45,17 +45,22 @@ typedef struct s_fsm
 	char			quote_type;
 }					t_fsm;
 
+typedef struct s_command
+{
+	char			*cmd;
+	char			**args;
+	char			**envp;
+}					t_command;
+
 // structs
 typedef struct s_minishell
 {
+	int				pipefd[2];
 	char			*line;
 	char			*home;
-	char			*path;
-	char			**paths;
-	char			**envp;
+	t_file			file;
 	t_list			*envs;
 	t_list			*tokens;
-	t_file			file;
 }					t_minishell;
 
 enum				e_type
@@ -99,13 +104,16 @@ char				*get_value(t_list **head, char *target);
 char				*get_value_env(t_list **head, char *target);
 void				add_env(t_list **env, char *value);
 void				substitute_env(t_list *token_current, char *value);
+char				**list_to_tab(t_list *list, int size);
 
 // prototypes_parser_and_tokenize
 int					fsm_is_state(char *str, int index);
 int					fsm_is_space(char *str, int index);
 int					fsm_is_special(char *str, int index);
 void				finite_state_machine(t_minishell *data);
-
+int					ft_lstlen(t_list *lst);
+int					ft_lstnlen(t_list *lst, int target);
+int					ft_lsttlen(t_list *lst, int target);
 // free prototypes
 void				destroy_minishell(t_minishell *data);
 void				destroy_repl(t_minishell *data);
@@ -117,7 +125,11 @@ void				make_heredoc(t_minishell *data);
 
 // prototypes_exec
 void				executor(t_minishell *data);
-char				*get_commando(t_minishell *data);
-char				**get_arguments(t_minishell *data);
+int					system_command(t_minishell *data);
+char				*get_path_command(t_list *list, char **paths);
+char				**list_to_array_string(t_list *list, int size);
+
+// prototypes_message
+void				message_command_not_found(t_list *tokens);
 
 #endif

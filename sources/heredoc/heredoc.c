@@ -3,7 +3,6 @@
 void	heredoc_stop(int signal)
 {
 	(void)signal;
-	destroy_minishell(data);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -20,7 +19,7 @@ void	init_file(t_file *file)
 
 void	write_in_file(t_file *file, t_list *list, t_minishell *data)
 {
-	while (true)
+	while (TRUE)
 	{
 		file->keepli = readline("> ");
 		if (!file->keepli)
@@ -43,9 +42,8 @@ void	write_in_file(t_file *file, t_list *list, t_minishell *data)
 
 void	make_heredoc(t_minishell *data)
 {
-	int	pid;
-	int	status;
-
+	int		pid;
+	int		status;
 	t_file	*file;
 	t_list	*list;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n <lpires-n@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 21:23:10 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/06/10 19:38:38 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/01/08 14:03:43 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	**ft_split(char const *s, char c)
 	char	**split;
 	int		i;
 
+	if (s == NULL)
+		return (NULL);
 	i = count_string(s, c);
 	split = malloc(sizeof(char *) * (i + 1));
 	if (split == NULL)

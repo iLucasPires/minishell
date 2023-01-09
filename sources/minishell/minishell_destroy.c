@@ -18,8 +18,8 @@ void	destroy_minishell(t_minishell *data)
 	rl_clear_history();
 	destroy_list(&data->envs);
 	destroy_list(&data->tokens);
-	free_all(data->paths);
 	free(data->line);
+
 }
 
 void	destroy_repl(t_minishell *data)

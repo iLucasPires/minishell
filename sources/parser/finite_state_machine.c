@@ -52,10 +52,10 @@ void	fsm_is_inside_quote(t_fsm *fsm, char *line)
 	if (line[fsm->index] == DQUOTE || line[fsm->index] == SQUOTE)
 	{
 		if (fsm->check_quote && line[fsm->index] == fsm->quote_type)
-			fsm->check_quote = false;
+			fsm->check_quote = FALSE;
 		else if (!fsm->check_quote)
 		{
-			fsm->check_quote = true;
+			fsm->check_quote = TRUE;
 			fsm->quote_type = line[fsm->index];
 		}
 	}
@@ -66,7 +66,7 @@ void	init_fsm(t_fsm *fsm)
 	fsm->index = 0;
 	fsm->limit = 0;
 	fsm->begin = 0;
-	fsm->check_quote = false;
+	fsm->check_quote = FALSE;
 	fsm->quote_type = 0;
 }
 
@@ -75,7 +75,7 @@ void	finite_state_machine(t_minishell *data)
 	t_fsm	fsm;
 
 	init_fsm(&fsm);
-	while (true)
+	while (TRUE)
 	{
 		fsm_is_inside_quote(&fsm, data->line);
 		if (fsm_is_special(data->line, fsm.index) && !fsm.check_quote)

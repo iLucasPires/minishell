@@ -17,19 +17,19 @@ int	fsm_is_state(char *str, int index)
 	else if (str[index] == BAR)
 		return (PIPE);
 	else
-		return (false);
+		return (FALSE);
 }
 
 int	fsm_is_space(char *str, int index)
 {
 	if (str[index] == SPACE || str[index] == NULL_CHAR)
-		return (true);
-	return (false);
+		return (TRUE);
+	return (FALSE);
 }
 
 int	fsm_is_special(char *str, int index)
 {
 	if (fsm_is_state(str, index) || fsm_is_space(str, index))
-		return (true);
-	return (false);
+		return (TRUE);
+	return (FALSE);
 }

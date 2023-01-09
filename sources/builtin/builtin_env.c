@@ -7,7 +7,7 @@ int	builtin_env(t_minishell *data)
 	token = data->envs;
 	while (token)
 	{
-		if (token->type == true)
+		if (token->type == TRUE)
 			printf("%s \n", token->value);
 		token = token->next;
 	}
