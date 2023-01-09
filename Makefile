@@ -17,9 +17,9 @@ MINISHELL = minishell.c minishell_signal.c minishell_destroy.c minishell_syntax.
 LIST_LINKED += list_linked_create.c list_linked_get.c list_linked_destroy.c
 FSMACHINE += aux_finite_state_machine.c finite_state_machine.c  
 BUILTIN += builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c builtin_env.c builtin_export.c builtin_unset.c
-HEREDOC += heredoc.c
+REDIRECT += heredoc.c identifier.c
 EXECUTOR += choose_command.c executor.c
-SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(HEREDOC) $(EXECUTOR)
+SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(REDIRECT) $(EXECUTOR)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 

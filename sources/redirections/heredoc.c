@@ -50,22 +50,22 @@ void	write_in_file(t_file *file, t_list *list)
 	}
 }
 
-void	make_heredoc(t_file *file, t_list *list)
+void	make_heredoc(t_minishell *data)
 {
 	int pid;
 	int status;
 
 	signal(SIGINT, SIG_IGN);
-	init_file(file);
+	init_file(&data->file);
 	pid = fork();
 	if (pid < 0)
 		exit(0);
 	if (pid == 0)
-		write_in_file(file, list);
+		write_in_file(&data->file, data->tokens);
 	else
 	{
 		waitpid(pid, &status, 0);
-		file->fd = open(HERE_FILE, O_RDONLY);
+		data->file.fd = open(HERE_FILE, O_RDONLY);
 	}
 	unlink(HERE_FILE);
 }

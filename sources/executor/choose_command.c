@@ -105,8 +105,8 @@ void	choose_command(t_minishell *data)
 		builtin_export(data);
 	else if (ft_strncmp(data->tokens->value, "unset", 6) == 0)
 		builtin_unset(data);
-	// else if (ft_strncmp(data->tokens->value, "<<", 2) == 0)
-	// 	make_heredoc(&data->file, data->tokens);
+	else if (check_redirection(data))
+		make_heredoc(data);
 	else
 		system_command(data);
 }

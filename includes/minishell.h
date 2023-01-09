@@ -58,6 +58,8 @@ typedef struct s_minishell
 	t_file			file;
 }					t_minishell;
 
+t_minishell g_minishell;
+
 enum				e_type
 {
 	WORD,
@@ -112,8 +114,9 @@ void				destroy_repl(t_minishell *data);
 void				destroy_exit_minishell(t_minishell *data, int status);
 void				free_all(char **pointer);
 
-// here_doc
-void				make_heredoc(t_file *file, t_list *list);
+// redirections
+int				check_redirection(t_minishell *data);
+void				make_heredoc(t_minishell *data);
 void				write_in_file(t_file *file, t_list *list);
 
 // prototypes_exec
