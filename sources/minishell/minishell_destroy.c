@@ -19,7 +19,6 @@ void	destroy_minishell(t_minishell *data)
 	destroy_list(&data->envs);
 	destroy_list(&data->tokens);
 	free(data->line);
-
 }
 
 void	destroy_repl(t_minishell *data)

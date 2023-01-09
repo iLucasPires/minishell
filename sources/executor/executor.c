@@ -1,91 +1,56 @@
 #include <minishell.h>
 
-char	**create_arguments(t_list **list, int size)
-{
-	int		index;
-	char	**array_string;
-
-	index = 0;
-	if (*list == NULL)
-		return (NULL);
-	array_string = ft_calloc(size + 1, sizeof(char *));
-	array_string[size] = NULL;
-	while (index < size)
-	{
-		array_string[index] = (*list)->value;
-		*list = (*list)->next;
-		index++;
-	}
-	return (array_string);
-}
-
-int	destroy_command(t_command *cmd)
-{
-	free(cmd->cmd);
-	free(cmd->envp);
-	free(cmd->args);
-	return (EXIT_SUCCESS);
-}
-
-int	init_cmd(t_command *cmd, t_minishell *data, char **paths)
-{
-	cmd->cmd = get_path_command(data->tokens, paths);
-	cmd->envp = list_to_array_string(data->envs, ft_lstlen(data->envs));
-	cmd->args = create_arguments(&data->tokens, ft_lstnlen(data->tokens, BAR));
-	return (EXIT_SUCCESS);
-}
-
-int	destroy_child_process(t_minishell *data, t_command *cmd, char **paths)
+int	destroy_child_process(t_minishell *data, t_command *cmd)
 {
 	destroy_minishell(data);
 	destroy_command(cmd);
-	free_all(paths);
+	free_all(data->paths);
 	exit(EXIT_FAILURE);
 }
 
-int	execute_commands(t_minishell *data, char **paths)
+void	execute_child_process(t_minishell *data, t_command *cmd)
 {
-	int			status;
-	pid_t		pid;
+	if (cmd->cmd != NULL)
+		execve(cmd->cmd, cmd->args, cmd->envp);
+	destroy_child_process(data, cmd);
+}
+
+void	execute_father_process(t_minishell *data, t_command *cmd)
+{
+	waitpid(data->pid, &data->status, 0);
+	destroy_command(cmd);
+}
+
+int	execute_commands(t_minishell *data)
+{
 	t_command	cmd;
 
-	if (pipe(data->pipefd) == -1)
+	if (pipe(data->pipefd) == FAILURE)
 		return (EXIT_FAILURE);
-	init_cmd(&cmd, data, paths);
-	pid = fork();
-	if (pid == 0)
-	{
-		if (cmd.cmd != NULL)
-			execve(cmd.cmd, cmd.args, cmd.envp);
-		destroy_child_process(data, &cmd, paths);
-	}
+	create_command(&cmd, data);
+	data->pid = fork();
+	if (!data->pid)
+		execute_child_process(data, &cmd);
 	else
-	{
-		waitpid(pid, &status, 0);
-		destroy_command(&cmd);
-	}
+		execute_father_process(data, &cmd);
 	return (EXIT_SUCCESS);
 }
 
 int	system_command(t_minishell *data)
 {
-	char	**path;
-	t_list	*temp;
-
-	temp = data->tokens;
-	path = ft_split(get_value_env(&data->envs, "PATH"), ':');
-	if (path == NULL)
+	data->tokens_aux = data->tokens;
+	data->paths = ft_split(get_value_env(&data->envs, "PATH"), ':');
+	if (data->paths == NULL)
 	{
-		message_command_not_found(data->tokens);
+		message_command_not_found(data->tokens_aux);
 		return (EXIT_FAILURE);
 	}
-	while (data->tokens != NULL)
+	while (data->tokens_aux != NULL)
 	{
-		execute_commands(data, path);
-		if (data->tokens != NULL && data->tokens->value[0] == BAR)
-			data->tokens = data->tokens->next;
+		execute_commands(data);
+		if (data->tokens_aux != NULL && data->tokens_aux->value[0] == BAR)
+			data->tokens_aux = data->tokens_aux->next;
 	}
-	data->tokens = temp;
-	free_all(path);
+	free_all(data->paths);
 	return (EXIT_SUCCESS);
 }

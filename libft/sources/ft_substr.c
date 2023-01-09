@@ -6,7 +6,7 @@
 /*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 22:28:08 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/12/15 00:25:52 by lucas            ###   ########.fr       */
+/*   Updated: 2023/01/09 19:36:14 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (s1 == NULL)
 		return (NULL);
 	ft_strlcpy(s1, s + start, len);
+	if (s1[0] == '\0')
+		return (NULL);
 	return (s1);
 }

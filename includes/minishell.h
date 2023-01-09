@@ -43,6 +43,7 @@ typedef struct s_fsm
 	int				begin;
 	int				check_quote;
 	char			quote_type;
+	t_list			*expanders;
 }					t_fsm;
 
 typedef struct s_command
@@ -56,11 +57,15 @@ typedef struct s_command
 typedef struct s_minishell
 {
 	int				pipefd[2];
+	pid_t			pid;
+	int				status;
 	char			*line;
 	char			*home;
+	char			**paths;
 	t_file			file;
 	t_list			*envs;
 	t_list			*tokens;
+	t_list			*tokens_aux;
 }					t_minishell;
 
 enum				e_type
@@ -105,7 +110,7 @@ char				*get_value_env(t_list **head, char *target);
 void				add_env(t_list **env, char *value);
 void				substitute_env(t_list *token_current, char *value);
 char				**list_to_tab(t_list *list, int size);
-
+void				delete_just_node(t_list **head, t_list *item);
 // prototypes_parser_and_tokenize
 int					fsm_is_state(char *str, int index);
 int					fsm_is_space(char *str, int index);
@@ -127,8 +132,10 @@ void				make_heredoc(t_minishell *data);
 void				executor(t_minishell *data);
 int					system_command(t_minishell *data);
 char				*get_path_command(t_list *list, char **paths);
-char				**list_to_array_string(t_list *list, int size);
-
+char				**list_to_array_string(t_list *list);
+char				**create_arguments(t_list **list);
+int					destroy_command(t_command *cmd);
+int					create_command(t_command *cmd, t_minishell *data);
 // prototypes_message
 void				message_command_not_found(t_list *tokens);
 

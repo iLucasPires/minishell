@@ -47,6 +47,21 @@ void	fsm_filter_word(t_fsm *fsm, char *line, t_list **tokens)
 	}
 }
 
+void	expander_inside_quote(t_fsm *fsm, char *line, t_list **tokens)
+{
+	char	*string;
+	int		length;
+
+	if (fsm->limit > 0)
+	{
+		length = fsm->index - fsm->limit;
+		string = ft_substr(line, length, fsm->limit);
+		new_node(tokens, string, WORD);
+		fsm->limit = 0;
+		free(string);
+	}
+}
+
 void	fsm_is_inside_quote(t_fsm *fsm, char *line)
 {
 	if (line[fsm->index] == DQUOTE || line[fsm->index] == SQUOTE)

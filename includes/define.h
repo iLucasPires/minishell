@@ -17,9 +17,7 @@
 # define TOKENS_VIEW "%.*s= \" %s\"\n"
 
 //process define
-# define CHILD_PROCESS 0
-# define EXE_FALL -1
-# define NO_ACCESS -1
+# define FAILURE -1
 # define INVISIBLE_CHAR -1
 
 // token define

@@ -1,11 +1,13 @@
 #include <minishell.h>
 
-char	**create_arguments(t_list **list, int size)
+char	**create_arguments(t_list **list)
 {
 	int		index;
+	int		size;
 	char	**array_string;
 
 	index = 0;
+	size = ft_lstnlen(*list, BAR);
 	if (*list == NULL)
 		return (NULL);
 	array_string = ft_calloc(size + 1, sizeof(char *));
@@ -27,10 +29,10 @@ int	destroy_command(t_command *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int	init_cmd(t_command *cmd, t_minishell *data, char **paths)
+int	create_command(t_command *cmd, t_minishell *data)
 {
-	cmd->cmd = get_path_command(data->tokens, paths);
-	cmd->envp = list_to_array_string(data->envs, ft_lstlen(data->envs));
-	cmd->args = create_arguments(&data->tokens, ft_lstnlen(data->tokens, BAR));
+	cmd->cmd = get_path_command(data->tokens_aux, data->paths);
+	cmd->envp = list_to_array_string(data->envs);
+	cmd->args = create_arguments(&data->tokens_aux);
 	return (EXIT_SUCCESS);
 }
