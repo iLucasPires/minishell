@@ -45,12 +45,14 @@ int	ft_lstnlen(t_list *lst, int target)
 	return (size);
 }
 
-char	**list_to_array_string(t_list *list, int size)
+char	**list_to_array_string(t_list *list)
 {
 	int		index;
+	int 	size;
 	char	**array_string;
 
 	index = 0;
+	size = ft_lstlen(list);
 	if (list == NULL)
 		return (NULL);
 	array_string = ft_calloc(size + 1, sizeof(char *));
@@ -65,22 +67,3 @@ char	**list_to_array_string(t_list *list, int size)
 	array_string[index] = NULL;
 	return (array_string);
 }
-
-// char	**create_arguments(t_list **list, int size)
-// {
-// 	int		index;
-// 	char	**array_string;
-
-// 	index = 0;
-// 	if (*list == NULL)
-// 		return (NULL);
-// 	array_string = ft_calloc(size + 1, sizeof(char *));
-// 	array_string[size] = NULL;
-// 	while (index < size)
-// 	{
-// 		array_string[index] = (*list)->value;
-// 		*list = (*list)->next;
-// 		index++;
-// 	}
-// 	return (array_string);
-// }

@@ -44,7 +44,7 @@
         "**/objects": true,
         "test/unity": true,
         "minishell": true,
-        "libft": true,
+    
         "readline.txt": true,
         "**/a.out": true,
         ".vscode": true,

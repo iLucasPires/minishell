@@ -6,7 +6,7 @@
 /*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 03:31:47 by lpires-n          #+#    #+#             */
-/*   Updated: 2022/12/14 21:14:07 by lucas            ###   ########.fr       */
+/*   Updated: 2023/01/09 19:17:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (end && ft_strchr(set, s1[end]))
 		end--;
 	str = ft_substr(s1, begin, end - begin + 1);
+	if (!str)
+		return (NULL);
 	return (str);
 }

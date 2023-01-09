@@ -24,7 +24,7 @@ BUILTIN +=	builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c \
 
 HEREDOC += heredoc.c
 EXECUTOR += executor_command.c executor.c executor_builtin_or_system.c \
-			
+			executor_command_aux.c
 MESSAGE += message_executor.c
 
 SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN)
