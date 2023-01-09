@@ -31,9 +31,9 @@ void	add_env(t_list **env, char *value)
 	if (ft_isalpha(*value) || *value == UNDERSCORE)
 	{
 		if (ft_strchr(value, EQUAL) != NULL)
-			new_node(env, value, true);
+			new_node(env, value, TRUE);
 		else
-			new_node(env, value, false);
+			new_node(env, value, FALSE);
 	}
 	else
 	{
@@ -49,7 +49,7 @@ void	substitute_env(t_list *token_current, char *value)
 	{
 		free(token_current->value);
 		token_current->value = ft_strdup(value);
-		if (token_current->type == false)
-			token_current->type = true;
+		if (token_current->type == FALSE)
+			token_current->type = TRUE;
 	}
 }

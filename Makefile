@@ -14,12 +14,21 @@ INCLUDE_LIBFT_DIR = $(LIBFT_DIR)/includes
 
 MAIN = main.c
 MINISHELL = minishell.c minishell_signal.c minishell_destroy.c minishell_syntax.c
-LIST_LINKED += list_linked_create.c list_linked_get.c list_linked_destroy.c
-FSMACHINE += aux_finite_state_machine.c finite_state_machine.c  
-BUILTIN += builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c builtin_env.c builtin_export.c builtin_unset.c
+
+LIST_LINKED +=	list_linked_create.c list_linked_get.c list_linked_destroy.c \
+				list_linked_for_array.c
+FSMACHINE += aux_finite_state_machine.c finite_state_machine.c
+
+BUILTIN +=	builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c \
+			builtin_env.c builtin_export.c builtin_unset.c
+
 HEREDOC += heredoc.c
-EXECUTOR += executor_commando.c executor.c
-SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN) $(LIST_LINKED) $(HEREDOC) $(EXECUTOR)
+EXECUTOR += executor_command.c executor.c executor_builtin_or_system.c \
+			
+MESSAGE += message_executor.c
+
+SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN)
+SOURCES +=  $(LIST_LINKED) $(HEREDOC) $(EXECUTOR) $(MESSAGE)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 
@@ -35,9 +44,6 @@ VALGRIDSUPP = --suppressions=readline.txt
 
 # Rules
 all: $(LIBFT) $(NAME)
-
-test: all
-	make run -C test
 
 valgrind: $(NAME)
 	valgrind $(VALGRINDFLAGS) $(VALGRIDSUPP) ./$(NAME)
@@ -68,14 +74,12 @@ clean:
 	@rm -fr $(OBJECTS) $(OBJECTS_DIR)
 	@make clean -C $(LIBFT_DIR) $(MAKEFLAGS)
 	@echo "\033[0;32mDone\033[0m"
-	make clean -C test
 
 fclean: clean
 	@echo "\033[0;31mCleaning $(NAME)...\033[0m"
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) $(MAKEFLAGS)
 	@echo "\033[0;32mDone\033[0m"
-	make fclean -C test
 
 .PHONY: all clean fclean re 
 

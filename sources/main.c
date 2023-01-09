@@ -12,14 +12,12 @@ void	init_env(t_minishell *data, char **envp)
 	}
 }
 
-void	init_data(t_minishell *data, char **envp)
+void	init_data(t_minishell *data)
 {
 	data->tokens = NULL;
 	data->line = NULL;
 	data->envs = NULL;
-	data->envp = envp;
 	data->home = getenv("HOME");
-	data->paths = ft_split(getenv("PATH"), ':');
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -31,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	init_data(&data, envp);
+	init_data(&data);
 	init_env(&data, envp);
 	read_eval_print_loop(&data);
 	return (EXIT_SUCCESS);

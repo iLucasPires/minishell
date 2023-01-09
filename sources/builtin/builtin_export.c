@@ -9,7 +9,7 @@ void	show_env(t_list *tokens)
 		value = tokens->value;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		ft_putlstr_fd(value, ft_strtlen(value, EQUAL), STDOUT_FILENO);
-		if (tokens->type == true)
+		if (tokens->type == TRUE)
 		{
 			ft_putstr_fd("=", STDOUT_FILENO);
 			ft_putstr_fd(SDQUOTE, STDOUT_FILENO);
@@ -20,6 +20,7 @@ void	show_env(t_list *tokens)
 		tokens = tokens->next;
 	}
 }
+
 
 int	builtin_export(t_minishell *data)
 {
