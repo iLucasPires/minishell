@@ -23,12 +23,12 @@ BUILTIN +=	builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c \
 			builtin_env.c builtin_export.c builtin_unset.c
 
 HEREDOC += heredoc.c
-EXECUTOR += executor_command.c executor.c executor_builtin_or_system.c \
-			executor_command_aux.c
+# EXECUTOR += executor_command.c executor.c executor_builtin_or_system.c \
+# 			executor_command_aux.c
 MESSAGE += message_executor.c
 
 SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN)
-SOURCES +=  $(LIST_LINKED) $(HEREDOC) $(EXECUTOR) $(MESSAGE)
+SOURCES +=  $(LIST_LINKED) $(HEREDOC) $(MESSAGE)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 

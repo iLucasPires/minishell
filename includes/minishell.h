@@ -43,6 +43,8 @@ typedef struct s_fsm
 	int				begin;
 	int				check_quote;
 	char			quote_type;
+	char			*line;
+	t_list			**tokens;
 	t_list			*expanders;
 }					t_fsm;
 
@@ -109,12 +111,13 @@ char				*get_value(t_list **head, char *target);
 char				*get_value_env(t_list **head, char *target);
 void				add_env(t_list **env, char *value);
 void				substitute_env(t_list *token_current, char *value);
-char				**list_to_tab(t_list *list, int size);
 void				delete_just_node(t_list **head, t_list *item);
+
 // prototypes_parser_and_tokenize
 int					fsm_is_state(char *str, int index);
 int					fsm_is_space(char *str, int index);
 int					fsm_is_special(char *str, int index);
+char				*fsm_identified(int identifier);
 void				finite_state_machine(t_minishell *data);
 int					ft_lstlen(t_list *lst);
 int					ft_lstnlen(t_list *lst, int target);
@@ -129,7 +132,6 @@ void				free_all(char **pointer);
 void				make_heredoc(t_minishell *data);
 
 // prototypes_exec
-void				executor(t_minishell *data);
 int					system_command(t_minishell *data);
 char				*get_path_command(t_list *list, char **paths);
 char				**list_to_array_string(t_list *list);

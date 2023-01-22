@@ -44,9 +44,9 @@ void	destroy_list(t_list **head)
 {
 	t_list	*node_temp;
 
-	if (!head)
+	if (head == NULL)
 		return ;
-	while (*head)
+	while (*head != NULL)
 	{
 		node_temp = *head;
 		*head = (*head)->next;
