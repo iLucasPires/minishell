@@ -36,21 +36,3 @@ int	execute_commands(t_minishell *data)
 	return (EXIT_SUCCESS);
 }
 
-int	system_command(t_minishell *data)
-{
-	data->tokens_aux = data->tokens;
-	data->paths = ft_split(get_value_env(&data->envs, "PATH"), ':');
-	if (data->paths == NULL)
-	{
-		message_command_not_found(data->tokens_aux);
-		return (EXIT_FAILURE);
-	}
-	while (data->tokens_aux != NULL)
-	{
-		execute_commands(data);
-		if (data->tokens_aux != NULL && data->tokens_aux->value[0] == BAR)
-			data->tokens_aux = data->tokens_aux->next;
-	}
-	free_all(data->paths);
-	return (EXIT_SUCCESS);
-}

@@ -18,6 +18,15 @@ char	*remove_space(char *string)
 	return (string_aux);
 }
 
+void print_list(t_list *list)
+{
+	while (list)
+	{
+		printf("token: %s\n", list->value);
+		list = list->next;
+	}
+}
+
 void	handle_line(t_minishell *data)
 {
 	handle_sigquit(data);
@@ -29,7 +38,7 @@ void	handle_line(t_minishell *data)
 		{
 			syntax_quotes(data->line);
 			finite_state_machine(data);
-			choose_command(data);
+			print_list(data->tokens);
 			destroy_list(&data->tokens);
 		}
 	}

@@ -32,7 +32,8 @@
         "stat.h": "c",
         "cstddef": "c",
         "colors.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "numbers": "c"
     },
     "files.exclude": {
         "**/.git": true,
