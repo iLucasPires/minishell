@@ -17,12 +17,12 @@ int	builtin_cd(t_minishell *data)
 	token = data->tokens;
 	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))
 	{
-		path = get_value_env(&data->envs, "HOME");
+		path = my_getenv(&data->envs, "HOME");
 		change_directory(path);
 	}
 	else if (!ft_strncmp(token->next->value, "-", 2))
 	{
-		path = get_value_env(&data->envs, "OLDPWD");
+		path = my_getenv(&data->envs, "OLDPWD");
 		change_directory(path);
 	}
 	else if (token->next->next == NULL)
