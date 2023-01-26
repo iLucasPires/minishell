@@ -38,12 +38,16 @@ char	*get_value(t_list **head, char *target)
 	return (NULL);
 }
 
-char	*get_value_env(t_list **head, char *target)
+char	*my_getenv(t_list **head, char *target)
 {
+	char	*string_aux;
 	char	*temp_value;
 
 	temp_value = get_value(head, target);
 	if (temp_value)
-		return (temp_value + ft_strtlen(temp_value, EQUAL) + 1);
+	{
+		string_aux = ft_strdup(ft_strchr(temp_value, EQUAL) + 1);
+		return (string_aux);
+	}
 	return (NULL);
 }

@@ -16,7 +16,7 @@ SOURCES += ft_calloc.c ft_strdup.c ft_isprint.c	ft_substr.c
 SOURCES += ft_strjoin.c	ft_strtrim.c ft_split.c ft_itoa.c	
 SOURCES += ft_strmapi.c	ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c	
 SOURCES += ft_putendl_fd.c ft_putnbr_fd.c ft_strcmp.c ft_strtlen.c
-SOURCES += ft_putlstr_fd.c ft_tablen.c
+SOURCES += ft_putlstr_fd.c ft_tablen.c ft_strfjoin.c ft_strrchar.c
 OBJECTS = $(patsubst %.c, $(OBJECTS_DIR)/%.o, $(SOURCES))
 
 # Compiler

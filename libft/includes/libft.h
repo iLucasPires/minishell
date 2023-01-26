@@ -6,7 +6,7 @@
 /*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 20:05:44 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/01/07 02:28:44 by lucas            ###   ########.fr       */
+/*   Updated: 2023/01/22 16:36:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,8 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_atoi(const char *nptr);
 char	*ft_itoa(int n);
 void	*ft_calloc(size_t nmemb, size_t size);
+char	*ft_strfjoin(char *string1, char *string2);
+char	*ft_strrchar(char *string, char c);
+
 
 #endif
