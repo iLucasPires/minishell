@@ -26,6 +26,8 @@ enum				e_bool
 typedef struct s_file
 {
 	int				fd;
+	int				infile;
+	int				outfile;
 	char			*keepli;
 }					t_file;
 
@@ -96,14 +98,16 @@ enum				e_type
 void	read_eval_print_loop(t_minishell *data);
 void	choose_command(t_minishell *data);
 void	syntax_quotes(char *line);
+int		system_command(t_minishell *data);
 
 // prototypes_signal
 void	handle_sigint(int signum);
 void	handle_sigquit(t_minishell *data);
 
 // builtins
+int		cmd_builtins(t_minishell *data, int size);
 int		builtin_cd(t_minishell *data);
-int		builtin_echo(t_minishell *data);
+int		builtin_echo(t_minishell *data, int size);
 int		builtin_pwd(t_minishell *data);
 int		builtin_exit(t_minishell *data);
 int		builtin_env(t_minishell *data);
@@ -134,6 +138,8 @@ void	expander_dollar(t_expander *expander, char *string, t_list **envs);
 int		ft_lstlen(t_list *lst);
 int		ft_lstnlen(t_list *lst, int target);
 int		ft_lsttlen(t_list *lst, int target);
+int		ft_lstslen(t_list *lst);
+
 // free prototypes
 void	destroy_minishell(t_minishell *data);
 void	destroy_repl(t_minishell *data);
@@ -141,7 +147,11 @@ void	destroy_exit_minishell(t_minishell *data, int status);
 void	free_all(char **pointer);
 
 // here_doc
-void	make_heredoc(t_minishell *data);
+void	check_red(t_minishell *data, int *fd);
+void	make_heredoc(t_list *token, t_minishell *data, int *fd);
+void	make_output(t_list *token, t_minishell *data);
+void	make_input(t_list *token, t_minishell *data);
+void	make_append(t_list *token, t_minishell *data);
 
 // prototypes_exec
 char	*get_path_command(t_list *list, char **paths);

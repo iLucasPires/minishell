@@ -36,8 +36,9 @@ void	handle_line(t_minishell *data)
   		data->line = remove_space(data->line);
 		if (data->line && data->line[0] != SPACE)
 		{
-			// syntax_quotes(data->line);
+			syntax_quotes(data->line);
 			finite_state_machine(data);
+			system_command(data);
 			print_list(data->tokens);
 			destroy_list(&data->tokens);
 		}

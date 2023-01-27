@@ -1,5 +1,34 @@
 #include <minishell.h>
 
+int	ft_lstslen(t_list *lst)
+{
+	int	size;
+
+	size = 0;
+	while (lst)
+	{
+		if (*lst->value == PIPE)
+		{
+			lst = lst->next;
+			return (size);
+		}
+		else if (*lst->value == PLUSTHAN)
+		{
+			lst = lst->next;
+			return (size);
+		}
+		else if (*lst->value == LESSTHAN)
+		{
+			lst = lst->next;
+			return (size);
+		}
+		else
+			lst = lst->next;
+		size++;
+	}
+	return (size);
+}
+
 char	**create_arguments(t_list **list)
 {
 	int		index;
