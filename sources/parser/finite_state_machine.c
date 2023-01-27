@@ -31,7 +31,7 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 			expander_word(&expander, line_temp);
 			expander_dollar(&expander, line_temp, &data->envs);
 		}
-		else 
+		else
 			expander.limit++;
 		if (line_temp[expander.index] == NULL_CHAR)
 		{
@@ -44,43 +44,52 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 	}
 }
 
+char	*ft_chartostr(char c)
+{
+	char	*str;
+
+	str = ft_calloc(sizeof(char) , 2);
+	str[0] = c;
+	return (str);
+}
+
+void	add_node_remove_quote(t_minishell *data, char **line_temp,
+		char *quote_type)
+{
+	remove_chars(*line_temp, quote_type);
+	new_node(&data->tokens, *line_temp, WORD);
+	free(*line_temp);
+}
+
+int	is_expander(char *line, char quote_type)
+{
+	if (line && quote_type != SQUOTE)
+		return (1);
+	else if ((line && quote_type == SQUOTE) || (quote_type == DQUOTE)
+			|| (quote_type == SQUOTE))
+		return (2);
+	return (0);
+}
+
 void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 {
 	char	*line_temp;
+	char	*quote_type;
 
 	if (fsm->limit > 0)
 	{
-		fsm->begin = fsm->index - fsm->limit;
-		line_temp = ft_substr(fsm->line, fsm->begin, fsm->limit);
-		if (ft_strchr(line_temp, '$') && fsm->line[fsm->begin] != SQUOTE)
+		quote_type = ft_chartostr(fsm->line[fsm->index - fsm->limit]);
+		line_temp = ft_substr(fsm->line, fsm->index - fsm->limit, fsm->limit);
+		if (is_expander(ft_strchr(line_temp, '$'), *quote_type) == 1)
 		{
 			remove_chars(line_temp, "\"");
-			fsm_expander(line_temp, data); 
+			fsm_expander(line_temp, data);
 		}
-		else if (ft_strchr(line_temp, '$') && fsm->line[fsm->begin] == SQUOTE)
-		{
-			remove_chars(line_temp, "\'");
-			new_node(&data->tokens, line_temp, WORD);
-			free(line_temp);
-		}
-		else if (fsm->line[fsm->begin] == DQUOTE)
-		{
-			remove_chars(line_temp, "\"");
-			new_node(&data->tokens, line_temp, WORD);
-			free(line_temp);
-		}
-		else if (fsm->line[fsm->begin] == SQUOTE)
-		{
-			remove_chars(line_temp, "\'");
-			new_node(&data->tokens, line_temp, WORD);
-			free(line_temp);
-		}
+		else if (is_expander(ft_strchr(line_temp, '$'), *quote_type) == 2)
+			add_node_remove_quote(data, &line_temp, quote_type);
 		else
-		{
-			remove_chars(line_temp, "\"\'");
-			new_node(&data->tokens, line_temp, WORD);
-			free(line_temp);
-		}
+			add_node_remove_quote(data, &line_temp, "\"\'");
+		free(quote_type);
 		fsm->limit = 0;
 	}
 }
