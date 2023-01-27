@@ -33,10 +33,10 @@ void	handle_line(t_minishell *data)
 	if (*data->line)
 	{
 		add_history(data->line);
-		data->line = remove_space(data->line);
+  		data->line = remove_space(data->line);
 		if (data->line && data->line[0] != SPACE)
 		{
-			syntax_quotes(data->line);
+			// syntax_quotes(data->line);
 			finite_state_machine(data);
 			print_list(data->tokens);
 			destroy_list(&data->tokens);

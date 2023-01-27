@@ -19,8 +19,7 @@ void	expander_dollar(t_expander *expander, char *string, t_list **envs)
 	char *string_aux;
 	char *string_aux2;
 
-	if (string[expander->index] == DOLLAR && string[expander->index
-		+ 1] != NULL_CHAR)
+	if (string[expander->index] == DOLLAR && string[expander->index + 1] != NULL_CHAR)
 	{
 		string_aux = ft_strrchar(&string[expander->index + 1], '$');
 		string_aux2 = my_getenv(envs, string_aux);
@@ -28,8 +27,7 @@ void	expander_dollar(t_expander *expander, char *string, t_list **envs)
 		expander->index += ft_strlen(string_aux);
 		free(string_aux);
 	}
-	else if (string[expander->index] == DOLLAR && string[expander->index
-			+ 1] == NULL_CHAR)
+	else if (string[expander->index] == DOLLAR && string[expander->index + 1] == NULL_CHAR)
 	{
 		if (expander->line == NULL)
 			expander->line = ft_strdup("$");
