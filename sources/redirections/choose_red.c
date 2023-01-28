@@ -37,11 +37,7 @@ void    check_red(t_list *token, t_command *cmd)
         if (token->type == PIPE)
             cmd = cmd->next;
         if (is_redirect(token->type))
-        {
             open_files(token->type, token->next->value, &cmd);
-            printf("FD IN: %d\n", cmd->infile);
-            printf("FD OUT: %d\n", cmd->outfile);
-        }
         token = token->next;
     }
 }
