@@ -61,9 +61,12 @@ typedef struct s_expander
 
 typedef struct s_command
 {
-	char	*cmd;
-	char	**args;
-	char	**envp;
+	char				*pathname;
+	char				**args;
+	char				**envp;
+	int					infile;
+	int					outfile;
+	struct s_command	*next;
 }					t_command;
 
 // structs
@@ -90,8 +93,9 @@ enum				e_type
 	HEREDOC,
 	PIPE,
 	QUOTE,
-	N_EXPAND,
+	N_EXPAND = 14,
 	EXPAND,
+	DOCUMENT,
 };
 
 // prototypes
@@ -147,18 +151,21 @@ void	destroy_exit_minishell(t_minishell *data, int status);
 void	free_all(char **pointer);
 
 // here_doc
-void	check_red(t_minishell *data, int *fd);
+void	check_red(t_list *token, t_command *cmd);
 void	make_heredoc(t_list *token, t_minishell *data, int *fd);
-void	make_output(t_list *token, t_minishell *data);
-void	make_input(t_list *token, t_minishell *data);
-void	make_append(t_list *token, t_minishell *data);
+int		make_output(char *file_name, int flags);
+int		make_input(char *file_name, int flags);
+int 	count_pipes(t_list *tokens);
 
 // prototypes_exec
-char	*get_path_command(t_list *list, char **paths);
-char	**list_to_array_string(t_list *list);
-char	**create_arguments(t_list **list);
-int		destroy_command(t_command *cmd);
-int		create_command(t_command *cmd, t_minishell *data);
+char		*get_path_command(t_list *list, char **paths);
+char		**list_to_array_string(t_list *list);
+char		**create_arguments(t_list *list);
+int			destroy_command(t_command *cmd);
+int			create_command(t_command *cmd, t_minishell *data);
+t_command	**build_list(t_minishell *data);
+int			is_redirect(int identifier);
+
 // prototypes_message
 void	message_command_not_found(t_list *tokens);
 

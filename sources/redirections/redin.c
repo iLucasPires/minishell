@@ -2,17 +2,22 @@
 
 // <
 
-void make_input(t_list *token, t_minishell *data)
+int make_input(char *file_name, int flags)
 {
-    char *name;
     int fd;
 
-    (void)data;
-    name = token->next->value;
-    fd = open(token->next->value, O_RDONLY);
+    fd = open(file_name, flags);
     if (fd == -1)
-    {
-        dprintf(2, "bash: %s: No such file or directory\n", name);
-        exit(1);
-    }
+        dprintf(2, "bash: %s: No such file or directory\n", file_name);
+    return (fd);
+}
+
+int make_output(char *file_name, int flags)
+{
+    int fd;
+
+    fd = open(file_name, flags, 0644);
+    if (fd == -1)
+        dprintf(2, "bash: %s: No such file or directory\n", file_name);
+    return (fd);
 }

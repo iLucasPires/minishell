@@ -22,7 +22,7 @@ FSMACHINE += finite_state_machine.c finite_state_machine_aux.c finite_state_mach
 BUILTIN +=	builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c \
 			builtin_env.c builtin_export.c builtin_unset.c
 
-REDIRECTION += heredoc.c choose_red.c append.c redin.c redout.c
+REDIRECTION += heredoc.c choose_red.c redin.c aux_redirect.c
 EXECUTOR += executor_command.c executor.c executor_builtin_or_system.c \
  			executor_command_aux.c
 MESSAGE += message_executor.c

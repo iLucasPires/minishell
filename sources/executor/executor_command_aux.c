@@ -1,67 +1,112 @@
 #include <minishell.h>
 
-int	ft_lstslen(t_list *lst)
+void print_tcommand(t_command *c, int i)
 {
-	int	size;
+	int j;
 
-	size = 0;
-	while (lst)
+	j = 0;
+	printf("%dº TCOMMAND: \n", i);
+	printf("ARGS: ");
+	while (c->args[j])
 	{
-		if (*lst->value == PIPE)
-		{
-			lst = lst->next;
-			return (size);
-		}
-		else if (*lst->value == PLUSTHAN)
-		{
-			lst = lst->next;
-			return (size);
-		}
-		else if (*lst->value == LESSTHAN)
-		{
-			lst = lst->next;
-			return (size);
-		}
-		else
-			lst = lst->next;
-		size++;
+		printf("%s ", c->args[j]);
+		j++;
 	}
-	return (size);
+	printf("\n");
+	printf("CMD: %s\n", c->pathname);
+	printf("ENVP: %s\n", c->envp[0]);
+	printf("INFILE: %d\n", c->infile);
+	printf("OUTFILE: %d\n", c->outfile);
+	printf("---------------------------------------\n");
+	if (c->next)
+		print_tcommand(c->next, i + 1);
 }
 
-char	**create_arguments(t_list **list)
+int 	size_args(t_list *list)
 {
-	int		index;
-	int		size;
-	char	**array_string;
+	t_list *aux;
+	int i;
 
-	index = 0;
-	size = ft_lstnlen(*list, BAR);
-	if (*list == NULL)
-		return (NULL);
-	array_string = ft_calloc(size + 1, sizeof(char *));
-	array_string[size] = NULL;
-	while (index < size)
+	i = 0;
+	aux = list;
+	while (aux != NULL && aux->type != PIPE)
 	{
-		array_string[index] = (*list)->value;
-		*list = (*list)->next;
-		index++;
+		if (aux->type == WORD)
+			i++;
+		aux = aux->next;
 	}
-	return (array_string);
+	return (i + 1);
 }
 
-int	destroy_command(t_command *cmd)
+char	**create_arguments(t_list *list)
 {
-	free(cmd->cmd);
-	free(cmd->envp);
-	free(cmd->args);
-	return (EXIT_SUCCESS);
+	char **args;
+	int size;
+	int i;
+
+	i = 0;
+	size = size_args(list);
+	args = ft_calloc(sizeof(char *), size);
+	while (i < size - 1)
+	{
+		if (list->type == WORD)
+		{
+			args[i] = list->value;
+			i++;
+		}
+		list = list->next;
+	}
+	return (args);
 }
 
-int	create_command(t_command *cmd, t_minishell *data)
+t_command *create_command_table(t_minishell *data)
 {
-	cmd->cmd = get_path_command(data->tokens_aux, data->paths);
-	cmd->envp = list_to_array_string(data->envs);
-	cmd->args = create_arguments(&data->tokens_aux);
-	return (EXIT_SUCCESS);
+	t_command *cmd_table;
+
+	cmd_table = malloc(1 * sizeof(t_command));
+
+
+	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths); // criar um jeito de pegar o path de cada comando
+	cmd_table->envp = list_to_array_string(data->envs);
+	cmd_table->args = create_arguments(data->tokens_aux);
+	cmd_table->infile = STDIN_FILENO;
+	cmd_table->outfile = STDOUT_FILENO;
+	cmd_table->next = NULL;
+	return (cmd_table);
+}
+
+void ft_lstadd_back(t_command **head, t_command *new_cmd_node)
+{
+	t_command *aux;
+
+	if (*head == NULL)
+	{
+		*head = new_cmd_node;
+		return ;
+	}
+	aux = *head;
+	while (aux->next)
+		aux = aux->next;
+	aux->next = new_cmd_node;
+}
+
+t_command **build_list(t_minishell *data)
+{
+	t_command **head;
+	int i;
+
+	i = 0;
+	head = malloc(sizeof(t_command *));
+	*head = NULL;
+	while (i < count_pipes(data->tokens) + 1)
+	{
+		ft_lstadd_back(head, create_command_table(data));
+		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
+			data->tokens_aux = data->tokens_aux->next;
+		if (data->tokens_aux)
+			data->tokens_aux = data->tokens_aux->next;
+		i++;
+	}
+	print_tcommand(*head, 1);
+	return (head);
 }
