@@ -1,5 +1,5 @@
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef MINISHELL_DEFINE_H
+# define MINISHELL_DEFINE_H
 
 # define PROMPT "\033[1;32mminishell\033[0m$ "
 # define MAX_LINE 80
@@ -38,6 +38,5 @@
 // heredoc define
 
 # define HERE_FILE	"./tmp_file"
-
 
 #endif

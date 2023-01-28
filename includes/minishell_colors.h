@@ -1,5 +1,5 @@
-#ifndef COLORS_H
-# define COLORS_H
+#ifndef MINISHELL_COLORS_H
+# define MINISHELL_COLORS_H
 
 //Regular text
 # define BLACK   "\001\e[0;30m\002"

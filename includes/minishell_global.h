@@ -1,0 +1,4 @@
+#ifndef MINISHELL_GLOBAL_H
+#define MINISHELL_GLOBAL_H
+
+#endif

@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	expander_word(t_expander *expander, char *string)
+void	expander_word(t_fsm *expander, char *string)
 {
 	char	*string_aux;
 
@@ -14,7 +14,7 @@ void	expander_word(t_expander *expander, char *string)
 	}
 }
 
-void	expander_dollar(t_expander *expander, char *string, t_list **envs)
+void	expander_dollar(t_fsm *expander, char *string, t_list **envs)
 {
 	char *string_aux;
 	char *string_aux2;

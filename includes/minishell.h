@@ -14,172 +14,88 @@
 
 // libraries local
 # include "../libft/includes/libft.h"
-# include "./colors.h"
-# include "./define.h"
+# include "./minishell_colors.h"
+# include "./minishell_define.h"
+# include "./minishell_struct.h"
+# include "./minishell_enum.h"
 
-enum				e_bool
-{
-	FALSE,
-	TRUE
-};
-
-typedef struct s_file
-{
-	int				fd;
-	int				infile;
-	int				outfile;
-	char			*keepli;
-}					t_file;
-
-typedef struct s_token
-{
-	int				type;
-	char			*value;
-	struct s_token	*next;
-}					t_list;
-
-typedef struct s_fsm
-{
-	int				index;
-	int				limit;
-	int				begin;
-	int				check_quote;
-	char			quote_type;
-	char			*line;
-	t_list			**tokens;
-	t_list			*expanders;
-}					t_fsm;
-
-typedef struct s_expander
-{
-	int				index;
-	int				limit;
-	int				begin;
-	char			*line;
-	t_list			**tokens;
-}					t_expander;
-
-typedef struct s_executor
-{
-	int					n_cmds;
-	int					**pipe;
-	pid_t				*pid;
-	int					aux_in;
-	int 				aux_out;
-}					t_executor;
-typedef struct s_command
-{
-	char				*pathname;
-	char				**args;
-	char				**envp;
-	int					infile;
-	int					outfile;
-	struct s_command	*next;
-}					t_command;
-
-// structs
-typedef struct s_minishell
-{
-	char		*line;
-	char		*home;
-	char		**paths;
-	t_list		*envs;
-	t_list		*tokens;
-	t_list		*tokens_aux;
-	u_int8_t	exit_code;
-}					t_minishell;
-
-t_minishell g_minishell;
-
-enum				e_type
-{
-	WORD,
-	RED_IN,
-	RED_OUT,
-	RED_APPEND,
-	HEREDOC,
-	PIPE,
-	QUOTE,
-	N_EXPAND = 14,
-	EXPAND,
-	DOCUMENT,
-};
+extern t_minishell	g_minishell;
 
 // prototypes
-void	read_eval_print_loop(t_minishell *data);
-void	choose_command(t_minishell *data);
-void	syntax_quotes(char *line);
-int		system_command(t_minishell *data);
+void					read_eval_print_loop(t_minishell *data);
+void					choose_command(t_minishell *data);
+void					syntax_quotes(char *line);
+int						system_command(t_minishell *data);
 
 // prototypes_signal
-void	handle_sigint(int signum);
-void	handle_sigquit(t_minishell *data);
+void					handle_sigint(int signum);
+void					handle_sigquit(t_minishell *data);
 
 // builtins
-int		cmd_builtins(t_minishell *data);
-int		builtin_cd(t_minishell *data);
-int		builtin_echo(char **args);
-int		builtin_pwd(t_minishell *data);
-int		builtin_exit(t_minishell *data);
-int		builtin_env(t_minishell *data);
-int		builtin_export(t_minishell *data);
-int		builtin_unset(t_minishell *data);
+int						cmd_builtins(t_minishell *data);
+int						builtin_cd(t_minishell *data);
+int						builtin_echo(char **args);
+int						builtin_pwd(t_minishell *data);
+int						builtin_exit(t_minishell *data);
+int						builtin_env(t_minishell *data);
+int						builtin_export(t_minishell *data);
+int						builtin_unset(t_minishell *data);
 
 // prototypes_list_linked
-void	new_node(t_list **head, char *value, int type);
-void	destroy_list(t_list **head);
+void					new_node(t_list **head, char *value, int type);
+void					destroy_list(t_list **head);
 
-void	delete_node(t_list **head, t_list *item);
-t_list	*get_node(t_list **head, char *target);
-char	*get_value(t_list **head, char *target);
-char	*my_getenv(t_list **head, char *target);
-void	add_env(t_list **env, char *value);
-void	substitute_env(t_list *token_current, char *value);
-void	delete_just_node(t_list **head, t_list *item);
+void					delete_node(t_list **head, t_list *item);
+t_list					*get_node(t_list **head, char *target);
+char					*get_value(t_list **head, char *target);
+char					*my_getenv(t_list **head, char *target);
+void					add_env(t_list **env, char *value);
+void					substitute_env(t_list *token_current, char *value);
+void					delete_just_node(t_list **head, t_list *item);
 
 // prototypes_parser_and_tokenize
-int		fsm_is_state(char *str, int index);
-int		fsm_is_space(char *str, int index);
-int		fsm_is_special(char *str, int index);
-char	*fsm_identified(int identifier);
-void	finite_state_machine(t_minishell *data);
-void	expander_word(t_expander *expander, char *string);
-void	expander_dollar(t_expander *expander, char *string, t_list **envs);
+int						fsm_is_state(char *str, int index);
+int						fsm_is_space(char *str, int index);
+int						fsm_is_special(char *str, int index);
+char					*fsm_identified(int identifier);
+void					finite_state_machine(t_minishell *data);
+void					expander_word(t_fsm *expander, char *string);
+void					expander_dollar(t_fsm *expander, char *string,
+							t_list **envs);
 
-int		ft_lstlen(t_list *lst);
-int		ft_lstnlen(t_list *lst, int target);
-int		ft_lsttlen(t_list *lst, int target);
-int		ft_lstslen(t_list *lst);
+int						ft_lstlen(t_list *lst);
+int						ft_lstnlen(t_list *lst, int target);
+int						ft_lsttlen(t_list *lst, int target);
+int						ft_lstslen(t_list *lst);
 
 // free prototypes
-void	destroy_minishell(t_minishell *data);
-void	destroy_repl(t_minishell *data);
-void	destroy_exit_minishell(t_minishell *data, int status);
-void	free_all(char **pointer);
+void					destroy_minishell(t_minishell *data);
+void					destroy_repl(t_minishell *data);
+void					destroy_exit_minishell(t_minishell *data, int status);
+void					free_all(char **pointer);
 
 // here_doc
-void	check_red(t_list *token, t_command *cmd);
-void	make_heredoc(t_list *token, t_minishell *data, int *fd);
-int		make_output(char *file_name, int flags);
-int		make_input(char *file_name, int flags);
-int 	count_pipes(t_list *tokens);
+void					check_red(t_list *token, t_command *cmd);
+void					make_heredoc(t_list *token, t_minishell *data, int *fd);
+int						make_output(char *file_name, int flags);
+int						make_input(char *file_name, int flags);
+int						count_pipes(t_list *tokens);
 
 // prototypes_exec
-char		*get_path_command(t_list *list, char **paths);
-char		**list_to_array_string(t_list *list);
-char		**create_arguments(t_list *list);
-int			destroy_command(t_command *cmd);
-int			create_command(t_command *cmd, t_minishell *data);
-t_command	**build_list(t_minishell *data);
-int			is_redirect(int identifier);
+char					*get_path_command(t_list *list, char **paths);
+char					**list_to_array_string(t_list *list);
+char					**create_arguments(t_list *list);
+int						destroy_command(t_command *cmd);
+int						create_command(t_command *cmd, t_minishell *data);
+t_command				**build_list(t_minishell *data);
+int						is_redirect(int identifier);
 
 // prototypes_message
-void	message_command_not_found(t_list *tokens);
-
+void					message_command_not_found(t_list *tokens);
 
 // TESTER BUILTIN
-int builtins(t_command **cmd);
-int	pwd(void);
-int is_builtin(char *str);
+int						builtins(t_command **cmd);
+int						pwd(void);
+int						is_builtin(char *str);
 
 #endif
