@@ -64,6 +64,8 @@ typedef struct s_executor
 	int					n_cmds;
 	int					**pipe;
 	pid_t				*pid;
+	int					aux_in;
+	int 				aux_out;
 }					t_executor;
 typedef struct s_command
 {
@@ -114,9 +116,9 @@ void	handle_sigint(int signum);
 void	handle_sigquit(t_minishell *data);
 
 // builtins
-int		cmd_builtins(t_minishell *data, int size);
+int		cmd_builtins(t_minishell *data);
 int		builtin_cd(t_minishell *data);
-int		builtin_echo(t_minishell *data, int size);
+int		builtin_echo(char **args);
 int		builtin_pwd(t_minishell *data);
 int		builtin_exit(t_minishell *data);
 int		builtin_env(t_minishell *data);
