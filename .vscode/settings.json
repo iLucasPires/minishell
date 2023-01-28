@@ -33,7 +33,12 @@
         "cstddef": "c",
         "colors.h": "c",
         "stdarg.h": "c",
-        "numbers": "c"
+        "numbers": "c",
+        "struct.h": "c",
+        "minishell_define.h": "c",
+        "minishell_struct.h": "c",
+        "minishell_colors.h": "c",
+        "minishell_enum.h": "c"
     },
     "files.exclude": {
         "**/.git": true,

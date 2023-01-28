@@ -20,9 +20,9 @@ void	remove_chars(char *str, char *targets)
 
 void	fsm_expander(char *line_temp, t_minishell *data)
 {
-	t_expander	expander;
+	t_fsm	expander;
 
-	ft_bzero(&expander, sizeof(t_expander));
+	ft_bzero(&expander, sizeof(t_fsm));
 	while (TRUE)
 	{
 		if (line_temp[expander.index] == DOLLAR)
