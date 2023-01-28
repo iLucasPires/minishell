@@ -59,6 +59,12 @@ typedef struct s_expander
 	t_list			**tokens;
 }					t_expander;
 
+typedef struct s_executor
+{
+	int					n_cmds;
+	int					**pipe;
+	pid_t				*pid;
+}					t_executor;
 typedef struct s_command
 {
 	char				*pathname;

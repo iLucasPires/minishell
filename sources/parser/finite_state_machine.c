@@ -23,7 +23,6 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 	t_expander	expander;
 
 	ft_bzero(&expander, sizeof(t_expander));
-	printf("line_temp: %s \n", line_temp);
 	while (TRUE)
 	{
 		if (line_temp[expander.index] == DOLLAR)

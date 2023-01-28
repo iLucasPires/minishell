@@ -107,6 +107,6 @@ t_command **build_list(t_minishell *data)
 			data->tokens_aux = data->tokens_aux->next;
 		i++;
 	}
-	print_tcommand(*head, 1);
+	// print_tcommand(*head, 1);
 	return (head);
 }
