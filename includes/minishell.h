@@ -17,6 +17,8 @@
 # include "./colors.h"
 # include "./define.h"
 
+u_int8_t	g_exit_code;
+
 enum				e_bool
 {
 	FALSE,
@@ -78,9 +80,9 @@ typedef struct s_command
 // structs
 typedef struct s_minishell
 {
-	int			pipefd[2];
-	pid_t		pid;
-	int			status;
+	// int			pipefd[2];
+	// pid_t		pid;
+	// int			status;
 	char		*line;
 	char		*home;
 	char		**paths;
@@ -174,5 +176,11 @@ int			is_redirect(int identifier);
 
 // prototypes_message
 void	message_command_not_found(t_list *tokens);
+
+
+// TESTER BUILTIN
+int builtins(t_command **cmd);
+int	pwd(void);
+int is_builtin(char *str);
 
 #endif
