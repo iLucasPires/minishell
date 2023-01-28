@@ -81,11 +81,43 @@ void make_redirects(t_command *cmd, t_executor **executor, int i)
 		dup2((*executor)->pipe[i - 1][0], STDIN_FILENO);
 }
 
+void builtin_redirect(t_command *cmd)
+{
+	if (cmd->outfile > 2)
+		dup2(cmd->outfile, STDOUT_FILENO);
+	if (cmd->infile > 2)
+		dup2(cmd->infile, STDIN_FILENO);
+}
+
+void init_resources(t_executor **exec, t_command **cmd)
+{
+	(*exec)->aux_in = dup(0);
+	(*exec)->aux_out = dup(1);
+	builtin_redirect(*cmd);
+}
+
+void reset_int_out(t_executor **executor)
+{
+	dup2((*executor)->aux_in, 0);
+	dup2((*executor)->aux_out, 1);
+	close((*executor)->aux_in);
+	close((*executor)->aux_out);
+}
+
+void close_files(t_command **cmd)
+{
+	close((*cmd)->infile);
+	close((*cmd)->outfile);
+}
+
 void execute_children(t_command **cmd, t_executor **executor, int i)
 {
 	if (is_builtin((*cmd)->args[0]) && (*executor)->n_cmds == 1)
 	{
+		init_resources(executor, cmd);
 		builtins(cmd);
+		close_files(cmd);
+		reset_int_out(executor);
 		return ;
 	}
 	(*executor)->pid[i] = fork();
@@ -149,7 +181,6 @@ int	system_command(t_minishell *data)
 	}
 	close_pipes(&executor);
 	wait_children(&executor);
-
 
 	return (g_minishell.exit_code);
 }

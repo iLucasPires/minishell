@@ -1,32 +1,24 @@
 #include <minishell.h>
 
-void	print_lists(t_list *tokens, int size)
+int	builtin_echo(char **args)
 {
-	while (tokens && size > 0)
-	{
-		ft_putstr_fd(tokens->value, STDOUT_FILENO);
-		ft_putchar_fd(' ', STDOUT_FILENO);
-		tokens = tokens->next;
-		size--;
-	}
-}
+	int cmpr;
+	int i;
 
-int	builtin_echo(t_minishell *data, int size)
-{
-	t_list *token;
-
-	token = data->tokens;
-	if (token->next == NULL)
-		ft_putchar_fd('\n', STDOUT_FILENO);
-	else
+	i = 1;
+	if (args[1] == NULL)
+		return(printf("\n"), 0);
+	cmpr = ft_strcmp(args[1], "-n");
+	if (cmpr == 0)
+		i++;
+	while (args[i])
 	{
-		if (ft_strncmp(token->next->value, "-n", 2) == 0)
-			print_lists(token->next->next, size);
-		else
-		{
-			print_lists(token->next, size);
-			ft_putchar_fd('\n', STDOUT_FILENO);
-		}
+		printf("%s", args[i]);
+		i++;
+		if (args[i])
+			printf(" ");
 	}
+	if (cmpr != 0)
+		printf("\n");
 	return (0);
 }
