@@ -5,54 +5,43 @@
 // 3	RED_APPEND >>
 // 4	HEREDOC <<
 
-static int choose_red(t_list *token, t_minishell *data, int *fd);
-
-void check_red(t_minishell *data, int *fd)
+int syntax_error(char *file_name)
 {
-    t_list *aux;
-
-    aux = data->tokens_aux;
-    while (aux)
-    {
-        if (aux->next->type > 0 && aux->next->type < 5)
-        {
-            choose_red(aux->next, data, fd);
-            aux = aux->next;
-        }
-        else
-        {
-            if(aux->next)
-                aux = aux->next;
-        }
-    }
+    if (file_name == NULL)
+        return (1);
+    if (!ft_strcmp(file_name, "<") || !ft_strcmp(file_name, "<<") || !ft_strcmp(file_name, ">") || !ft_strcmp(file_name, ">>") ||
+    !ft_strcmp(file_name, "|"))
+        return (1);
+    return (0);
 }
 
-static int choose_red(t_list *token, t_minishell *data, int *fd)
+int open_files(int type, char *file_name, t_command **cmd)
 {
-    if (token->type == 4)
-    {
-        if (!token->next)
-            return (ft_putstr_fd(ERROR_SYNTAX, 2), 1);
-        make_heredoc(token, data, fd);
-    }
-    else if (token->type == 3)
-    {
-        if (!token->next)
-            return (ft_putstr_fd(ERROR_SYNTAX, 2), 1);
-        make_append(token, data);
-    }
-    else if (token->type == 2)
-    {
-        if (!token->next)
-            return (ft_putstr_fd(ERROR_SYNTAX, 2), 1);
-        make_output(token ,data);
-
-    }
-    else if (token->type == 1)
-    {
-        if (!token->next)
-            return (ft_putstr_fd(ERROR_SYNTAX, 2), 1);
-        make_input(token, data);
-    }
+    if (syntax_error(file_name))
+        return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
+    // else if (type == HEREDOC)
+    //     make_heredoc();
+    else if (type == RED_IN)
+        (*cmd)->infile = make_input(file_name, (O_RDONLY));
+    else if (type == RED_OUT)
+        (*cmd)->outfile = make_output(file_name, (O_CREAT | O_RDWR | O_TRUNC));
+    else if (type == RED_APPEND)
+        (*cmd)->outfile = make_output(file_name, (O_CREAT | O_RDWR | O_APPEND));
     return (0);
+}
+
+void    check_red(t_list *token, t_command *cmd)
+{
+    while (token)
+    {
+        if (token->type == PIPE)
+            cmd = cmd->next;
+        if (is_redirect(token->type))
+        {
+            open_files(token->type, token->next->value, &cmd);
+            printf("FD IN: %d\n", cmd->infile);
+            printf("FD OUT: %d\n", cmd->outfile);
+        }
+        token = token->next;
+    }
 }

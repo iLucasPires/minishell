@@ -94,20 +94,45 @@ void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 	}
 }
 
+int count_index(char *line)
+{
+	int  i;
+
+	i = 0;
+
+	while (line[i] != 0 && line[i] != SPACE)
+		i++;
+	return (i);
+}
+
+int is_redirect(int identifier)
+{
+	return (identifier == RED_IN || identifier == RED_OUT || identifier == RED_APPEND || identifier == HEREDOC);
+}
+
 void	fsm_filter_special(t_fsm *fsm, t_minishell *data)
 {
 	int	identifier;
+	char *document;
+	int size_index;
 
 	identifier = fsm_is_state(fsm->line, fsm->index);
-	if (identifier == RED_IN || identifier == RED_OUT || identifier == PIPE)
+	if (is_redirect(identifier))
 	{
 		new_node(&data->tokens, fsm_identified(identifier), identifier);
 		fsm->index++;
+		fsm->index += (identifier == RED_APPEND || identifier == HEREDOC);
+		fsm->index += (fsm->line[fsm->index] == SPACE);
+		size_index = count_index(&fsm->line[fsm->index]);
+		document = ft_substr(&fsm->line[fsm->index], 0, size_index);
+		new_node(&data->tokens, document, DOCUMENT);
+		fsm->index += size_index;
+		free(document);
 	}
-	if (identifier == RED_APPEND || identifier == HEREDOC)
+	if (identifier == PIPE)
 	{
 		new_node(&data->tokens, fsm_identified(identifier), identifier);
-		fsm->index += 2;
+		fsm->index++;
 	}
 }
 

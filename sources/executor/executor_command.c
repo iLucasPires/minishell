@@ -24,6 +24,8 @@ char	*get_path_command(t_list *list, char **paths)
 	char	*command;
 	char	*command_path;
 
+	if (!list)
+		return (NULL);
 	if (!access(list->value, F_OK | X_OK))
 		return (ft_strdup(list->value));
 	else

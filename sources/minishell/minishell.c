@@ -39,7 +39,7 @@ void	handle_line(t_minishell *data)
 			syntax_quotes(data->line);
 			finite_state_machine(data);
 			system_command(data);
-			print_list(data->tokens);
+			// print_list(data->tokens);
 			destroy_list(&data->tokens);
 		}
 	}
