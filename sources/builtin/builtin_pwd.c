@@ -22,7 +22,7 @@ int	pwd(void)
 	char c[1024];
 
 	if (!getcwd(c, sizeof(c)))
-		g_exit_code = EXIT_FAILURE;
+		g_minishell.exit_code = EXIT_FAILURE;
 	printf("%s\n", c);
 	return (1);
 }

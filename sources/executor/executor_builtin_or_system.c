@@ -20,12 +20,19 @@ int	cmd_builtins(t_minishell *data, int size)
 }
 
 int b_exit(char **args) {
-  if (args[1] != NULL) {
-    int status = ft_atoi(args[1]);
-    exit(status);
-  } else {
-    exit(0);
-  }
+	if (args[1] != NULL) 
+	{
+    	int status = ft_atoi(args[1]);
+		// Fecha todos os arquivos abertos e libera a memória alocada
+    	// antes de encerrar o programa
+    	exit(status);
+	}
+	else 
+	{
+		// Fecha todos os arquivos abertos e libera a memória alocada
+		// antes de encerrar o programa
+		exit(0);
+	}
 }
 
 int is_builtin(char *str)
