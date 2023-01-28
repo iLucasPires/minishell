@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	data;
 
-	g_exit_code = 0;
+	g_minishell.exit_code = 0;
 	if (argc != 1 || argv[1] != NULL)
 	{
 		ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);

@@ -17,8 +17,6 @@
 # include "./colors.h"
 # include "./define.h"
 
-u_int8_t	g_exit_code;
-
 enum				e_bool
 {
 	FALSE,
@@ -80,17 +78,16 @@ typedef struct s_command
 // structs
 typedef struct s_minishell
 {
-	// int			pipefd[2];
-	// pid_t		pid;
-	// int			status;
 	char		*line;
 	char		*home;
 	char		**paths;
-	t_file		file;
 	t_list		*envs;
 	t_list		*tokens;
 	t_list		*tokens_aux;
+	u_int8_t	exit_code;
 }					t_minishell;
+
+t_minishell g_minishell;
 
 enum				e_type
 {

@@ -36,12 +36,12 @@ void	expander_dollar(t_expander *expander, char *string, t_list **envs)
 	{
 		if (expander->line == NULL)
 		{
-			expander->line = ft_itoa(g_exit_code);
+			expander->line = ft_itoa(g_minishell.exit_code);
 			expander->index = expander->index + 1;
 			return ;
 		}
 		string_aux = expander->line;
-		expander->line = ft_strjoin(expander->line, ft_itoa(g_exit_code));
+		expander->line = ft_strjoin(expander->line, ft_itoa(g_minishell.exit_code));
 		free(string_aux);
 		expander->index = expander->index + 1;	
 	}
