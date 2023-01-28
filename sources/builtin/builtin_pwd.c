@@ -16,3 +16,13 @@ int	builtin_pwd(t_minishell *data)
 	free(path);
 	return (EXIT_SUCCESS);
 }
+
+int	pwd(void)
+{
+	char c[1024];
+
+	if (!getcwd(c, sizeof(c)))
+		g_exit_code = EXIT_FAILURE;
+	printf("%s\n", c);
+	return (1);
+}

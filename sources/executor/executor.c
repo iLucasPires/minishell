@@ -9,32 +9,6 @@ int	destroy_child_process(t_minishell *data, t_command *cmd)
 	exit(EXIT_FAILURE);
 }
 
-int	execute_commands(t_minishell *data)
-{
-	(void)data;
-	// t_command cmd;
-	// int i = 0;
-
-	// while (cmd.args[i])
-	// {
-	// 	printf("ARGS: %s\n", cmd.args[i]);
-	// 	i++;
-	// }
-	// printf("CMD: %s\n", cmd.cmd);
-	// printf("FD INPUT: %d\n", cmd.infile);
-	// printf("FD OUTPUT: %d\n", cmd.outfile);
-	// printf("ENVP: %s\n", cmd.envp[0]);
-	// printf("----------------------------------------\n");
-	// if (pipe(data->pipefd) == FAILURE)
-	// 	return (EXIT_FAILURE);
-	// data->pid = fork();
-	// if (!data->pid)
-	// 	execute_child_process(data, &cmd);
-	// else
-	// 	execute_father_process(data, &cmd);
-	return (EXIT_SUCCESS);
-}
-
 t_executor *malloc_executor(int size)
 {
 	t_executor *new_executor;
@@ -87,6 +61,10 @@ void wait_children(t_executor **executor)
 	while (i < ((*executor)->n_cmds))
 	{
 		waitpid((*executor)->pid[i], &status, 0);
+		if (WIFEXITED(status))
+		{
+			g_exit_code = WEXITSTATUS(status);
+		}
 		i++;
 	}
 }
@@ -105,15 +83,35 @@ void make_redirects(t_command *cmd, t_executor **executor, int i)
 
 void execute_children(t_command **cmd, t_executor **executor, int i)
 {
-	(void)cmd;
+	if (is_builtin((*cmd)->args[0]) && (*executor)->n_cmds == 1)
+	{
+		builtins(cmd);
+		return ;
+	}
 	(*executor)->pid[i] = fork();
 	if ((*executor)->pid[i] == 0)
 	{
 		make_redirects(*cmd, executor, i);
 		close_pipes(executor);
 		execve((*cmd)->pathname, (*cmd)->args, (*cmd)->envp);
-		exit (1);
+		exit(1);
 	}
+}
+
+int syntax_error_pipe(t_list *tokens)
+{
+	if (tokens->type == PIPE)
+		return(ft_putstr_fd(ERROR_SYNTAX, 2), 2);
+	while (tokens)
+	{
+		if (tokens->type == PIPE)
+		{
+			if (tokens->next == NULL)
+				return(ft_putstr_fd(ERROR_SYNTAX, 2), 2);
+		}
+		tokens = tokens->next;
+	}
+	return (0);
 }
 
 int	system_command(t_minishell *data)
@@ -124,6 +122,12 @@ int	system_command(t_minishell *data)
 	int i;
 
 	i = 0;
+	if (syntax_error_pipe(data->tokens) != 0)
+	{
+		// limpar a porra toda
+		g_exit_code = 2;
+		return(g_exit_code);
+	}
 	data->tokens_aux = data->tokens;
 	data->paths = ft_split(get_value(&data->envs, "PATH"), ':');
 	if (data->paths == NULL)
@@ -134,6 +138,7 @@ int	system_command(t_minishell *data)
 	head = build_list(data);
 	check_red(data->tokens, *head);
 	executor = malloc_executor(count_pipes(data->tokens));
+	free_all(data->paths);
 	open_pipes(&executor);
 	cmd_aux = *head;
 	while (i < executor->n_cmds)
@@ -146,34 +151,5 @@ int	system_command(t_minishell *data)
 	wait_children(&executor);
 
 
-	free_all(data->paths);
-	return (EXIT_SUCCESS);
+	return (g_exit_code);
 }
-
-
-
-
-
-
-
-
-
-
-	// int j;
-
-	// j = 0;
-	// printf("%dº TCOMMAND: \n", i);
-	// printf("ARGS: ");
-	// while ((*cmd)->args[j])
-	// {
-	// 	printf("%s ", (*cmd)->args[j]);
-	// 	j++;
-	// }
-	// printf("\n");
-	// printf("CMD: %s\n", (*cmd)->pathname);
-	// printf("ENVP: %s\n", (*cmd)->envp[0]);
-	// printf("INFILE: %d\n", (*cmd)->infile);
-	// printf("OUTFILE: %d\n", (*cmd)->outfile);
-	// printf("\n%dº EXECUTOR: \n", i);
-	// printf("Nº CMDS: %d\n", executor->n_cmds);
-	// printf("---------------------------------------\n");

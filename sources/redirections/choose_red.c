@@ -5,7 +5,7 @@
 // 3	RED_APPEND >>
 // 4	HEREDOC <<
 
-int syntax_error(char *file_name)
+static int syntax_error_redirects(char *file_name)
 {
     if (file_name == NULL)
         return (1);
@@ -17,7 +17,7 @@ int syntax_error(char *file_name)
 
 int open_files(int type, char *file_name, t_command **cmd)
 {
-    if (syntax_error(file_name))
+    if (syntax_error_redirects(file_name))
         return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
     // else if (type == HEREDOC)
     //     make_heredoc();
