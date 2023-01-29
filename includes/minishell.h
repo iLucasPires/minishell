@@ -33,11 +33,11 @@ void					handle_sigquit(t_minishell *data);
 
 // builtins
 int						cmd_builtins(t_minishell *data);
-int						builtin_cd(t_minishell *data);
+int						builtin_cd(t_command **cmd);
 int						builtin_echo(char **args);
 int						builtin_pwd(t_minishell *data);
 int						builtin_exit(t_minishell *data);
-int						builtin_env(t_minishell *data);
+int						builtin_env(t_executor **exec);
 int						builtin_export(t_minishell *data);
 int						builtin_unset(t_minishell *data);
 
@@ -94,7 +94,7 @@ int						is_redirect(int identifier);
 void					message_command_not_found(t_list *tokens);
 
 // TESTER BUILTIN
-int						builtins(t_command **cmd);
+int						builtins(t_command **cmd, t_executor **exec);
 int						pwd(void);
 int						is_builtin(char *str);
 

@@ -1,15 +1,15 @@
 #include <minishell.h>
 
-int	builtin_env(t_minishell *data)
+int	builtin_env(t_executor **exec)
 {
-	t_list *token;
+	int i;
 
-	token = data->envs;
-	while (token)
+	i = 0;
+	while ((*exec)->envp_array[i])
 	{
-		if (token->type == TRUE)
-			printf("%s \n", token->value);
-		token = token->next;
+		if ((*exec)->envp_array[i])
+			printf("%s\n", (*exec)->envp_array[i]);
+		i++;;
 	}
 	return (EXIT_SUCCESS);
 }

@@ -1,6 +1,8 @@
 #ifndef MINISHELL_STRUCT_H
 # define MINISHELL_STRUCT_H
 
+#include <minishell.h>
+
 typedef struct s_file
 {
 	int					fd;
@@ -33,6 +35,8 @@ typedef struct s_executor
 	int					n_cmds;
 	int					**pipe;
 	pid_t				*pid;
+	char				**envp_array;
+	t_list				**envp_list;
 	int					aux_in;
 	int					aux_out;
 }						t_executor;
@@ -40,7 +44,6 @@ typedef struct s_command
 {
 	char				*pathname;
 	char				**args;
-	char				**envp;
 	int					infile;
 	int					outfile;
 	struct s_command	*next;
