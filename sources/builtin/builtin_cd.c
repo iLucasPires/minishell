@@ -9,25 +9,23 @@ void	change_directory(char *path)
 		perror("cd");
 }
 
-int	builtin_cd(t_minishell *data)
+int	builtin_cd(t_command **cmd)
 {
 	char	*path;
-	t_list	*token;
 
-	token = data->tokens;
-	if (token->next == NULL || !ft_strncmp(token->next->value, "~", 2))
+	if ((*cmd)->args[1] == NULL || !ft_strncmp((*cmd)->args[1], "~", 2))
 	{
-		path = my_getenv(&data->envs, "HOME");
+		path = my_getenv(&g_minishell.envs, "HOME");
 		change_directory(path);
 	}
-	else if (!ft_strncmp(token->next->value, "-", 2))
+	else if (!ft_strncmp((*cmd)->args[1], "-", 2))
 	{
-		path = my_getenv(&data->envs, "OLDPWD");
+		path = my_getenv(&g_minishell.envs, "OLDPWD");
 		change_directory(path);
 	}
-	else if (token->next->next == NULL)
+	else if ((*cmd)->args[2] == NULL)
 	{
-		path = token->next->value;
+		path = (*cmd)->args[1];
 		change_directory(path);
 	}
 	else

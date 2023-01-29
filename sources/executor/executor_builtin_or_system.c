@@ -55,7 +55,7 @@ int is_builtin(char *str)
 	return(0);
 }
 
-int builtins(t_command **cmd)
+int builtins(t_command **cmd, t_executor **exec)
 {
 	if (ft_strcmp((*cmd)->args[0], "pwd") == 0)
 		return(pwd());
@@ -63,5 +63,13 @@ int builtins(t_command **cmd)
 		return(b_exit((*cmd)->args));
 	else if (ft_strcmp((*cmd)->args[0], "echo") == 0)
 		return(builtin_echo((*cmd)->args));
+	else if (ft_strcmp((*cmd)->args[0], "cd") == 0)
+		return(builtin_cd(cmd));
+	else if (ft_strcmp((*cmd)->args[0], "env") == 0)
+		return(builtin_env(exec));
+	else if (ft_strcmp((*cmd)->args[0], "export") == 0)
+		return(builtin_env(exec));
+	else if (ft_strcmp((*cmd)->args[0], "unset") == 0)
+		return(builtin_env(exec));
 	return (0);
 }

@@ -14,7 +14,6 @@ void print_tcommand(t_command *c, int i)
 	}
 	printf("\n");
 	printf("CMD: %s\n", c->pathname);
-	printf("ENVP: %s\n", c->envp[0]);
 	printf("INFILE: %d\n", c->infile);
 	printf("OUTFILE: %d\n", c->outfile);
 	printf("---------------------------------------\n");
@@ -67,7 +66,6 @@ t_command *create_command_table(t_minishell *data)
 
 
 	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths); // criar um jeito de pegar o path de cada comando
-	cmd_table->envp = list_to_array_string(data->envs);
 	cmd_table->args = create_arguments(data->tokens_aux);
 	cmd_table->infile = STDIN_FILENO;
 	cmd_table->outfile = STDOUT_FILENO;

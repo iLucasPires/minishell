@@ -115,7 +115,7 @@ void execute_children(t_command **cmd, t_executor **executor, int i)
 	if (is_builtin((*cmd)->args[0]) && (*executor)->n_cmds == 1)
 	{
 		init_resources(executor, cmd);
-		builtins(cmd);
+		builtins(cmd, executor);
 		close_files(cmd);
 		reset_int_out(executor);
 		return ;
@@ -125,7 +125,7 @@ void execute_children(t_command **cmd, t_executor **executor, int i)
 	{
 		make_redirects(*cmd, executor, i);
 		close_pipes(executor);
-		execve((*cmd)->pathname, (*cmd)->args, (*cmd)->envp);
+		execve((*cmd)->pathname, (*cmd)->args, (*executor)->envp_array);
 		exit(1);
 	}
 }
@@ -144,6 +144,12 @@ int syntax_error_pipe(t_list *tokens)
 		tokens = tokens->next;
 	}
 	return (0);
+}
+
+void create_executor(t_executor **exec, t_list **env)
+{
+	(*exec)->envp_array = list_to_array_string((*env));
+	(*exec)->envp_list = env;
 }
 
 int	system_command(t_minishell *data)
@@ -170,6 +176,7 @@ int	system_command(t_minishell *data)
 	head = build_list(data);
 	check_red(data->tokens, *head);
 	executor = malloc_executor(count_pipes(data->tokens));
+	create_executor(&executor, &data->envs);
 	free_all(data->paths);
 	open_pipes(&executor);
 	cmd_aux = *head;
