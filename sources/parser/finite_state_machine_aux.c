@@ -48,3 +48,24 @@ char	*fsm_identified(int identifier)
 		return ("<<");
 	return ("");
 }
+
+pid_t	my_getpid(void)
+{
+	int		fd;
+	char	buffer[256];
+	ssize_t	bytes_read;
+	char	*current_line;
+
+	fd = open("/proc/self/status", O_RDONLY);
+	if (fd == FAILURE)
+		return ((pid_t)FAILURE);
+	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+	close(fd);
+	if (bytes_read == FAILURE)
+		return ((pid_t)FAILURE);
+	buffer[bytes_read] = '\0';
+	current_line = ft_strnstr(buffer, "Pid:", bytes_read);
+	if (current_line == NULL)
+		return ((pid_t)FAILURE);
+	return (atoi(current_line + 4));
+}
