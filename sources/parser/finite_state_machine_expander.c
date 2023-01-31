@@ -13,69 +13,57 @@ void	expander_word(t_fsm *expander, char *string)
 		expander->limit = 0;
 	}
 }
-
-void	expander_dollar(t_fsm *expander, char *string, t_list **envs)
+void	expander_special(t_fsm *var, char *string)
 {
-	char *string_aux;
-	char *string_aux2;
+	char	*string_aux;
 
-	if (string[expander->index] == DOLLAR && string[expander->index + 1] == '$')
+	if (var->line == NULL)
 	{
-		if (expander->line == NULL)
+		var->line = string;
+		var->index = var->index + 1;
+		return ;
+	}
+	string_aux = var->line;
+	var->line = ft_strjoin(var->line, string);
+	var->index = var->index + 1;
+	free(string_aux);
+	free(string);
+}
+
+void	expander_env(t_fsm *var, t_list **envs, char *line)
+{
+	char	*line_aux;
+	char	*line_aux2;
+
+	line_aux = ft_strrchar(&line[var->index + 1], '$');
+	line_aux2 = my_getenv(envs, line_aux);
+	var->line = ft_strfjoin(var->line, line_aux2);
+	var->index += ft_strlen(line_aux);
+	free(line_aux);
+}
+
+void	expander_dollar(t_fsm *var, char *line, t_list **envs)
+{
+	int new_index;
+
+	new_index = var->index + 1;
+	if (line[var->index] == DOLLAR && line[new_index] == '$')
+		expander_special(var, ft_itoa(my_getpid()));
+	else if (line[var->index] == DOLLAR && line[new_index] == '?')
+		expander_special(var, ft_itoa(127));
+	else if (line[var->index] == DOLLAR)
+	{
+		if (line[new_index] == NULL_CHAR || line[new_index] == SPACE)
 		{
-			expander->line = ft_strdup("$$");
-			expander->index = expander->index + 1;
-			return ;
+			expander_special(var, ft_strdup("$"));
+			var->index--;
 		}
-		string_aux = expander->line;
-		expander->line = ft_strjoin(expander->line, ft_strdup("$$"));
-		free(string_aux);
-		expander->index = expander->index + 1;
-	}
-	else if (string[expander->index] == DOLLAR && string[expander->index + 1] == '?')
-	{
-		if (expander->line == NULL)
+		else if (line[new_index] == DQUOTE || line[new_index] == SQUOTE)
 		{
-			expander->line = ft_itoa(g_minishell.exit_code);
-			expander->index = expander->index + 1;
-			return ;
-		}
-		string_aux = expander->line;
-		expander->line = ft_strjoin(expander->line, ft_itoa(g_minishell.exit_code));
-		free(string_aux);
-		expander->index = expander->index + 1;	
-	}
-	else if (string[expander->index] == DOLLAR && (string[expander->index + 1] != NULL_CHAR && string[expander->index + 1] != SPACE))
-	{
-		string_aux = ft_strrchar(&string[expander->index + 1], '$');
-		string_aux2 = my_getenv(envs, string_aux);
-		expander->line = ft_strfjoin(expander->line, string_aux2);
-		expander->index += ft_strlen(string_aux);
-		free(string_aux);
-	}
-	else if (string[expander->index] == DOLLAR && (string[expander->index + 1] == NULL_CHAR || string[expander->index + 1] == SPACE))
-	{
-		if (string[expander->index + 1] == SPACE)
-		{
-			string_aux = expander->line;
-			if (expander->line == NULL)
-				expander->line = ft_strdup("$ ");
-			else
-				expander->line = ft_strjoin(expander->line, "$ ");
-			free(string_aux);
-			expander->index++;
+			expander_special(var, ft_strdup("$"));
+			var->index--;
 		}
 		else
-		{
-			if (expander->line == NULL)
-				expander->line = ft_strdup("$");
-			else 
-			{
-				string_aux = expander->line;
-				expander->line = ft_strjoin(expander->line, "$");
-				free(string_aux);
-			}
-			expander->index++;
-		}
+			expander_env(var, envs, line);
 	}
 }

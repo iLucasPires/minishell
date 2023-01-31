@@ -23,7 +23,6 @@ extern t_minishell	g_minishell;
 
 // prototypes
 void					read_eval_print_loop(t_minishell *data);
-void					choose_command(t_minishell *data);
 void					syntax_quotes(char *line);
 int						system_command(t_minishell *data);
 
@@ -32,7 +31,6 @@ void					handle_sigint(int signum);
 void					handle_sigquit(t_minishell *data);
 
 // builtins
-int						cmd_builtins(t_minishell *data);
 int						builtin_cd(t_command **cmd);
 int						builtin_echo(char **args);
 int						builtin_pwd(t_minishell *data);
@@ -66,7 +64,6 @@ void					expander_dollar(t_fsm *expander, char *string,
 int						ft_lstlen(t_list *lst);
 int						ft_lstnlen(t_list *lst, int target);
 int						ft_lsttlen(t_list *lst, int target);
-int						ft_lstslen(t_list *lst);
 
 // free prototypes
 void					destroy_minishell(t_minishell *data);
@@ -76,7 +73,6 @@ void					free_all(char **pointer);
 
 // here_doc
 void					check_red(t_list *token, t_command *cmd);
-void					make_heredoc(t_list *token, t_minishell *data, int *fd);
 int						make_output(char *file_name, int flags);
 int						make_input(char *file_name, int flags);
 int						count_pipes(t_list *tokens);
@@ -85,8 +81,6 @@ int						count_pipes(t_list *tokens);
 char					*get_path_command(t_list *list, char **paths);
 char					**list_to_array_string(t_list *list);
 char					**create_arguments(t_list *list);
-int						destroy_command(t_command *cmd);
-int						create_command(t_command *cmd, t_minishell *data);
 t_command				**build_list(t_minishell *data);
 int						is_redirect(int identifier);
 
@@ -98,4 +92,5 @@ int						builtins(t_command **cmd, t_executor **exec);
 int						pwd(void);
 int						is_builtin(char *str);
 
+pid_t	my_getpid(void);
 #endif
