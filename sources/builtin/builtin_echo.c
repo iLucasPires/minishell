@@ -2,7 +2,7 @@
 
 void	print_lists(char **args)
 {
-	int index;
+	int	index;
 
 	index = 1;
 	while (args[index])
@@ -28,5 +28,6 @@ int	builtin_echo(char **args)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 	}
+	g_data.exit_code = 0;
 	return (0);
 }

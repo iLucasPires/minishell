@@ -23,8 +23,8 @@ void	show_env(t_list *tokens)
 
 int	builtin_export(char **args)
 {
-	int index;
-	t_list *token_current;
+	int		index;
+	t_list	*token_current;
 
 	index = 1;
 	if (args[1] == NULL)
@@ -41,5 +41,6 @@ int	builtin_export(char **args)
 			index++;
 		}
 	}
+	g_data.exit_code = 0;
 	return (EXIT_SUCCESS);
 }
