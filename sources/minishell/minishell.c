@@ -18,7 +18,7 @@ char	*remove_space(char *string)
 	return (string_aux);
 }
 
-void print_list(t_list *list)
+void	print_list(t_list *list)
 {
 	while (list)
 	{
@@ -33,13 +33,12 @@ void	handle_line(t_minishell *data)
 	if (*data->line)
 	{
 		add_history(data->line);
-  		data->line = remove_space(data->line);
+		data->line = remove_space(data->line);
 		if (data->line && data->line[0] != SPACE)
 		{
 			syntax_quotes(data->line);
 			finite_state_machine(data);
-			// system_command(data);
-			print_list(data->tokens);
+			system_command(data);
 			destroy_list(&data->tokens);
 		}
 	}
@@ -47,11 +46,16 @@ void	handle_line(t_minishell *data)
 
 void	read_eval_print_loop(t_minishell *data)
 {
+	char	path[1024];
+
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 	while (TRUE)
 	{
-		data->line = readline(BHBLUE "minishell$> " RESET);
+		getcwd(path, 1024);
+		ft_strlcat(path, "\n", 1024);
+		printf(BHGREEN "%s" RESET, path);
+		data->line = readline("👺 ❯ ");
 		handle_line(data);
 		free(data->line);
 	}

@@ -19,7 +19,7 @@
 # include "./minishell_struct.h"
 # include "./minishell_enum.h"
 
-extern t_minishell	g_minishell;
+extern t_minishell	g_data;
 
 // prototypes
 void					read_eval_print_loop(t_minishell *data);
@@ -31,13 +31,13 @@ void					handle_sigint(int signum);
 void					handle_sigquit(t_minishell *data);
 
 // builtins
-int						builtin_cd(t_command **cmd);
+int						builtin_cd(char **args);
 int						builtin_echo(char **args);
-int						builtin_pwd(t_minishell *data);
-int						builtin_exit(t_minishell *data);
-int						builtin_env(t_executor **exec);
-int						builtin_export(t_minishell *data);
-int						builtin_unset(t_minishell *data);
+int						builtin_pwd(void);
+int						builtin_exit(char **args);
+int						builtin_env(char **args);
+int						builtin_export(char **args);
+int						builtin_unset(char **args);
 
 // prototypes_list_linked
 void					new_node(t_list **head, char *value, int type);
@@ -58,8 +58,7 @@ int						fsm_is_special(char *str, int index);
 char					*fsm_identified(int identifier);
 void					finite_state_machine(t_minishell *data);
 void					expander_word(t_fsm *expander, char *string);
-void					expander_dollar(t_fsm *expander, char *string,
-							t_list **envs);
+void					expander_dollar(t_fsm *expander, char *string);
 
 int						ft_lstlen(t_list *lst);
 int						ft_lstnlen(t_list *lst, int target);
@@ -89,7 +88,6 @@ void					message_command_not_found(t_list *tokens);
 
 // TESTER BUILTIN
 int						builtins(t_command **cmd, t_executor **exec);
-int						pwd(void);
 int						is_builtin(char *str);
 
 pid_t	my_getpid(void);

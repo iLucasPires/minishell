@@ -23,12 +23,13 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 	t_fsm	expander;
 
 	ft_bzero(&expander, sizeof(t_fsm));
+	expander.tokens = &data->envs;
 	while (TRUE)
 	{
 		if (line_temp[expander.index] == DOLLAR)
 		{
 			expander_word(&expander, line_temp);
-			expander_dollar(&expander, line_temp, &data->envs);
+			expander_dollar(&expander, line_temp);
 		}
 		else
 			expander.limit++;
@@ -47,7 +48,7 @@ char	*ft_chartostr(char c)
 {
 	char	*str;
 
-	str = ft_calloc(sizeof(char) , 2);
+	str = ft_calloc(sizeof(char), 2);
 	str[0] = c;
 	return (str);
 }
@@ -93,27 +94,27 @@ void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 	}
 }
 
-int count_index(char *line)
+int	count_index(char *line)
 {
-	int  i;
+	int	i;
 
 	i = 0;
-
 	while (line[i] != 0 && line[i] != SPACE)
 		i++;
 	return (i);
 }
 
-int is_redirect(int identifier)
+int	is_redirect(int identifier)
 {
-	return (identifier == RED_IN || identifier == RED_OUT || identifier == RED_APPEND || identifier == HEREDOC);
+	return (identifier == RED_IN || identifier == RED_OUT
+		|| identifier == RED_APPEND || identifier == HEREDOC);
 }
 
 void	fsm_filter_special(t_fsm *fsm, t_minishell *data)
 {
-	int	identifier;
-	char *document;
-	int size_index;
+	int		identifier;
+	char	*document;
+	int		size_index;
 
 	identifier = fsm_is_state(fsm->line, fsm->index);
 	if (is_redirect(identifier))

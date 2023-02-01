@@ -65,6 +65,6 @@ int	init_file(int *fd)
 // 	}
 // 	waitpid(pid, &status, 0);
 // 	WIFEXITED(status);
-// 	g_minishell. = WEXITSTATUS(status);
+// 	g_data. = WEXITSTATUS(status);
 // 	unlink(HERE_FILE);
 // }

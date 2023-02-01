@@ -13,6 +13,7 @@ void	expander_word(t_fsm *expander, char *string)
 		expander->limit = 0;
 	}
 }
+
 void	expander_special(t_fsm *var, char *string)
 {
 	char	*string_aux;
@@ -30,19 +31,19 @@ void	expander_special(t_fsm *var, char *string)
 	free(string);
 }
 
-void	expander_env(t_fsm *var, t_list **envs, char *line)
+void	expander_env(t_fsm *var, char *line)
 {
 	char	*line_aux;
 	char	*line_aux2;
 
 	line_aux = ft_strrchar(&line[var->index + 1], '$');
-	line_aux2 = my_getenv(envs, line_aux);
+	line_aux2 = my_getenv(var->tokens, line_aux);
 	var->line = ft_strfjoin(var->line, line_aux2);
 	var->index += ft_strlen(line_aux);
 	free(line_aux);
 }
 
-void	expander_dollar(t_fsm *var, char *line, t_list **envs)
+void	expander_dollar(t_fsm *var, char *line)
 {
 	int new_index;
 
@@ -64,6 +65,6 @@ void	expander_dollar(t_fsm *var, char *line, t_list **envs)
 			var->index--;
 		}
 		else
-			expander_env(var, envs, line);
+			expander_env(var, line);
 	}
 }

@@ -1,24 +1,32 @@
 #include <minishell.h>
 
+void	print_lists(char **args)
+{
+	int index;
+
+	index = 1;
+	while (args[index])
+	{
+		ft_putstr_fd(args[index], STDOUT_FILENO);
+		if (args[index + 1] != NULL)
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		index++;
+	}
+}
+
 int	builtin_echo(char **args)
 {
-	int cmpr;
-	int i;
-
-	i = 1;
 	if (args[1] == NULL)
-		return(printf("\n"), 0);
-	cmpr = ft_strcmp(args[1], "-n");
-	if (cmpr == 0)
-		i++;
-	while (args[i])
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	else
 	{
-		printf("%s", args[i]);
-		i++;
-		if (args[i])
-			printf(" ");
+		if (ft_strncmp(args[1], "-n", 2) == 0)
+			print_lists(&args[1]);
+		else
+		{
+			print_lists(args);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		}
 	}
-	if (cmpr != 0)
-		printf("\n");
 	return (0);
 }

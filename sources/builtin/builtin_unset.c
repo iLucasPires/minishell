@@ -1,17 +1,17 @@
 #include <minishell.h>
 
-int	builtin_unset(t_minishell *data)
+int	builtin_unset(char **args)
 {
-	t_list *temp;
+	int index;
 	t_list *token_current;
 
-	temp = data->tokens;
-	while (temp->next)
+	index = 1;
+	while (args[index])
 	{
-		token_current = get_node(&data->envs, temp->next->value);
-		if (token_current != NULL)
-			delete_node(&data->envs, token_current);
-		temp = temp->next;
+		token_current = get_node(&g_data.envs, args[index]);
+		if (token_current)
+			delete_node(&g_data.envs, token_current);
+		index++;
 	}
 	return (EXIT_SUCCESS);
 }

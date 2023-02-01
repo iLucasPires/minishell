@@ -1,15 +1,22 @@
 #include <minishell.h>
 
-int	builtin_env(t_executor **exec)
+int	builtin_env(char **args)
 {
-	int i;
+	t_list *token_current;
 
-	i = 0;
-	while ((*exec)->envp_array[i])
+	token_current = g_data.envs;
+	if (args[1] == NULL)
 	{
-		if ((*exec)->envp_array[i])
-			printf("%s\n", (*exec)->envp_array[i]);
-		i++;;
+		while (token_current)
+		{
+			if (token_current->type == TRUE)
+			{
+				ft_putstr_fd(token_current->value, STDOUT_FILENO);
+				ft_putstr_fd("\n", STDOUT_FILENO);
+			}
+
+			token_current = token_current->next;
+		}
 	}
 	return (EXIT_SUCCESS);
 }
