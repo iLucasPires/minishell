@@ -1,42 +1,6 @@
 #include <minishell.h>
 
-// int	cmd_builtins(t_minishell *data)
-// {
-// 	if (ft_strncmp(data->tokens->value, "cd", 3) == 0)
-// 		return (builtin_cd(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "echo", 5) == 0)
-// 		return (builtin_echo(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "pwd", 4) == 0)
-// 		return (builtin_pwd(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "exit", 5) == 0)
-// 		return (builtin_exit(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "env", 4) == 0)
-// 		return (builtin_env(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "export", 7) == 0)
-// 		return (builtin_export(data), 1);
-// 	else if (ft_strncmp(data->tokens->value, "unset", 6) == 0)
-// 		return (builtin_unset(data), 1);
-// 	return (0);
-// }
-
-int b_exit(char **args)
-{
-	if (args[1] != NULL) 
-	{
-    	int status = ft_atoi(args[1]);
-		// Fecha todos os arquivos abertos e libera a memória alocada
-    	// antes de encerrar o programa
-    	exit(status);
-	}
-	else 
-	{
-		// Fecha todos os arquivos abertos e libera a memória alocada
-		// antes de encerrar o programa
-		exit(0);
-	}
-}
-
-int is_builtin(char *str)
+int	is_builtin(char *str)
 {
 	if (ft_strcmp(str, "cd") == 0)
 		return (1);
@@ -52,24 +16,28 @@ int is_builtin(char *str)
 		return (1);
 	else if (ft_strcmp(str, "unset") == 0)
 		return (1);
-	return(0);
+	return (0);
 }
 
-int builtins(t_command **cmd, t_executor **exec)
+int	builtins(t_command **cmd, t_executor **exec)
 {
-	if (ft_strcmp((*cmd)->args[0], "pwd") == 0)
-		return(pwd());
-	else if (ft_strcmp((*cmd)->args[0], "exit") == 0)
-		return(b_exit((*cmd)->args));
-	else if (ft_strcmp((*cmd)->args[0], "echo") == 0)
-		return(builtin_echo((*cmd)->args));
-	else if (ft_strcmp((*cmd)->args[0], "cd") == 0)
-		return(builtin_cd(cmd));
-	else if (ft_strcmp((*cmd)->args[0], "env") == 0)
-		return(builtin_env(exec));
-	else if (ft_strcmp((*cmd)->args[0], "export") == 0)
-		return(builtin_env(exec));
-	else if (ft_strcmp((*cmd)->args[0], "unset") == 0)
-		return(builtin_env(exec));
+	char	**args;
+
+	(void)(exec);
+	args = (*cmd)->args;
+	if (ft_strcmp(args[0], "pwd") == 0)
+		return (builtin_pwd());
+	else if (ft_strcmp(args[0], "exit") == 0)
+		return (builtin_exit(args));
+	else if (ft_strcmp(args[0], "echo") == 0)
+		return (builtin_echo(args));
+	else if (ft_strcmp(args[0], "cd") == 0)
+		return (builtin_cd(args));
+	else if (ft_strcmp(args[0], "env") == 0)
+		return (builtin_env(args));
+	else if (ft_strcmp(args[0], "export") == 0)
+		return (builtin_export(args));
+	else if (ft_strcmp(args[0], "unset") == 0)
+		return (builtin_unset(args));
 	return (0);
 }

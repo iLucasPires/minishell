@@ -67,5 +67,5 @@ pid_t	my_getpid(void)
 	current_line = ft_strnstr(buffer, "Pid:", bytes_read);
 	if (current_line == NULL)
 		return ((pid_t)FAILURE);
-	return (atoi(current_line + 4));
+	return (ft_atoi(current_line + 4));
 }

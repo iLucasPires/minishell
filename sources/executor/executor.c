@@ -63,7 +63,7 @@ void wait_children(t_executor **executor)
 		waitpid((*executor)->pid[i], &status, 0);
 		if (WIFEXITED(status))
 		{
-			g_minishell.exit_code = WEXITSTATUS(status);
+			g_data.exit_code = WEXITSTATUS(status);
 		}
 		i++;
 	}
@@ -163,8 +163,8 @@ int	system_command(t_minishell *data)
 	if (syntax_error_pipe(data->tokens) != 0)
 	{
 		// limpar a porra toda
-		g_minishell.exit_code = 2;
-		return(g_minishell.exit_code);
+		g_data.exit_code = 2;
+		return(g_data.exit_code);
 	}
 	data->tokens_aux = data->tokens;
 	data->paths = ft_split(get_value(&data->envs, "PATH"), ':');
@@ -189,5 +189,5 @@ int	system_command(t_minishell *data)
 	close_pipes(&executor);
 	wait_children(&executor);
 
-	return (g_minishell.exit_code);
+	return (g_data.exit_code);
 }

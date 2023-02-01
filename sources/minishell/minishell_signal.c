@@ -7,7 +7,7 @@ void	handle_sigquit(t_minishell *data)
 		ft_putstr_fd(ERROR_EXIT, STDERR_FILENO);
 		rl_clear_history();
 		destroy_minishell(data);
-		exit(EXIT_FAILURE);
+		exit(g_data.exit_code);
 	}
 }
 
@@ -19,5 +19,6 @@ void	handle_sigint(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_data.exit_code = 130;
 	}
 }
