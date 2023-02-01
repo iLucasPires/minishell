@@ -18,5 +18,6 @@ int	builtin_env(char **args)
 			token_current = token_current->next;
 		}
 	}
+	g_data.exit_code = 0;
 	return (EXIT_SUCCESS);
 }

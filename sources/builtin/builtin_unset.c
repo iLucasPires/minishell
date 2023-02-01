@@ -13,5 +13,6 @@ int	builtin_unset(char **args)
 			delete_node(&g_data.envs, token_current);
 		index++;
 	}
+	g_data.exit_code = 0;
 	return (EXIT_SUCCESS);
 }
