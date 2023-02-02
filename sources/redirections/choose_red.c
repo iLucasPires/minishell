@@ -19,8 +19,8 @@ int open_files(int type, char *file_name, t_command **cmd)
 {
     if (syntax_error_redirects(file_name))
         return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
-    // else if (type == HEREDOC)
-    //     make_heredoc();
+    else if (type == HEREDOC)
+        make_heredoc(cmd, file_name);
     else if (type == RED_IN)
         (*cmd)->infile = make_input(file_name, (O_RDONLY));
     else if (type == RED_OUT)

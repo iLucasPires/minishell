@@ -21,50 +21,56 @@ int	init_file(int *fd)
 	return (*fd);
 }
 
-// static void	write_in_file(int fd, t_list *list, t_minishell *data)
-// {
-// 	char *line;
+static void	write_in_file(int *fd, char *file_name)
+{
+	char *line;
 
-// 	signal(SIGINT, heredoc_stop);
-// 	while (TRUE)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 		{
-// 			destroy_minishell(data);
-// 			close(fd);
-// 			exit(0);
-// 		}
-// 		if (!ft_strcmp(line, list->next->value))
-// 		{
-// 			destroy_minishell(data);
-// 			close(fd);
-// 			break ;
-// 		}
-// 		ft_putendl_fd(line, fd);
-// 		free(line);
-// 	}
-// 	exit(0);
-// }
+	signal(SIGINT, heredoc_stop);
+	while (TRUE)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			free(line);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+			destroy_minishell(&g_data);
+			close(*fd);
+			exit(0);
+		}
+		if (!ft_strcmp(line, file_name))
+		{
+			free(line);
+			close(*fd);
+			destroy_minishell(&g_data);
+			exit(0);
+		}
+		ft_putendl_fd(line, *fd);
+		free(line);
+	}
+	exit(0);
+}
 
-// void	make_heredoc(t_list *token, t_minishell *data, int *fd)
-// {
-// 	int	pid;
-// 	int	status;
+void	make_heredoc(t_command **cmd, char *file_name)
+{
+	int	pid;
+	int	status;
 
-// 	signal(SIGINT, SIG_IGN);
-// 	pid = fork();
-// 	if (pid < 0)
-// 		ft_putstr_fd("fork: creating error\n", STDERR_FILENO);
-// 	if (pid == 0)
-// 	{
-// 		g_ms.fd_heredoc = open_heredoc_file(error);
-// 		if (g_ms.fd_heredoc == -1)
-// 			return ;
-// 		write_heredoc_file(delimiter);
-// 	}
-// 	waitpid(pid, &status, 0);
-// 	WIFEXITED(status);
-// 	g_data. = WEXITSTATUS(status);
-// 	unlink(HERE_FILE);
-// }
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid < 0)
+		ft_putstr_fd("fork: creating error\n", STDERR_FILENO);
+	if (pid == 0)
+	{
+		init_file(&(*cmd)->infile);
+		if ((*cmd)->infile == -1)
+			return ;
+		write_in_file(&(*cmd)->infile, file_name);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		WIFEXITED(status);
+		g_data.exit_code = WEXITSTATUS(status);
+		unlink(HERE_FILE);
+	}
+}
