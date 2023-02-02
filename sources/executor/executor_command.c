@@ -30,7 +30,7 @@ char	*get_path_command(t_list *list, char **paths)
 		return (ft_strdup(list->value));
 	else
 	{
-		while(is_redirect(list->type) || list->type == DOCUMENT)
+		while((is_redirect(list->type) || list->type == DOCUMENT) && list->next)
 			list = list->next;
 		command = ft_strjoin("/", list->value);
 		if (command == NULL)
