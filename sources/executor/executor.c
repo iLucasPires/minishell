@@ -69,14 +69,14 @@ void wait_children(t_executor **executor)
 	}
 }
 
-void make_redirects(t_command *cmd, t_executor **executor, int i)
+void make_redirects(t_command **cmd, t_executor **executor, int i)
 {
-	if (cmd->outfile > 2)
-		dup2(cmd->outfile, STDOUT_FILENO);
+	if ((*cmd)->outfile > 2)
+		dup2((*cmd)->outfile, STDOUT_FILENO);
 	else if (i < (*executor)->n_cmds - 1)
 		dup2((*executor)->pipe[i][1], STDOUT_FILENO);
-	if (cmd->infile > 2)
-		dup2(cmd->infile, STDIN_FILENO);
+	if (((*cmd))->infile > 2)
+		dup2((*cmd)->infile, STDIN_FILENO);
 	else if (i > 0)
 		dup2((*executor)->pipe[i - 1][0], STDIN_FILENO);
 }
@@ -112,6 +112,8 @@ void close_files(t_command **cmd)
 
 void execute_children(t_command **cmd, t_executor **executor, int i)
 {
+	if (!(*cmd)->args[0])
+		return;
 	if (is_builtin((*cmd)->args[0]) && (*executor)->n_cmds == 1)
 	{
 		init_resources(executor, cmd);
@@ -123,7 +125,7 @@ void execute_children(t_command **cmd, t_executor **executor, int i)
 	(*executor)->pid[i] = fork();
 	if ((*executor)->pid[i] == 0)
 	{
-		make_redirects(*cmd, executor, i);
+		make_redirects(cmd, executor, i);
 		close_pipes(executor);
 		execve((*cmd)->pathname, (*cmd)->args, (*executor)->envp_array);
 		exit(1);

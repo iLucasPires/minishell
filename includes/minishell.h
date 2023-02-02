@@ -75,6 +75,7 @@ void					check_red(t_list *token, t_command *cmd);
 int						make_output(char *file_name, int flags);
 int						make_input(char *file_name, int flags);
 int						count_pipes(t_list *tokens);
+void                    make_heredoc(t_command **cmd, char *file_name);
 
 // prototypes_exec
 char					*get_path_command(t_list *list, char **paths);

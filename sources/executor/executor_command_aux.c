@@ -66,6 +66,7 @@ t_command *create_command_table(t_minishell *data)
 
 
 	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths); // criar um jeito de pegar o path de cada comando
+	// printf("CREATE CMD TABLE: PATHNAME: %s           :/n", cmd_table->pathname);
 	cmd_table->args = create_arguments(data->tokens_aux);
 	cmd_table->infile = STDIN_FILENO;
 	cmd_table->outfile = STDOUT_FILENO;
