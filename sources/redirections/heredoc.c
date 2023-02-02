@@ -10,18 +10,18 @@ void	heredoc_stop(int signal)
 	exit(130);
 }
 
-int	init_file(int *fd)
+int	init_file(t_command **cmd)
 {
-	*fd = open(HERE_FILE, O_CREAT | O_RDWR | O_TRUNC, 0664);
-	if (*fd == -1)
+	((*cmd)->infile) = open(HERE_FILE, O_CREAT | O_RDWR, 0664);
+	if ((*cmd)->infile == -1)
 	{		
 		dprintf(2, "ERROR NA INITFILE <<!\n");
 		return (-1);
 	}
-	return (*fd);
+	return ((*cmd)->infile);
 }
 
-static void	write_in_file(int *fd, char *file_name)
+static void	write_in_file(t_command **cmd, char *file_name)
 {
 	char *line;
 
@@ -34,17 +34,17 @@ static void	write_in_file(int *fd, char *file_name)
 			free(line);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			destroy_minishell(&g_data);
-			close(*fd);
+			close((*cmd)->infile);
 			exit(0);
 		}
 		if (!ft_strcmp(line, file_name))
 		{
 			free(line);
-			close(*fd);
+			close((*cmd)->infile);
 			destroy_minishell(&g_data);
 			exit(0);
 		}
-		ft_putendl_fd(line, *fd);
+		ft_putendl_fd(line, (*cmd)->infile);
 		free(line);
 	}
 	exit(0);
@@ -61,14 +61,15 @@ void	make_heredoc(t_command **cmd, char *file_name)
 		ft_putstr_fd("fork: creating error\n", STDERR_FILENO);
 	if (pid == 0)
 	{
-		init_file(&(*cmd)->infile);
+		init_file(cmd);
 		if ((*cmd)->infile == -1)
 			return ;
-		write_in_file(&(*cmd)->infile, file_name);
+		write_in_file(cmd, file_name);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
+		(*cmd)->infile = open(HERE_FILE, O_RDONLY);
 		WIFEXITED(status);
 		g_data.exit_code = WEXITSTATUS(status);
 		unlink(HERE_FILE);
