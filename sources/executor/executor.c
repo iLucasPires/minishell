@@ -188,8 +188,8 @@ int	system_command(t_minishell *data)
 		cmd_aux = cmd_aux->next;
 		i++;
 	}
-	close_pipes(&executor);
 	wait_children(&executor);
+	close_pipes(&executor);
 
 	return (g_data.exit_code);
 }
