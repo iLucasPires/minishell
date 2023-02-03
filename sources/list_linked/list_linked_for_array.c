@@ -46,24 +46,27 @@ int	ft_lstnlen(t_list *lst, int target)
 }
 
 char	**list_to_array_string(t_list *list)
-{
+{ 
 	int		index;
 	int 	size;
+	t_list	*tmp;
 	char	**array_string;
 
+	tmp = list;
+
+	if (!tmp)
+		return (NULL);
+	size = ft_lstlen(tmp);
+	array_string = malloc(sizeof(char *) * (size + 1));
+	if (!array_string)
+		return (NULL);
 	index = 0;
-	size = ft_lstlen(list);
-	if (list == NULL)
-		return (NULL);
-	array_string = ft_calloc(size + 1, sizeof(char *));
-	if (array_string == NULL)
-		return (NULL);
-	while (list != NULL && index < size)
+	while (tmp && index < size)
 	{
-		array_string[index] = list->value;
-		list = list->next;
+		array_string[index] = tmp->value;
+		tmp = tmp->next;
 		index++;
 	}
-	array_string[index] = NULL;
+	array_string[size] = NULL;
 	return (array_string);
 }

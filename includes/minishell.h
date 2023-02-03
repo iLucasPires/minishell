@@ -81,14 +81,15 @@ void                    make_heredoc(t_command **cmd, char *file_name);
 char					*get_path_command(t_list *list, char **paths);
 char					**list_to_array_string(t_list *list);
 char					**create_arguments(t_list *list);
-t_command				**build_list(t_minishell *data);
+t_command				*create_cmd_list(t_minishell *data);
+void destroy_cmd_list(t_command *cmd_list);
 int						is_redirect(int identifier);
 
 // prototypes_message
-void					message_command_not_found(t_list *tokens);
+void	message_command_not_found(char *command, u_int8_t *exit_code);
 
 // TESTER BUILTIN
-int						builtins(t_command **cmd, t_executor **exec);
+int						builtins(char	**args);
 int						is_builtin(char *str);
 
 pid_t	my_getpid(void);

@@ -32,7 +32,7 @@ typedef struct s_fsm
 
 typedef struct s_executor
 {
-	int					n_cmds;
+	int					count_commands;
 	int					**pipe;
 	pid_t				*pid;
 	char				**envp_array;
@@ -55,10 +55,12 @@ typedef struct s_minishell
 	char				*line;
 	char				*home;
 	char				**paths;
+	char 				**envp;
 	t_list				*envs;
 	t_list				*tokens;
 	t_list				*tokens_aux;
 	u_int8_t			exit_code;
+	t_executor			*executor;
 }						t_minishell;
 
 #endif
