@@ -62,11 +62,8 @@ t_command *create_command_table(t_minishell *data)
 {
 	t_command *cmd_table;
 
-	cmd_table = malloc(1 * sizeof(t_command));
-
-
-	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths); // criar um jeito de pegar o path de cada comando
-	// printf("CREATE CMD TABLE: PATHNAME: %s           :/n", cmd_table->pathname);
+	cmd_table = malloc(sizeof(t_command));
+	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths);
 	cmd_table->args = create_arguments(data->tokens_aux);
 	cmd_table->infile = STDIN_FILENO;
 	cmd_table->outfile = STDOUT_FILENO;
@@ -89,23 +86,36 @@ void ft_lstadd_back(t_command **head, t_command *new_cmd_node)
 	aux->next = new_cmd_node;
 }
 
-t_command **build_list(t_minishell *data)
+t_command *create_cmd_list(t_minishell *data)
 {
-	t_command **head;
-	int i;
+	int index;
+	t_command *head;
 
-	i = 0;
-	head = malloc(sizeof(t_command *));
-	*head = NULL;
-	while (i < count_pipes(data->tokens) + 1)
+	index = 0;
+	head = NULL;
+	while (index < count_pipes(data->tokens) + 1)
 	{
-		ft_lstadd_back(head, create_command_table(data));
+		ft_lstadd_back(&head, create_command_table(data));
 		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
 			data->tokens_aux = data->tokens_aux->next;
 		if (data->tokens_aux)
 			data->tokens_aux = data->tokens_aux->next;
-		i++;
+		index++;
 	}
 	// print_tcommand(*head, 1);
 	return (head);
+}
+
+void destroy_cmd_list(t_command *cmd_list)
+{
+	t_command *aux;
+
+	while (cmd_list)
+	{
+		aux = cmd_list;
+		cmd_list = cmd_list->next;
+		free(aux->pathname);
+		free(aux->args);
+		free(aux);
+	}
 }

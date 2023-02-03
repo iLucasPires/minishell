@@ -1,11 +1,11 @@
 #include <minishell.h>
 
-void	message_command_not_found(t_list *tokens)
+void	message_command_not_found(char *command, u_int8_t *exit_code)
 {
-
-	ft_putstr_fd(tokens->value, STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	g_data.exit_code = 127;
+	*exit_code = 127;
 }
 
 void message_pipe_error(t_list *tokens)

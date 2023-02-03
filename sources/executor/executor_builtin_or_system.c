@@ -19,12 +19,8 @@ int	is_builtin(char *str)
 	return (0);
 }
 
-int	builtins(t_command **cmd, t_executor **exec)
+int	builtins(char	**args)
 {
-	char	**args;
-
-	(void)(exec);
-	args = (*cmd)->args;
 	if (ft_strcmp(args[0], "pwd") == 0)
 		return (builtin_pwd());
 	else if (ft_strcmp(args[0], "exit") == 0)
