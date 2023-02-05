@@ -17,6 +17,9 @@ static int syntax_error_redirects(char *file_name)
 
 int open_files(int type, char *file_name, t_command **cmd)
 {
+    if (*cmd == NULL)
+        return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
+
     if (syntax_error_redirects(file_name))
         return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
     else if (type == HEREDOC)
@@ -30,7 +33,7 @@ int open_files(int type, char *file_name, t_command **cmd)
     return (0);
 }
 
-void    check_red(t_list *token, t_command *cmd)
+void    check_redirected(t_list *token, t_command *cmd)
 {
     while (token)
     {

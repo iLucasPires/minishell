@@ -1,8 +1,8 @@
 #include <minishell.h>
 
-void print_tcommand(t_command *c, int i)
+void	print_tcommand(t_command *c, int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	printf("%dº TCOMMAND: \n", i);
@@ -21,10 +21,10 @@ void print_tcommand(t_command *c, int i)
 		print_tcommand(c->next, i + 1);
 }
 
-int 	size_args(t_list *list)
+int	size_args(t_list *list)
 {
-	t_list *aux;
-	int i;
+	t_list	*aux;
+	int		i;
 
 	i = 0;
 	aux = list;
@@ -39,9 +39,9 @@ int 	size_args(t_list *list)
 
 char	**create_arguments(t_list *list)
 {
-	char **args;
-	int size;
-	int i;
+	char	**args;
+	int		size;
+	int		i;
 
 	i = 0;
 	size = size_args(list);
@@ -58,12 +58,19 @@ char	**create_arguments(t_list *list)
 	return (args);
 }
 
-t_command *create_command_table(t_minishell *data)
+t_command	*create_command_table(t_minishell *data)
 {
-	t_command *cmd_table;
+	t_command	*cmd_table;
 
 	cmd_table = malloc(sizeof(t_command));
 	cmd_table->pathname = get_path_command(data->tokens_aux, data->paths);
+	if (cmd_table->pathname == NULL)
+	{
+		message_command_not_found(data->tokens_aux->value, &data->exit_code);
+		free(cmd_table->pathname);
+		free(cmd_table);
+		return (NULL);
+	}
 	cmd_table->args = create_arguments(data->tokens_aux);
 	cmd_table->infile = STDIN_FILENO;
 	cmd_table->outfile = STDOUT_FILENO;
@@ -71,44 +78,45 @@ t_command *create_command_table(t_minishell *data)
 	return (cmd_table);
 }
 
-void ft_lstadd_back(t_command **head, t_command *new_cmd_node)
+void	ft_lstadd_back(t_command **list_cmd, t_command *new_cmd_node)
 {
-	t_command *aux;
+	t_command	*aux;
 
-	if (*head == NULL)
+	if (*list_cmd == NULL)
 	{
-		*head = new_cmd_node;
+		*list_cmd = new_cmd_node;
 		return ;
 	}
-	aux = *head;
+	aux = *list_cmd;
 	while (aux->next)
 		aux = aux->next;
 	aux->next = new_cmd_node;
 }
 
-t_command *create_cmd_list(t_minishell *data)
+t_command	*create_cmd_list(t_minishell *data)
 {
-	int index;
-	t_command *head;
+	int			index;
+	t_command	*current;
+	t_command	*list_cmd;
 
 	index = 0;
-	head = NULL;
+	list_cmd = NULL;
 	while (index < count_pipes(data->tokens) + 1)
 	{
-		ft_lstadd_back(&head, create_command_table(data));
+		current = create_command_table(data);
+		ft_lstadd_back(&list_cmd, current);
 		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
 			data->tokens_aux = data->tokens_aux->next;
 		if (data->tokens_aux)
 			data->tokens_aux = data->tokens_aux->next;
 		index++;
 	}
-	// print_tcommand(*head, 1);
-	return (head);
+	return (list_cmd);
 }
 
-void destroy_cmd_list(t_command *cmd_list)
+void	destroy_cmd_list(t_command *cmd_list)
 {
-	t_command *aux;
+	t_command	*aux;
 
 	while (cmd_list)
 	{
