@@ -23,14 +23,14 @@ extern t_minishell	g_data;
 
 // prototypes
 void					read_eval_print_loop(t_minishell *data);
-void					syntax_quotes(char *line);
+int					syntax_quotes(char *line);
 int						system_command(t_minishell *data);
-
+int	syntax_error_pipe(t_list *tokens);
 // prototypes_signal
 void					handle_sigint(int signum);
 void					handle_sigquit(t_minishell *data);
 
-// builtins
+// exec_builtins
 int						builtin_cd(char **args);
 int						builtin_echo(char **args);
 int						builtin_pwd(void);
@@ -89,8 +89,16 @@ int						is_redirect(int identifier);
 void	message_command_not_found(char *command, u_int8_t *exit_code);
 
 // TESTER BUILTIN
-int						builtins(char	**args);
+int						exec_builtins(char	**args);
 int						is_builtin(char *str);
 
+void	dup_fds(t_command *cmd);
+void	dup_saved_fds(int saved[2]);
+void	close_fds(t_command *cmd);
+void	close_saved_fds(int saved[2]);
 pid_t	my_getpid(void);
+void	ft_lstadd_back(t_command **list_cmd, t_minishell *data);
+void	dup_pipe_fds(t_minishell *cmd, int child_index);
+void	close_pipe_fds(t_minishell *cmd, int child_index);
+void destroy_executor(t_minishell *data);
 #endif

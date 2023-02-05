@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	syntax_quotes(char *line)
+int	syntax_quotes(char *line)
 {
 	int	index;
 	int	value;
@@ -18,9 +18,27 @@ void	syntax_quotes(char *line)
 			if (line[index] == NULL_CHAR)
 			{
 				ft_putstr_fd(ERROR_SYNTAX, 2);
-				return ;
+				return (EXIT_FAILURE);
 			}
 		}
 		index++;
 	}
+	return (EXIT_SUCCESS);
 }
+
+int	syntax_error_pipe(t_list *tokens)
+{
+	if (tokens->type == PIPE)
+		return (ft_putstr_fd(ERROR_SYNTAX, 2), 2);
+	while (tokens)
+	{
+		if (tokens->type == PIPE)
+		{
+			if (tokens->next == NULL)
+				return (ft_putstr_fd(ERROR_SYNTAX, 2), 2);
+		}
+		tokens = tokens->next;
+	}
+	return (EXIT_SUCCESS);
+}
+

@@ -1,7 +1,7 @@
 #ifndef MINISHELL_STRUCT_H
 # define MINISHELL_STRUCT_H
 
-#include <minishell.h>
+# include <minishell.h>
 
 typedef struct s_file
 {
@@ -32,13 +32,6 @@ typedef struct s_fsm
 
 typedef struct s_executor
 {
-	int					count_commands;
-	int					**pipe;
-	pid_t				*pid;
-	char				**envp_array;
-	t_list				**envp_list;
-	int					aux_in;
-	int					aux_out;
 }						t_executor;
 typedef struct s_command
 {
@@ -55,12 +48,17 @@ typedef struct s_minishell
 	char				*line;
 	char				*home;
 	char				**paths;
-	char 				**envp;
+	char				**envp;
 	t_list				*envs;
 	t_list				*tokens;
 	t_list				*tokens_aux;
 	u_int8_t			exit_code;
-	t_executor			*executor;
+	int					status;
+	int					count_cmd;
+	int					**pipe;
+	pid_t				*pid;
+	int					aux_in;
+	int					aux_out;
 }						t_minishell;
 
 #endif

@@ -2,24 +2,16 @@
 
 int	is_builtin(char *str)
 {
-	if (ft_strcmp(str, "cd") == 0)
-		return (1);
-	else if (ft_strcmp(str, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(str, "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(str, "exit") == 0)
-		return (1);
-	else if (ft_strcmp(str, "env") == 0)
-		return (1);
-	else if (ft_strcmp(str, "export") == 0)
-		return (1);
-	else if (ft_strcmp(str, "unset") == 0)
-		return (1);
-	return (0);
+	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "pwd") ||
+		!ft_strcmp(str, "echo") || !ft_strcmp(str, "env") ||
+		!ft_strcmp(str, "export") || !ft_strcmp(str, "unset") ||
+		!ft_strcmp(str, "exit"))
+		return (TRUE);
+	else
+		return (FALSE);
 }
 
-int	builtins(char	**args)
+int	exec_builtins(char **args)
 {
 	if (ft_strcmp(args[0], "pwd") == 0)
 		return (builtin_pwd());
@@ -36,4 +28,17 @@ int	builtins(char	**args)
 	else if (ft_strcmp(args[0], "unset") == 0)
 		return (builtin_unset(args));
 	return (0);
+}
+
+void	execute_builtin(t_command *cmd)
+{
+	int	saved[2];
+
+	saved[STDIN_FILENO] = dup(STDIN_FILENO);
+	saved[STDOUT_FILENO] = dup(STDOUT_FILENO);
+	dup_fds(cmd);
+	exec_builtins(cmd->args);
+	dup_saved_fds(saved);
+	close_saved_fds(saved);
+	close_fds(cmd);
 }
