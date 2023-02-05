@@ -24,13 +24,16 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 	dup_fds(cmd);
 	dup_pipe_fds(data, child_index);
 	if (cmd->pathname)
+	{
+		data->exit_code = 0;
 		execve(cmd->pathname, cmd->args, data->envp);
+	}
 	else
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		exit(4);
+		exit(127);
 	}
 }
 
@@ -66,9 +69,17 @@ void	execute_childrens(t_command *cmd_list, t_minishell *data)
 		execute_children(cmd_list, data, index);
 		close_pipe_fds(data, index);
 		waitpid(data->pid[index], &data->status, 0);
+		if (WIFEXITED(data->status))
+			data->exit_code = WEXITSTATUS(data->status);
 		cmd_list = cmd_list->next;
 		index++;
 	}
+}
+
+void   destroy_data(t_minishell *data)
+{
+	free_all(data->paths);
+	free(data->envp);
 }
 
 int	system_command(t_minishell *data)
@@ -87,8 +98,10 @@ int	system_command(t_minishell *data)
 	check_redirected(data->tokens, cmd_list);
 	create_executor(data);
 	execute_childrens(cmd_list, data);
+	
 	destroy_executor(data);
 	destroy_cmd_list(cmd_list);
+	destroy_data(data);
 	
 	return (data->exit_code);
 }

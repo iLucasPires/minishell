@@ -13,6 +13,6 @@ int	builtin_pwd(void)
 	}
 	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
-	g_data.exit_code = 0;
+	g_data.exit_code = 42;
 	return (EXIT_SUCCESS);
 }
