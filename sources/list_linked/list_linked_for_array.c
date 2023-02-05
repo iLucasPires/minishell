@@ -15,17 +15,14 @@ int	ft_lstlen(t_list *lst)
 
 int	ft_lsttlen(t_list *lst, int target)
 {
-	int	size;
 	int	number_of_target;
 
-	size = 0;
 	number_of_target = 0;
 	while (lst)
 	{
 		if (*lst->value == target)
 			number_of_target++;
 		lst = lst->next;
-		size++;
 	}
 	return (number_of_target);
 }
