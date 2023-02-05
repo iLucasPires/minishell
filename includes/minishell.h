@@ -71,7 +71,7 @@ void					destroy_exit_minishell(t_minishell *data, int status);
 void					free_all(char **pointer);
 
 // here_doc
-void					check_red(t_list *token, t_command *cmd);
+void					check_redirected(t_list *token, t_command *cmd);
 int						make_output(char *file_name, int flags);
 int						make_input(char *file_name, int flags);
 int						count_pipes(t_list *tokens);

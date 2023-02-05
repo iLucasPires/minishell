@@ -38,7 +38,8 @@ void	handle_line(t_minishell *data)
 		{
 			syntax_quotes(data->line);
 			finite_state_machine(data);
-			system_command(data);
+			if (data->tokens->value)
+				data->exit_code = system_command(data);
 			destroy_list(&data->tokens);
 		}
 	}

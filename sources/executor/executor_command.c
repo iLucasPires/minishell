@@ -6,6 +6,9 @@ char	*get_path(char *command, char **paths)
 	char	*command_path;
 
 	index = 0;
+
+	if (paths == NULL)
+		return (NULL);
 	while (paths[index])
 	{
 		command_path = ft_strjoin(paths[index], command);
