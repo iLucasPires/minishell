@@ -51,7 +51,7 @@ void	expander_dollar(t_fsm *var, char *line)
 	if (line[var->index] == DOLLAR && line[new_index] == '$')
 		expander_special(var, ft_itoa(my_getpid()));
 	else if (line[var->index] == DOLLAR && line[new_index] == '?')
-		expander_special(var, ft_itoa(WEXITSTATUS(g_data.exit_code)));
+		expander_special(var, ft_itoa(g_data.exit_code));
 	else if (line[var->index] == DOLLAR)
 	{
 		if (line[new_index] == NULL_CHAR || line[new_index] == SPACE)

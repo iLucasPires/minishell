@@ -32,6 +32,7 @@ char	**create_arguments(t_list *list)
 		}
 		list = list->next;
 	}
+	args[index] = NULL;
 	return (args);
 }
 
