@@ -18,6 +18,8 @@ int make_output(char *file_name, int flags)
 
     fd = open(file_name, flags, 0644);
     if (fd == -1)
-        dprintf(2, "bash: %s: No such file or directory\n", file_name);
+    {
+        perror("open");
+    }
     return (fd);
 }

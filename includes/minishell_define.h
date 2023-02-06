@@ -18,6 +18,7 @@
 
 //process define
 # define FAILURE -1
+# define SUCCESS 0
 # define INVISIBLE_CHAR -1
 
 // token define
