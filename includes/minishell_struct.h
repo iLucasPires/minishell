@@ -32,7 +32,14 @@ typedef struct s_fsm
 
 typedef struct s_executor
 {
+	int					status;
+	int					count_cmd;
+	int					**pipe;
+	pid_t				*pid;
+	int					aux_in;
+	int					aux_out;
 }						t_executor;
+
 typedef struct s_command
 {
 	char				*pathname;
@@ -41,6 +48,18 @@ typedef struct s_command
 	int					outfile;
 	struct s_command	*next;
 }						t_command;
+
+typedef struct s_repl
+{
+	char				*line;
+	char				*home;
+	char				**paths;
+	char				**envp;
+	t_list				*envs;
+	t_list				*tokens;
+	t_list				*tokens_aux;
+	u_int8_t			exit_code;
+}						t_repl;
 
 // structs
 typedef struct s_minishell

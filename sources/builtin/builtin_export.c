@@ -21,26 +21,26 @@ void	show_env(t_list *tokens)
 	}
 }
 
-int	builtin_export(char **args)
+int	builtin_export(char **args, t_minishell *data)
 {
 	int		index;
 	t_list	*token_current;
 
 	index = 1;
 	if (args[1] == NULL)
-		show_env(g_data.envs);
+		show_env(data->envs);
 	else if (args[1])
 	{
 		while (args[index] != NULL)
 		{
-			token_current = get_node(&g_data.envs, args[index]);
+			token_current = get_node(&data->envs, args[index]);
 			if (token_current == NULL)
-				add_env(&g_data.envs, args[index]);
+				add_env(&data->envs, args[index]);
 			else if (token_current != NULL)
 				substitute_env(token_current, args[index]);
 			index++;
 		}
 	}
-	g_data.exit_code = 0;
+	data->exit_code = 0;
 	return (EXIT_SUCCESS);
 }

@@ -11,33 +11,33 @@ int	is_builtin(char *str)
 		return (FALSE);
 }
 
-int	exec_builtins(char **args)
+int	exec_builtins(char **args, t_minishell *data)
 {
 	if (ft_strcmp(args[0], "pwd") == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(args, data));
 	else if (ft_strcmp(args[0], "exit") == 0)
-		return (builtin_exit(args));
+		return (builtin_exit(args, data));
 	else if (ft_strcmp(args[0], "echo") == 0)
-		return (builtin_echo(args));
+		return (builtin_echo(args, data));
 	else if (ft_strcmp(args[0], "cd") == 0)
-		return (builtin_cd(args));
+		return (builtin_cd(args, data));
 	else if (ft_strcmp(args[0], "env") == 0)
-		return (builtin_env(args));
+		return (builtin_env(args, data));
 	else if (ft_strcmp(args[0], "export") == 0)
-		return (builtin_export(args));
+		return (builtin_export(args, data));
 	else if (ft_strcmp(args[0], "unset") == 0)
-		return (builtin_unset(args));
+		return (builtin_unset(args, data));
 	return (0);
 }
 
-void	execute_builtin(t_command *cmd)
+void	execute_builtin(t_command *cmd, t_minishell *data)
 {
 	int	saved[2];
 
 	saved[STDIN_FILENO] = dup(STDIN_FILENO);
 	saved[STDOUT_FILENO] = dup(STDOUT_FILENO);
 	dup_fds(cmd);
-	exec_builtins(cmd->args);
+	exec_builtins(cmd->args, data);
 	dup_saved_fds(saved);
 	close_saved_fds(saved);
 	close_fds(cmd);
