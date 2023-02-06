@@ -76,7 +76,7 @@ void	execute_childrens(t_command *cmd_list, t_minishell *data)
 	}
 }
 
-void   destroy_data(t_minishell *data)
+void	destroy_data(t_minishell *data)
 {
 	free_all(data->paths);
 	free(data->envp);
@@ -95,13 +95,14 @@ int	system_command(t_minishell *data)
 	data->envp = list_to_array_string(data->envs);
 	data->tokens_aux = data->tokens;
 	cmd_list = create_cmd_list(data);
-	check_redirected(data->tokens, cmd_list);
-	create_executor(data);
-	execute_childrens(cmd_list, data);
-	
-	destroy_executor(data);
+	check_redirected(data, cmd_list);
+	if (cmd_list->args[0] != NULL)
+	{
+		create_executor(data);
+		execute_childrens(cmd_list, data);
+		destroy_executor(data);
+	}
 	destroy_cmd_list(cmd_list);
 	destroy_data(data);
-	
 	return (data->exit_code);
 }
