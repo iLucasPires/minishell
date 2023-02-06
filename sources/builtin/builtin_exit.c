@@ -21,7 +21,7 @@ void	error_exit_str(char *str)
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 }
 
-int	builtin_exit(char **args)
+int	builtin_exit(char **args, t_minishell *data)
 {
 	if (args[1] == NULL)
 	{
@@ -31,11 +31,11 @@ int	builtin_exit(char **args)
 	else if (args[2] == NULL)
 	{
 		if (is_numeric(args[1]))
-			destroy_exit_minishell(&g_data, ft_atoi(args[1]));
+			destroy_exit_minishell(data, ft_atoi(args[1]));
 		else
 		{
 			error_exit_str(args[1]);
-			destroy_exit_minishell(&g_data, EXIT_FAILURE);
+			destroy_exit_minishell(data, EXIT_FAILURE);
 		}
 	}
 	else

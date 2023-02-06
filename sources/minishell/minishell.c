@@ -56,7 +56,7 @@ void	read_eval_print_loop(t_minishell *data)
 		getcwd(path, 1024);
 		ft_strlcat(path, "\n", 1024);
 		printf(BHGREEN "%s" RESET, path);
-		data->line = readline("👺 ❯ ");
+		data->line = readline(BHBLUE "minishell> " RESET);
 		handle_line(data);
 		free(data->line);
 	}

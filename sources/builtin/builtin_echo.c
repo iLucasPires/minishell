@@ -14,7 +14,7 @@ void	print_lists(char **args)
 	}
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, t_minishell *data)
 {
 	if (args[1] == NULL)
 		ft_putchar_fd('\n', STDOUT_FILENO);
@@ -28,6 +28,6 @@ int	builtin_echo(char **args)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 	}
-	g_data.exit_code = 0;
+	data->exit_code = 0;
 	return (0);
 }

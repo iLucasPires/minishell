@@ -16,7 +16,7 @@ static int	syntax_error_redirects(char *file_name)
 	return (FALSE);
 }
 
-int	open_files(int type, char *file_name, t_command *cmd , t_minishell *data)
+int	open_files(int type, char *file_name, t_command *cmd, t_minishell *data)
 {
 	if (cmd == NULL)
 		return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
@@ -35,15 +35,20 @@ int	open_files(int type, char *file_name, t_command *cmd , t_minishell *data)
 
 void	check_redirected(t_minishell *data, t_command *cmd)
 {
-    t_list *aux;
+	t_list	*aux;
+	char	*file_name;
 
-    aux = data->tokens;
-	while (aux)
+	aux = data->tokens;
+	while (aux != NULL)
 	{
 		if (aux->type == PIPE)
 			cmd = cmd->next;
-		if (is_redirect(aux->type))
-			open_files(aux->type, ft_strdup(aux->next->value), cmd, data);
+		if (is_redirect(aux->type) != FALSE)
+		{
+			file_name = ft_strdup(aux->next->value);
+			open_files(aux->type, file_name, cmd, data);
+			free(file_name);
+		}
 		aux = aux->next;
 	}
 }

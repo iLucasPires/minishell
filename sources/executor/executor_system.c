@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	execute_builtin(t_command *cmd);
+void	execute_builtin(t_command *cmd, t_minishell *data);
 
 void	create_executor(t_minishell *data)
 {
@@ -42,7 +42,7 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 	pid_t	pid_current;
 
 	if (is_builtin(*cmd->args) && data->count_cmd == 1)
-		execute_builtin(cmd);
+		execute_builtin(cmd, data);
 	else
 	{
 		pid_current = fork();
@@ -52,7 +52,17 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 			exit(EXIT_FAILURE);
 		}
 		if (pid_current == 0)
-			execute_system(cmd, data, child_index);
+		{
+			if (is_builtin(*cmd->args))
+			{
+				dup_fds(cmd);
+				dup_pipe_fds(data, child_index);
+				execute_builtin(cmd, data);
+				exit(data->exit_code);
+			}
+			else
+				execute_system(cmd, data, child_index);
+		}
 		data->pid[child_index] = pid_current;
 	}
 }
