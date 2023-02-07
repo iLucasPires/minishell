@@ -25,31 +25,3 @@ void	new_node(t_list **head, char *value, int type)
 		node->next = create_node(value, type);
 	}
 }
-
-void	add_env(t_list **env, char *value)
-{
-	if (ft_isalpha(*value) || *value == UNDERSCORE)
-	{
-		if (ft_strchr(value, EQUAL) != NULL)
-			new_node(env, value, TRUE);
-		else
-			new_node(env, value, FALSE);
-	}
-	else
-	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(value, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-	}
-}
-
-void	substitute_env(t_list *token_current, char *value)
-{
-	if (ft_strchr(value, EQUAL) != NULL)
-	{
-		free(token_current->value);
-		token_current->value = ft_strdup(value);
-		if (token_current->type == FALSE)
-			token_current->type = TRUE;
-	}
-}

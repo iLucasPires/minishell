@@ -21,6 +21,52 @@ void	show_env(t_list *tokens)
 	}
 }
 
+int	verify_identifier(char *value)
+{
+	int	index;
+
+	index = 0;
+	if (ft_isdigit(*value))
+		return (FALSE);
+	while (value[index] != EQUAL && value[index] != '\0')
+	{
+		if (!ft_isalnum(value[index]) && value[index] != UNDERSCORE)
+			return (FALSE);
+		index++;
+	}
+	return (TRUE);
+}
+
+void	export_add(t_minishell *data, char *value)
+{
+	if (ft_isalnum(*value) || *value == UNDERSCORE)
+	{
+		if (ft_strchr(value, EQUAL) != NULL)
+			new_node(&data->envs, value, TRUE);
+		else
+			new_node(&data->envs, value, FALSE);
+		data->exit_code = 0;
+	}
+	else
+	{
+		ft_putstr_fd("export: ", STDERR_FILENO);
+		ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
+		data->exit_code = 1;
+	}
+}
+
+void	substitute_env(t_list *token_current, char *value)
+{
+	if (ft_strchr(value, EQUAL) != NULL)
+	{
+		free(token_current->value);
+		token_current->value = ft_strdup(value);
+		if (token_current->type == FALSE)
+			token_current->type = TRUE;
+			
+	}
+}
+
 int	builtin_export(char **args, t_minishell *data)
 {
 	int		index;
@@ -33,14 +79,22 @@ int	builtin_export(char **args, t_minishell *data)
 	{
 		while (args[index] != NULL)
 		{
-			token_current = get_node(&data->envs, args[index]);
-			if (token_current == NULL)
-				add_env(&data->envs, args[index]);
-			else if (token_current != NULL)
-				substitute_env(token_current, args[index]);
+			if (verify_identifier(args[index]) == FALSE)
+			{
+				ft_putstr_fd("export: ", STDERR_FILENO);
+				ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
+				data->exit_code = 1;
+			}
+			else
+			{
+				token_current = get_node(&data->envs, args[index]);
+				if (token_current == NULL)
+					export_add(data, args[index]);
+				else if (token_current != NULL)
+					substitute_env(token_current, args[index]);
+			}
 			index++;
 		}
 	}
-	data->exit_code = 0;
 	return (EXIT_SUCCESS);
 }

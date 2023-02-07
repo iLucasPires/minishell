@@ -1,27 +1,45 @@
 #include <minishell.h>
 
-int	is_numeric(const char *str)
+int	is_numeric(char *str)
 {
+	int	index;
+
+	index = 0;
 	if (str == NULL)
 		return (0);
-	while (*str != '\0')
+	if (str[index] == '-' || str[index] == '+')
+		index++;
+	while (str[index] != '\0')
 	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
+		if (!ft_isdigit(str[index]))
+			return (FALSE);
+		index++;
 	}
-	return (1);
+	return (TRUE);
 }
 
 void	error_exit_str(char *str)
 {
-	ft_putstr_fd("exit\n", STDERR_FILENO);
-	ft_putstr_fd("exit: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+	(void)str;
+	ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
 }
 
-int	builtin_exit(char **args, t_minishell *data)
+int isBetween(char *num) {
+    int index;
+
+	index = 0;
+	while (num[index] != '\0')
+	{
+		if (!ft_isdigit(num[index]))
+			return (FALSE);
+		index++;
+	}
+	if (WEXITSTATUS(ft_atoi(num)) == ft_atoi(num))
+		return (TRUE);
+	return (FALSE);
+}
+
+int	builtin_exit(char  **args, t_minishell *data)
 {
 	if (args[1] == NULL)
 	{
@@ -31,17 +49,25 @@ int	builtin_exit(char **args, t_minishell *data)
 	else if (args[2] == NULL)
 	{
 		if (is_numeric(args[1]))
-			destroy_exit_minishell(data, ft_atoi(args[1]));
+		{
+			if (isBetween(args[1]) == TRUE)
+			{
+				ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
+				destroy_exit_minishell(data, 2);
+			}
+			data->exit_code = ft_atoi(args[1]);
+			destroy_exit_minishell(data, data->exit_code);
+		}
 		else
 		{
 			error_exit_str(args[1]);
-			destroy_exit_minishell(data, EXIT_FAILURE);
+			destroy_exit_minishell(data, 2);
 		}
 	}
 	else
 	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("exit: too many arguments", STDERR_FILENO);
+		data->exit_code = 1;
 	}
 	return (EXIT_FAILURE);
 }

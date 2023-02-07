@@ -14,6 +14,6 @@ int	builtin_pwd(char **args, t_minishell *data)
 	}
 	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
-	data->exit_code = 42;
+	data->exit_code = 0;
 	return (EXIT_SUCCESS);
 }

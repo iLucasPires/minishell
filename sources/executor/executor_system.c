@@ -10,8 +10,8 @@ void	create_executor(t_minishell *data)
 	index = 0;
 	size = ft_lsttlen(data->tokens, BAR);
 	data->count_cmd = size + 1;
-	data->pid = malloc(sizeof(int) * data->count_cmd);
 	data->pipe = malloc(sizeof(int *) * size);
+	data->pid = malloc(sizeof(int) * data->count_cmd);
 	while (index < size)
 	{
 		data->pipe[index] = malloc(sizeof(int) * 2);
@@ -19,10 +19,41 @@ void	create_executor(t_minishell *data)
 	}
 }
 
+void	close_fds2(t_command *cmd_list)
+{
+	t_command	*cmd;
+	int			i;
+
+	i = 3;
+	while (!close(i))
+	{
+		i++;
+	}
+	cmd = cmd_list;
+	while (cmd)
+	{
+		if (cmd->infile > 0)
+			close(cmd->infile);
+		if (cmd->outfile > 0)
+			close(cmd->outfile);
+		cmd = cmd->next;
+	}
+}
+
+void	destroy_execute_system(t_command *cmd, t_minishell *data)
+{
+	destroy_cmd_list(cmd);
+	destroy_executor(data);
+	destroy_list(&data->tokens);
+	destroy_list(&data->envs);
+	free(data->line);
+	free(data->envp);
+	free_all(data->paths);
+}
+
 void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 {
-	dup_fds(cmd);
-	dup_pipe_fds(data, child_index);
+	(void)child_index;
 	if (cmd->pathname)
 	{
 		data->exit_code = 0;
@@ -30,59 +61,65 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 	}
 	else
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		close_fds2(cmd);
+		message_command_not_found(cmd->args[0], &data->exit_code);
+		destroy_execute_system(cmd, data);
 		exit(127);
 	}
 }
 
 void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 {
-	pid_t	pid_current;
-
-	if (is_builtin(*cmd->args) && data->count_cmd == 1)
-		execute_builtin(cmd, data);
-	else
+	data->pid[child_index] = fork();
+	if (data->pid[child_index] < 0)
 	{
-		pid_current = fork();
-		if (pid_current < 0)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid_current == 0)
-		{
-			if (is_builtin(*cmd->args))
-			{
-				dup_fds(cmd);
-				dup_pipe_fds(data, child_index);
-				execute_builtin(cmd, data);
-				exit(data->exit_code);
-			}
-			else
-				execute_system(cmd, data, child_index);
-		}
-		data->pid[child_index] = pid_current;
+		perror("fork");
+		exit(EXIT_FAILURE);
 	}
+	if (data->pid[child_index] == 0)
+	{
+		dup_fds(cmd);
+		dup_pipe_fds(data, child_index);
+		clear_history();
+		if (is_builtin(*cmd->args))
+		{
+			exec_builtins(cmd->args, data);
+			close_fds2(cmd);
+						close_pipe_fds(data, index);
+
+			destroy_execute_system(cmd, data);
+			exit(data->exit_code);
+		}
+		else
+		{
+			execute_system(cmd, data, child_index);
+		}
+
+	}
+
 }
 
 void	execute_childrens(t_command *cmd_list, t_minishell *data)
 {
-	int	index;
+	int			index;
 
 	index = 0;
-	while (index < data->count_cmd)
+	if (is_builtin(*cmd_list->args) && data->count_cmd == 1)
+		execute_builtin(cmd_list, data);
+	else
 	{
-		if (index < data->count_cmd - 1)
-			pipe(data->pipe[index]);
-		execute_children(cmd_list, data, index);
-		close_pipe_fds(data, index);
-		waitpid(data->pid[index], &data->status, 0);
-		if (WIFEXITED(data->status))
-			data->exit_code = WEXITSTATUS(data->status);
-		cmd_list = cmd_list->next;
-		index++;
+		while (index < data->count_cmd)
+		{
+			if (index < data->count_cmd - 1)
+				pipe(data->pipe[index]);
+			execute_children(cmd_list, data, index);
+			close_pipe_fds(data, index);
+			waitpid(data->pid[index], &data->status, 0);
+			if (WIFEXITED(data->status))
+				data->exit_code = WEXITSTATUS(data->status);
+			cmd_list = cmd_list->next;
+			index++;
+		}
 	}
 }
 

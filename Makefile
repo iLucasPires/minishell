@@ -41,7 +41,7 @@ INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 
 # Makefile
 MAKEFLAGS = --no-print-directory
-VALGRINDFLAGS = -s --leak-check=full --show-leak-kinds=all 
+VALGRINDFLAGS = -s --leak-check=full --show-leak-kinds=all --track-fds=yes
 VALGRIDSUPP = --suppressions=readline.txt
 
 # Rules
@@ -49,6 +49,9 @@ all: $(LIBFT) $(NAME)
 
 valgrind: $(NAME)
 	valgrind $(VALGRINDFLAGS) $(VALGRIDSUPP) ./$(NAME)
+
+test: $(NAME)
+	./minishell_tester/tester
 
 rb:
 	rm -rf $(NAME)
