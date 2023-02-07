@@ -9,7 +9,7 @@ void	init_env(t_minishell *data, char **envp)
 	index = 0;
 	while (envp[index] != NULL)
 	{
-		add_env(&data->envs, envp[index]);
+		new_node(&data->envs, envp[index], TRUE);
 		index++;
 	}
 }
@@ -20,6 +20,8 @@ void	init_data(t_minishell *data)
 	data->line = NULL;
 	data->envs = NULL;
 	data->home = getenv("HOME");
+	data->status = 0;
+	data->pid = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -32,13 +32,17 @@ int	exec_builtins(char **args, t_minishell *data)
 
 void	execute_builtin(t_command *cmd, t_minishell *data)
 {
-	int	saved[2];
-
-	saved[STDIN_FILENO] = dup(STDIN_FILENO);
-	saved[STDOUT_FILENO] = dup(STDOUT_FILENO);
-	dup_fds(cmd);
+	data->aux_in = dup(STDIN_FILENO);
+	data->aux_out = dup(STDOUT_FILENO);
+	if (cmd->infile > 2)
+		dup2(cmd->infile, STDIN_FILENO);
+	if (cmd->outfile > 2)
+		dup2(cmd->outfile, STDOUT_FILENO);
 	exec_builtins(cmd->args, data);
-	dup_saved_fds(saved);
-	close_saved_fds(saved);
-	close_fds(cmd);
+	close(cmd->infile);
+	close(cmd->outfile);
+	dup2(data->aux_in, STDIN_FILENO);
+	dup2(data->aux_out, STDOUT_FILENO);
+	close(data->aux_in);
+	close(data->aux_out);
 }

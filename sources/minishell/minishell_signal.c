@@ -4,7 +4,7 @@ void	handle_sigquit(t_minishell *data)
 {
 	if (data->line == NULL)
 	{
-		ft_putstr_fd(ERROR_EXIT, STDERR_FILENO);
+		// ft_putstr_fd(ERROR_EXIT, STDERR_FILENO);
 		rl_clear_history();
 		destroy_minishell(data);
 		exit(g_data.exit_code);

@@ -47,16 +47,16 @@ void	handle_line(t_minishell *data)
 
 void	read_eval_print_loop(t_minishell *data)
 {
-	char	path[1024];
+	// char	path[1024];
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 	while (TRUE)
 	{
-		getcwd(path, 1024);
-		ft_strlcat(path, "\n", 1024);
-		printf(BHGREEN "%s" RESET, path);
-		data->line = readline(BHBLUE "minishell> " RESET);
+		// getcwd(path, 1024);
+		// ft_strlcat(path, "\n", 1024);
+		// printf(BHGREEN "%s" RESET, path);
+		data->line = readline("minishell> ");
 		handle_line(data);
 		free(data->line);
 	}
