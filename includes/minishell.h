@@ -90,7 +90,7 @@ int					is_redirect(int identifier);
 void	message_command_not_found(char *command,
 								u_int8_t *exit_code);
 
-int					exec_builtins(char **args,  t_minishell *data);
+int					exec_builtins(char **args, t_minishell *data);
 int					is_builtin(char *str);
 
 void				dup_fds(t_command *cmd);
@@ -102,4 +102,12 @@ void				ft_lstadd_back(t_command **list_cmd, t_minishell *data);
 void				dup_pipe_fds(t_minishell *cmd, int child_index);
 void				close_pipe_fds(t_minishell *cmd, int child_index);
 void				destroy_executor(t_minishell *data);
+
+void				make_redirects(t_command *cmd, int child_index,
+						t_minishell *data);
+void				builtin_redirect(t_command *cmd);
+void				init_resources(t_command *cmd, t_minishell *data);
+void				reset_int_out(t_minishell *data);
+void close_files(t_command *cmd);
+void execute_builtin_child(t_command *cmd, t_minishell *data, int child_index);
 #endif

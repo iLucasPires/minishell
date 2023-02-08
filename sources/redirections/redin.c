@@ -8,7 +8,10 @@ int make_input(char *file_name, int flags)
 
     fd = open(file_name, flags);
     if (fd == -1)
-        dprintf(2, "bash: %s: No such file or directory\n", file_name);
+    {
+        perror("open");
+        g_data.exit_code = 1;
+    }
     return (fd);
 }
 
@@ -20,6 +23,7 @@ int make_output(char *file_name, int flags)
     if (fd == -1)
     {
         perror("open");
+        g_data.exit_code = 2;
     }
     return (fd);
 }

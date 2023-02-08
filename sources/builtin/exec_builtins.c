@@ -32,17 +32,28 @@ int	exec_builtins(char **args, t_minishell *data)
 
 void	execute_builtin(t_command *cmd, t_minishell *data)
 {
-	data->aux_in = dup(STDIN_FILENO);
-	data->aux_out = dup(STDOUT_FILENO);
-	if (cmd->infile > 2)
-		dup2(cmd->infile, STDIN_FILENO);
-	if (cmd->outfile > 2)
-		dup2(cmd->outfile, STDOUT_FILENO);
+	init_resources(cmd, data);
 	exec_builtins(cmd->args, data);
-	close(cmd->infile);
-	close(cmd->outfile);
-	dup2(data->aux_in, STDIN_FILENO);
-	dup2(data->aux_out, STDOUT_FILENO);
-	close(data->aux_in);
-	close(data->aux_out);
+	close_files(cmd);
+	reset_int_out(data);
+}
+
+void close_resources(t_minishell *data)
+{
+	reset_int_out(data);
+	destroy_executor(data);
+}
+
+void execute_builtin_child(t_command *cmd, t_minishell *data, int child_index)
+{
+	for (int i = 0; i < data->count_cmd; i++)
+	{
+		if (i != child_index)
+			close_pipe_fds(data, i);
+	}
+	make_redirects(cmd, child_index, data);
+	exec_builtins(cmd->args, data);
+	close_files(cmd);
+	close_pipe_fds(data, child_index);
+
 }
