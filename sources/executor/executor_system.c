@@ -57,11 +57,14 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 	if (cmd->pathname)
 	{
 		data->exit_code = 0;
+		close_files(cmd);
+		close_pipe_fds(data, child_index);
 		execve(cmd->pathname, cmd->args, data->envp);
 	}
 	else
 	{
-		close_fds2(cmd);
+		close_files(cmd);
+		close_pipe_fds(data, child_index);
 		message_command_not_found(cmd->args[0], &data->exit_code);
 		destroy_execute_system(cmd, data);
 		exit(127);
@@ -78,15 +81,11 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 	}
 	if (data->pid[child_index] == 0)
 	{
-		dup_fds(cmd);
-		dup_pipe_fds(data, child_index);
 		clear_history();
+		make_redirects(cmd, child_index, data);
 		if (is_builtin(*cmd->args))
 		{
-			exec_builtins(cmd->args, data);
-			close_fds2(cmd);
-						close_pipe_fds(data, index);
-
+			execute_builtin_child(cmd, data, child_index);
 			destroy_execute_system(cmd, data);
 			exit(data->exit_code);
 		}
@@ -94,14 +93,26 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 		{
 			execute_system(cmd, data, child_index);
 		}
-
 	}
+}
 
+void	wait_childrens(t_minishell *data)
+{
+	int	index;
+
+	index = 0;
+	while (index < data->count_cmd)
+	{
+		waitpid(data->pid[index], &data->status, 0);
+		if (WIFEXITED(data->status))
+			data->exit_code = WEXITSTATUS(data->status);
+		index++;
+	}
 }
 
 void	execute_childrens(t_command *cmd_list, t_minishell *data)
 {
-	int			index;
+	int	index;
 
 	index = 0;
 	if (is_builtin(*cmd_list->args) && data->count_cmd == 1)
@@ -114,12 +125,10 @@ void	execute_childrens(t_command *cmd_list, t_minishell *data)
 				pipe(data->pipe[index]);
 			execute_children(cmd_list, data, index);
 			close_pipe_fds(data, index);
-			waitpid(data->pid[index], &data->status, 0);
-			if (WIFEXITED(data->status))
-				data->exit_code = WEXITSTATUS(data->status);
 			cmd_list = cmd_list->next;
 			index++;
 		}
+		wait_childrens(data);
 	}
 }
 

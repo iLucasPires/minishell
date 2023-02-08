@@ -1,10 +1,5 @@
 #include <minishell.h>
 
-// 1	RED_IN <
-// 2	RED_OUT >
-// 3	RED_APPEND >>
-// 4	HEREDOC <<
-
 static int	syntax_error_redirects(char *file_name)
 {
 	if (file_name == NULL)
@@ -19,9 +14,18 @@ static int	syntax_error_redirects(char *file_name)
 int	open_files(int type, char *file_name, t_command *cmd, t_minishell *data)
 {
 	if (cmd == NULL)
-		return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
+	{
+		ft_putstr_fd("No such file or directory\n", 2);
+		data->exit_code = 2;
+		
+	}
 	if (syntax_error_redirects(file_name))
-		return (ft_putstr_fd("ERROR NA OPEN FILES\n", 2), 1);
+	{
+		ft_putstr_fd(file_name, 2);
+		ft_putstr_fd(": syntax error near unexpected token\n", 2);
+		data->exit_code = 2;
+		return (1);
+	}
 	else if (type == HEREDOC)
 		make_heredoc(cmd, file_name, data);
 	else if (type == RED_IN)
