@@ -106,10 +106,7 @@ void	fsm_filter_special(t_fsm *fsm)
 
 	identifier = fsm_is_state(fsm->line, fsm->index);
 	if (identifier == RED_IN || identifier == RED_OUT || identifier == PIPE)
-	{
 		new_node(fsm->tokens, fsm_identified(identifier), identifier);
-		
-	}
 	if (identifier == RED_APPEND || identifier == HEREDOC)
 	{
 		new_node(fsm->tokens, fsm_identified(identifier), identifier);

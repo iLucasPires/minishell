@@ -82,17 +82,19 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 	if (data->pid[child_index] == 0)
 	{
 		clear_history();
-		make_redirects(cmd, child_index, data);
-		if (is_builtin(*cmd->args))
+		if (cmd->infile != FAILURE && cmd->outfile != FAILURE)
 		{
-			execute_builtin_child(cmd, data, child_index);
-			destroy_execute_system(cmd, data);
-			exit(data->exit_code);
+			make_redirects(cmd, child_index, data);
+			if (is_builtin(*cmd->args))
+			{
+				execute_builtin_child(cmd, data, child_index);
+				destroy_execute_system(cmd, data);
+				exit(data->exit_code);
+			}
+			else
+				execute_system(cmd, data, child_index);
 		}
-		else
-		{
-			execute_system(cmd, data, child_index);
-		}
+		exit(data->exit_code);
 	}
 }
 
@@ -115,7 +117,8 @@ void	execute_childrens(t_command *cmd_list, t_minishell *data)
 	int	index;
 
 	index = 0;
-	if (is_builtin(*cmd_list->args) && data->count_cmd == 1)
+	if (is_builtin(*cmd_list->args) && data->count_cmd == 1
+		&& cmd_list->infile != FAILURE && cmd_list->outfile != FAILURE)
 		execute_builtin(cmd_list, data);
 	else
 	{
@@ -143,16 +146,13 @@ int	system_command(t_minishell *data)
 	t_command	*cmd_list;
 
 	if (syntax_error_pipe(data->tokens) != 0)
-	{
-		data->exit_code = 2;
-		return (EXIT_FAILURE);
-	}
+		return (2);
 	data->paths = ft_split(get_value(&data->envs, "PATH"), ':');
 	data->envp = list_to_array_string(data->envs);
 	data->tokens_aux = data->tokens;
 	cmd_list = create_cmd_list(data);
 	check_redirected(data, cmd_list);
-	if (cmd_list->args[0] != NULL && cmd_list->infile != -1 && cmd_list->outfile != -1)
+	if (cmd_list->args[0] != NULL)
 	{
 		create_executor(data);
 		execute_childrens(cmd_list, data);
