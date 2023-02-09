@@ -47,7 +47,8 @@ void	check_redirected(t_minishell *data, t_command *cmd)
 	{
 		if (aux->type == PIPE)
 			cmd = cmd->next;
-		if (is_redirect(aux->type) != FALSE)
+		if (is_redirect(aux->type) != FALSE && cmd->infile != -1 &&
+			cmd->outfile != -1)
 		{
 			file_name = ft_strdup(aux->next->value);
 			open_files(aux->type, file_name, cmd, data);
