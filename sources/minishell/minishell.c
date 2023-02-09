@@ -18,12 +18,19 @@ char	*remove_space(char *string)
 	return (string_aux);
 }
 
-void	print_list(t_list *list)
+void typing_tokens(t_list *tokens)
 {
-	while (list)
+	t_list	*aux;
+
+	aux = tokens;
+	while (aux)
 	{
-		printf("token: %s\n", list->value);
-		list = list->next;
+		if (is_redirect(aux->type))
+		{
+			if (aux->next && aux->next->type == WORD)
+				aux->next->type = DOCUMENT;
+		}
+		aux = aux->next;
 	}
 }
 
@@ -38,6 +45,7 @@ void	handle_line(t_minishell *data)
 		{
 			syntax_quotes(data->line);
 			finite_state_machine(data);
+			typing_tokens(data->tokens);
 			if (data->tokens->value)
 				data->exit_code = system_command(data);
 			destroy_list(&data->tokens);

@@ -152,7 +152,7 @@ int	system_command(t_minishell *data)
 	data->tokens_aux = data->tokens;
 	cmd_list = create_cmd_list(data);
 	check_redirected(data, cmd_list);
-	if (cmd_list->args[0] != NULL)
+	if (cmd_list->args[0] != NULL && cmd_list->infile != -1 && cmd_list->outfile != -1)
 	{
 		create_executor(data);
 		execute_childrens(cmd_list, data);
