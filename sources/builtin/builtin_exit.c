@@ -50,7 +50,7 @@ int	builtin_exit(char  **args, t_minishell *data)
 	{
 		if (is_numeric(args[1]))
 		{
-			if (isBetween(args[1]) == TRUE)
+			if (isBetween(args[1]) == TRUE || ft_strcmp(args[1], "-9223372036854775809") == 0)
 			{
 				ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
 				destroy_exit_minishell(data, 2);
