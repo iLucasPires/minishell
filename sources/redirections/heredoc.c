@@ -9,27 +9,37 @@ void	clean_heredoc(t_minishell *data)
 	free(data->envp);
 }
 
-void	open_file(int *infile, int flags, int other_flags)
+int	open_file(char *file, int flags, int other_flags)
 {
+	int	fd;
+	int	is_file;
+
 	if (other_flags == 0)
-		*infile = open(HERE_FILE, flags);
+	{
+		is_file = access(file, F_OK);
+		if (is_file == -1)
+		{
+			perror("minishell");
+			exit(EXIT_FAILURE);
+		}
+		fd = open(file, flags);
+	}
 	else
-		*infile = open(HERE_FILE, flags, other_flags);
-	if (*infile == FAILURE)
+		fd = open(file, flags, other_flags);
+	if (fd == FAILURE)
 	{
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
+	return (fd);
 }
 
 void	handle_sigint_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		
 		exit(EXIT_SUCCESS);
 	}
-
 }
 
 void	write_in_file(t_command *cmd, char *file_name)
@@ -68,7 +78,7 @@ void	make_heredoc(t_command *cmd, char *file_name, t_minishell *data)
 	}
 	if (pid == 0)
 	{
-		open_file(&cmd->infile, O_CREAT | O_RDWR, 0664);
+		cmd->infile = open_file(HERE_FILE, O_CREAT | O_RDWR, 0664);
 		clean_heredoc(data);
 		write_in_file(cmd, file_name);
 		exit(EXIT_SUCCESS);
@@ -76,7 +86,7 @@ void	make_heredoc(t_command *cmd, char *file_name, t_minishell *data)
 	else
 	{
 		waitpid(pid, &status, 0);
-		open_file(&cmd->infile, O_RDONLY, 0);
+		cmd->infile = open_file(HERE_FILE, O_RDONLY, 0);
 		if (WIFEXITED(status))
 			data->exit_code = WEXITSTATUS(status);
 		unlink(HERE_FILE);
