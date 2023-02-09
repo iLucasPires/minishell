@@ -53,7 +53,7 @@ void	destroy_execute_system(t_command *cmd, t_minishell *data)
 
 void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 {
-	(void)child_index;
+	//(void)child_index;
 	if (cmd->pathname)
 	{
 		data->exit_code = 0;
