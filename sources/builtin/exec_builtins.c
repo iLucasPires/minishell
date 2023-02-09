@@ -38,22 +38,26 @@ void	execute_builtin(t_command *cmd, t_minishell *data)
 	reset_int_out(data);
 }
 
-void close_resources(t_minishell *data)
+void	close_resources(t_minishell *data)
 {
 	reset_int_out(data);
 	destroy_executor(data);
 }
 
-void execute_builtin_child(t_command *cmd, t_minishell *data, int child_index)
+void	execute_builtin_child(t_command *cmd, t_minishell *data,
+		int child_index)
 {
-	for (int i = 0; i < data->count_cmd; i++)
+	int	index;
+
+	index = 0;
+	while (index < data->count_cmd)
 	{
-		if (i != child_index)
-			close_pipe_fds(data, i);
+		if (index != child_index)
+			close_pipe_fds(data, index);
+		index++;
 	}
 	make_redirects(cmd, child_index, data);
 	exec_builtins(cmd->args, data);
 	close_files(cmd);
 	close_pipe_fds(data, child_index);
-
 }
