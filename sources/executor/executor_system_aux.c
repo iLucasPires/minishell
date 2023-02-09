@@ -5,7 +5,10 @@ void	make_redirects(t_command *cmd, int child_index, t_minishell *data)
 	if (cmd->outfile > 2)
 		dup2(cmd->outfile, STDOUT_FILENO);
 	else if (child_index < data->count_cmd - 1)
+	{
 		dup2(data->pipe[child_index][STDOUT_FILENO], STDOUT_FILENO);
+		close(data->pipe[child_index][STDIN_FILENO]);
+	}
 	if (cmd->infile > 2)
 		dup2(cmd->infile, STDIN_FILENO);
 	else if (child_index > 0)
