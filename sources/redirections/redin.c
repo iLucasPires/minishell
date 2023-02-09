@@ -31,7 +31,7 @@ int	make_output(char *file_name, int flags)
 	if (fd == -1)
 	{
 		perror("open");
-		g_data.exit_code = 2;
+		g_data.exit_code = 1;
 	}
 	return (fd);
 }
