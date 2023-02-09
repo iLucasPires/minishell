@@ -1,7 +1,5 @@
 #include <minishell.h>
 
-// <
-
 int	make_input(char *file_name, int flags)
 {
 	int	fd;

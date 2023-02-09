@@ -1,0 +1,6 @@
+*.o
+**/objects
+**/objects/*.o
+minishell
+.vscode
+minishell_tester

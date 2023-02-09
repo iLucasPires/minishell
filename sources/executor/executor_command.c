@@ -56,7 +56,7 @@ t_command	*create_cmd_list(t_minishell *data)
 
 	index = 0;
 	list_cmd = NULL;
-	while (index < count_pipes(data->tokens) + 1)
+	while (index < ft_lsttlen(data->tokens, BAR) + 1)
 	{
 		ft_lstadd_back(&list_cmd, data);
 		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
