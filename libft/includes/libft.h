@@ -56,6 +56,7 @@ char	*ft_itoa(int n);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strfjoin(char *string1, char *string2);
 char	*ft_strrchar(char *string, char c);
-
+char	*ft_chrtstr(char c);
+void	ft_rmchr(char *str, char *targets);
 
 #endif

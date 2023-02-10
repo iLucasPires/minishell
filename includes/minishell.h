@@ -108,6 +108,9 @@ void				make_redirects(t_command *cmd, int child_index,
 void				builtin_redirect(t_command *cmd);
 void				init_resources(t_command *cmd, t_minishell *data);
 void				reset_int_out(t_minishell *data);
-void close_files(t_command *cmd);
-void execute_builtin_child(t_command *cmd, t_minishell *data, int child_index);
+void				close_files(t_command *cmd);
+void				execute_builtin_child(t_command *cmd, t_minishell *data,
+						int child_index);
+int					open_file(char *file, int flags, int other_flags,
+						u_int8_t *exit_code);
 #endif

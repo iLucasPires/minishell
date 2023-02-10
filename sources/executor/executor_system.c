@@ -19,27 +19,6 @@ void	create_executor(t_minishell *data)
 	}
 }
 
-void	close_fds2(t_command *cmd_list)
-{
-	t_command	*cmd;
-	int			i;
-
-	i = 3;
-	while (!close(i))
-	{
-		i++;
-	}
-	cmd = cmd_list;
-	while (cmd)
-	{
-		if (cmd->infile > 0)
-			close(cmd->infile);
-		if (cmd->outfile > 0)
-			close(cmd->outfile);
-		cmd = cmd->next;
-	}
-}
-
 void	destroy_execute_system(t_command *cmd, t_minishell *data)
 {
 	destroy_cmd_list(cmd);
@@ -53,7 +32,6 @@ void	destroy_execute_system(t_command *cmd, t_minishell *data)
 
 void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 {
-	//(void)child_index;
 	if (cmd->pathname)
 	{
 		data->exit_code = 0;

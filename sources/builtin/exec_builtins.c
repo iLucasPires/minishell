@@ -38,12 +38,6 @@ void	execute_builtin(t_command *cmd, t_minishell *data)
 	reset_int_out(data);
 }
 
-void	close_resources(t_minishell *data)
-{
-	reset_int_out(data);
-	destroy_executor(data);
-}
-
 void	execute_builtin_child(t_command *cmd, t_minishell *data,
 		int child_index)
 {
