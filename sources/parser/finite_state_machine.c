@@ -1,23 +1,5 @@
 #include <minishell.h>
 
-void	remove_chars(char *str, char *targets)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (!ft_strchr(targets, str[i]))
-		{
-			str[j++] = str[i];
-		}
-		i++;
-	}
-	str[j] = '\0';
-}
-
 void	fsm_expander(char *line_temp, t_minishell *data)
 {
 	t_fsm	expander;
@@ -38,66 +20,50 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 			expander.limit--;
 			expander_word(&expander, line_temp);
 			new_node(&data->tokens, expander.line, WORD);
-			return (free(line_temp), free(expander.line));
+			free(expander.line);
+			break ;
 		}
 		expander.index++;
 	}
 }
 
-char	*ft_chartostr(char c)
+int	fsm_is_expander(char *line, char quote_type)
 {
-	char	*str;
-
-	str = ft_calloc(sizeof(char), 2);
-	str[0] = c;
-	return (str);
-}
-
-void	add_node_remove_quote(t_minishell *data, char **line_temp,
-		char *quote_type)
-{
-	remove_chars(*line_temp, quote_type);
-	new_node(&data->tokens, *line_temp, WORD);
-	free(*line_temp);
-}
-
-int	is_expander(char *line, char quote_type)
-{
-	if (line && quote_type != SQUOTE)
+	if (ft_strchr(line, DOLLAR) && quote_type != SQUOTE)
 		return (1);
-	else if ((line && quote_type == SQUOTE) || (quote_type == DQUOTE)
-			|| (quote_type == SQUOTE))
+	else if ((ft_strchr(line, DOLLAR) && quote_type == SQUOTE)
+			|| (quote_type == DQUOTE) || (quote_type == SQUOTE))
 		return (2);
 	return (0);
 }
 
 void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 {
-	char	*line_temp;
-	char	*quote_type;
+	char	quote_char[2];
 
 	if (fsm->limit > 0)
 	{
-		quote_type = ft_chartostr(fsm->line[fsm->index - fsm->limit]);
-		line_temp = ft_substr(fsm->line, fsm->index - fsm->limit, fsm->limit);
-		if (is_expander(ft_strchr(line_temp, '$'), *quote_type) == 1)
+		ft_strlcpy(quote_char, fsm->line + fsm->index - fsm->limit, 2);
+		fsm->line_aux = ft_substr(fsm->line, fsm->index - fsm->limit,
+				fsm->limit);
+		if (fsm_is_expander(fsm->line_aux, *quote_char) == 1)
 		{
-			remove_chars(line_temp, "\"");
-			fsm_expander(line_temp, data);
+			ft_rmchr(fsm->line_aux, "\"");
+			fsm_expander(fsm->line_aux, data);
 		}
-		else if (is_expander(ft_strchr(line_temp, '$'), *quote_type) == 2)
-			add_node_remove_quote(data, &line_temp, quote_type);
+		else if (fsm_is_expander(fsm->line_aux, *quote_char) == 2)
+		{
+			ft_rmchr(fsm->line_aux, quote_char);
+			new_node(fsm->tokens, fsm->line_aux, WORD);
+		}
 		else
-			add_node_remove_quote(data, &line_temp, "\"\'");
-		free(quote_type);
+		{
+			ft_rmchr(fsm->line_aux, "\"\'");
+			new_node(fsm->tokens, fsm->line_aux, WORD);
+		}
+		free(fsm->line_aux);
 		fsm->limit = 0;
 	}
-}
-
-int	is_redirect(int identifier)
-{
-	return (identifier == RED_IN || identifier == RED_OUT ||
-			identifier == RED_APPEND || identifier == HEREDOC);
 }
 
 void	fsm_filter_special(t_fsm *fsm)
@@ -128,22 +94,13 @@ void	fsm_is_inside_quote(t_fsm *fsm)
 	}
 }
 
-void	init_fsm(t_fsm *fsm, t_minishell *data)
-{
-	fsm->index = 0;
-	fsm->limit = 0;
-	fsm->begin = 0;
-	fsm->check_quote = FALSE;
-	fsm->quote_type = 0;
-	fsm->line = data->line;
-	fsm->tokens = &data->tokens;
-}
-
 void	finite_state_machine(t_minishell *data)
 {
 	t_fsm fsm;
 
-	init_fsm(&fsm, data);
+	ft_bzero(&fsm, sizeof(t_fsm));
+	fsm.line = data->line;
+	fsm.tokens = &data->tokens;
 	while (TRUE)
 	{
 		fsm_is_inside_quote(&fsm);

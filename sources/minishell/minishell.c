@@ -1,36 +1,38 @@
 #include <minishell.h>
 
-char	*remove_space(char *string)
+char	*remove_space(char *line)
 {
 	int		index;
-	char	*string_aux;
+	char	*new_line;
 
 	index = 0;
-	while (string[index] == SPACE)
+	while (line[index] == SPACE)
 		index++;
-	if (string[index] == NULL_CHAR)
+	if (line[index] == NULL_CHAR)
 	{
-		free(string);
+		free(line);
 		return (NULL);
 	}
-	string_aux = ft_substr(string, index, ft_strlen(string));
-	free(string);
-	return (string_aux);
+	new_line = ft_substr(line, index, ft_strlen(line));
+	free(line);
+	return (new_line);
 }
 
-void typing_tokens(t_list *tokens)
+void	typing_tokens(t_list *tokens)
 {
-	t_list	*aux;
+	t_list	*token_temp;
 
-	aux = tokens;
-	while (aux)
+	token_temp = tokens;
+	if (tokens == NULL)
+		return ;
+	while (token_temp != NULL)
 	{
-		if (is_redirect(aux->type))
+		if (is_redirect(token_temp->type))
 		{
-			if (aux->next && aux->next->type == WORD)
-				aux->next->type = DOCUMENT;
+			if (token_temp->next && token_temp->next->type == WORD)
+				token_temp->next->type = DOCUMENT;
 		}
-		aux = aux->next;
+		token_temp = token_temp->next;
 	}
 }
 
@@ -55,16 +57,11 @@ void	handle_line(t_minishell *data)
 
 void	read_eval_print_loop(t_minishell *data)
 {
-	// char	path[1024];
-
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 	while (TRUE)
 	{
-		// getcwd(path, 1024);
-		// ft_strlcat(path, "\n", 1024);
-		// printf(BHGREEN "%s" RESET, path);
-		data->line = readline("minishell> ");
+		data->line = readline(PROMPT);
 		handle_line(data);
 		free(data->line);
 	}

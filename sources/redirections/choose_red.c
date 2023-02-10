@@ -13,28 +13,22 @@ static int	syntax_error_redirects(char *file_name)
 
 int	open_files(int type, char *file_name, t_command *cmd, t_minishell *data)
 {
-	if (cmd == NULL)
+	if (cmd == NULL || syntax_error_redirects(file_name))
 	{
 		ft_putstr_fd("No such file or directory\n", 2);
 		data->exit_code = 2;
-		
-	}
-	if (syntax_error_redirects(file_name))
-	{
-		ft_putstr_fd(file_name, 2);
-		ft_putstr_fd(": syntax error near unexpected token\n", 2);
-		data->exit_code = 2;
-		return (1);
+		return (TRUE);
 	}
 	else if (type == HEREDOC)
 		make_heredoc(cmd, file_name, data);
 	else if (type == RED_IN)
-		cmd->infile = make_input(file_name, (O_RDONLY));
+		cmd->infile = open_file(file_name, O_RDONLY, 0, &data->exit_code);
 	else if (type == RED_OUT)
-		cmd->outfile = make_output(file_name, (O_CREAT | O_RDWR | O_TRUNC));
+		cmd->outfile = open_file(file_name, R_FLAG, 0644, &data->exit_code);
 	else if (type == RED_APPEND)
-		cmd->outfile = make_output(file_name, (O_CREAT | O_RDWR | O_APPEND));
-	return (0);
+		cmd->outfile = open_file(file_name, A_FLAG, 0644, &data->exit_code);
+	free(file_name);
+	return (EXIT_SUCCESS);
 }
 
 void	check_redirected(t_minishell *data, t_command *cmd)
@@ -50,9 +44,15 @@ void	check_redirected(t_minishell *data, t_command *cmd)
 		if (is_redirect(aux->type) != FALSE && cmd->infile != -1 &&
 			cmd->outfile != -1)
 		{
+			if (aux->next == NULL || aux->next->type != DOCUMENT)
+			{
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
+				cmd->infile = FAILURE;
+				data->exit_code = 2;
+				return ;
+			}
 			file_name = ft_strdup(aux->next->value);
 			open_files(aux->type, file_name, cmd, data);
-			free(file_name);
 		}
 		aux = aux->next;
 	}

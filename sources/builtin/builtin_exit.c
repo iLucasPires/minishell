@@ -24,19 +24,29 @@ void	error_exit_str(char *str)
 	ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
 }
 
-int isBetween(char *num) {
-    int index;
+int    ft_islong_long(char *str)
+{
+    long long    out;
+    int            c;
 
-	index = 0;
-	while (num[index] != '\0')
-	{
-		if (!ft_isdigit(num[index]))
-			return (FALSE);
-		index++;
-	}
-	if (WEXITSTATUS(ft_atoi(num)) == ft_atoi(num))
-		return (TRUE);
-	return (FALSE);
+    if (ft_strlen(str) > 20)
+        return (0);
+    if (ft_strncmp(str, "-9223372036854775808", 21) == 0)
+        return (1);
+    out = 0;
+    if (*str == '-' || *str == '+')
+        str++;
+    while (*str)
+    {
+        if (*str < '0' || *str > '9')
+            return (0);
+        c = *str - '0';
+        if (out > (9223372036854775807 - c) / 10)
+            return (0);
+        out = out * 10 + c;
+        str++;
+    }
+    return (1);
 }
 
 int	builtin_exit(char  **args, t_minishell *data)
@@ -50,7 +60,7 @@ int	builtin_exit(char  **args, t_minishell *data)
 	{
 		if (is_numeric(args[1]))
 		{
-			if (isBetween(args[1]) == TRUE || ft_strcmp(args[1], "-9223372036854775809") == 0)
+			if (!ft_islong_long(args[1]))
 			{
 				ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
 				destroy_exit_minishell(data, 2);

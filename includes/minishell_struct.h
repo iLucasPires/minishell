@@ -26,6 +26,7 @@ typedef struct s_fsm
 	int					check_quote;
 	char				quote_type;
 	char				*line;
+	char 				*line_aux;
 	t_list				**tokens;
 	t_list				*expanders;
 }						t_fsm;
