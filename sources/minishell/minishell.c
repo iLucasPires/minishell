@@ -57,10 +57,10 @@ void	handle_line(t_minishell *data)
 
 void	read_eval_print_loop(t_minishell *data)
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
 	while (TRUE)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handle_sigint);
 		data->line = readline(PROMPT);
 		handle_line(data);
 		free(data->line);
