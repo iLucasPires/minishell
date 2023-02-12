@@ -51,6 +51,7 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 
 void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 {
+	signal(SIGINT, SIG_IGN);
 	data->pid[child_index] = fork();
 	if (data->pid[child_index] < 0)
 	{
@@ -59,6 +60,7 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 	}
 	if (data->pid[child_index] == 0)
 	{
+		signal(SIGINT, handle_sigint);
 		clear_history();
 		if (cmd->infile != FAILURE && cmd->outfile != FAILURE)
 		{
