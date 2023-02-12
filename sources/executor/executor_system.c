@@ -63,14 +63,17 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 		if (cmd->infile != FAILURE && cmd->outfile != FAILURE)
 		{
 			make_redirects(cmd, child_index, data);
-			if (is_builtin(*cmd->args))
+			if (cmd->args[0] != NULL)
 			{
-				execute_builtin_child(cmd, data, child_index);
-				destroy_execute_system(cmd, data);
-				exit(data->exit_code);
+				if (is_builtin(*cmd->args))
+				{
+					execute_builtin_child(cmd, data, child_index);
+					destroy_execute_system(cmd, data);
+					exit(data->exit_code);
+				}
+				else
+					execute_system(cmd, data, child_index);
 			}
-			else
-				execute_system(cmd, data, child_index);
 		}
 		exit(data->exit_code);
 	}
@@ -95,8 +98,8 @@ void	execute_childrens(t_command *cmd_list, t_minishell *data)
 	int	index;
 
 	index = 0;
-	if (is_builtin(*cmd_list->args) && data->count_cmd == 1
-		&& cmd_list->infile != FAILURE && cmd_list->outfile != FAILURE)
+	if (cmd_list->args[0] != NULL && (is_builtin(*cmd_list->args) && data->count_cmd == 1
+		&& cmd_list->infile != FAILURE && cmd_list->outfile != FAILURE))
 		execute_builtin(cmd_list, data);
 	else
 	{
@@ -130,12 +133,9 @@ int	system_command(t_minishell *data)
 	data->tokens_aux = data->tokens;
 	cmd_list = create_cmd_list(data);
 	check_redirected(data, cmd_list);
-	if (cmd_list->args[0] != NULL)
-	{
-		create_executor(data);
-		execute_childrens(cmd_list, data);
-		destroy_executor(data);
-	}
+	create_executor(data);
+	execute_childrens(cmd_list, data);
+	destroy_executor(data);
 	destroy_cmd_list(cmd_list);
 	destroy_data(data);
 	return (data->exit_code);

@@ -41,7 +41,7 @@ INCLUDE = -I $(INCLUDE_DIR) -I $(INCLUDE_LIBFT_DIR)
 
 # Makefile
 MAKEFLAGS = --no-print-directory
-VALGRINDFLAGS = -s --leak-check=full --show-leak-kinds=all --track-fds=yes
+VALGRINDFLAGS = -s --leak-check=full --show-leak-kinds=all --track-fds=no
 VALGRIDSUPP = --suppressions=readline.txt
 
 # Rules
