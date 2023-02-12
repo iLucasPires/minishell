@@ -9,19 +9,9 @@ void	init_env(t_minishell *data, char **envp)
 	index = 0;
 	while (envp[index] != NULL)
 	{
-		new_node(&data->envs, envp[index], TRUE);
+		append_list(&data->envs, envp[index], TRUE);
 		index++;
 	}
-}
-
-void	init_data(t_minishell *data)
-{
-	data->tokens = NULL;
-	data->line = NULL;
-	data->envs = NULL;
-	data->home = getenv("HOME");
-	data->status = 0;
-	data->pid = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -35,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd(ERROR_ARGUMENTS, STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	init_data(data);
+	ft_bzero(data, sizeof(t_minishell));
 	init_env(data, envp);
 	read_eval_print_loop(data);
 	return (EXIT_SUCCESS);

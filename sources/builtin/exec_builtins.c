@@ -32,10 +32,18 @@ int	exec_builtins(char **args, t_minishell *data)
 
 void	execute_builtin(t_command *cmd, t_minishell *data)
 {
-	init_resources(cmd, data);
+	data->exec.aux_in = dup(STDIN_FILENO);
+	data->exec.aux_out = dup(STDOUT_FILENO);
+	if (cmd->infile > 2)
+		dup2(cmd->infile, STDIN_FILENO);
+	if (cmd->outfile > 2)
+		dup2(cmd->outfile, STDOUT_FILENO);
 	exec_builtins(cmd->args, data);
 	close_files(cmd);
-	reset_int_out(data);
+	dup2(data->exec.aux_in, STDIN_FILENO);
+	dup2(data->exec.aux_out, STDOUT_FILENO);
+	close(data->exec.aux_in);
+	close(data->exec.aux_out);
 }
 
 void	execute_builtin_child(t_command *cmd, t_minishell *data,
@@ -44,14 +52,16 @@ void	execute_builtin_child(t_command *cmd, t_minishell *data,
 	int	index;
 
 	index = 0;
-	while (index < data->count_cmd)
+	while (index < data->exec.count_cmd)
 	{
 		if (index != child_index)
-			close_pipe_fds(data, index);
+			close_pipe_fds(&data->exec, index);
 		index++;
 	}
-	make_redirects(cmd, child_index, data);
+	make_redirects(cmd, child_index, &data->exec);
 	exec_builtins(cmd->args, data);
 	close_files(cmd);
-	close_pipe_fds(data, child_index);
+	close_pipe_fds(&data->exec, child_index);
+	destroy_execute_system(data);
+	exit(data->exit_code);
 }

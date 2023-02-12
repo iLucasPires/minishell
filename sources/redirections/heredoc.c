@@ -13,6 +13,7 @@ void	handle_sigint_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
+		ft_putchar_fd('\n', 1);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -42,7 +43,7 @@ void	write_in_file(t_command *cmd, char *file_name)
 
 void	heredoc_child(t_command *cmd, char *file_name, t_minishell *data)
 {
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sigint_heredoc);
 	cmd->infile = open_file(HERE_FILE, O_CREAT | O_RDWR, 0664, &data->exit_code);
 	clean_heredoc(data);
 	write_in_file(cmd, file_name);
@@ -64,11 +65,11 @@ void	make_heredoc(t_command *cmd, char *file_name, t_minishell *data)
 		heredoc_child(cmd, file_name, data);
 	else
 	{
-		waitpid(pid, &data->status, 0);
+		waitpid(pid, &data->exec.status, 0);
 		signal(SIGINT, handle_sigint);
 		cmd->infile = open_file(HERE_FILE, O_RDONLY, 0, &data->exit_code);
-		if (WIFEXITED(data->status))
-			data->exit_code = WEXITSTATUS(data->status);
+		if (WIFEXITED(data->exec.status))
+			data->exit_code = WEXITSTATUS(data->exec.status);
 		unlink(HERE_FILE);
 	}
 }

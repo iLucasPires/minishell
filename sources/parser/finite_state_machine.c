@@ -19,7 +19,7 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 		{
 			expander.limit--;
 			expander_word(&expander, line_temp);
-			new_node(&data->tokens, expander.line, WORD);
+			append_list(&data->tokens, expander.line, WORD);
 			free(expander.line);
 			break ;
 		}
@@ -54,12 +54,12 @@ void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 		else if (fsm_is_expander(fsm->line_aux, *quote_char) == 2)
 		{
 			ft_rmchr(fsm->line_aux, quote_char);
-			new_node(fsm->tokens, fsm->line_aux, WORD);
+			append_list(fsm->tokens, fsm->line_aux, WORD);
 		}
 		else
 		{
 			ft_rmchr(fsm->line_aux, "\"\'");
-			new_node(fsm->tokens, fsm->line_aux, WORD);
+			append_list(fsm->tokens, fsm->line_aux, WORD);
 		}
 		free(fsm->line_aux);
 		fsm->limit = 0;
@@ -72,10 +72,10 @@ void	fsm_filter_special(t_fsm *fsm)
 
 	identifier = fsm_is_state(fsm->line, fsm->index);
 	if (identifier == RED_IN || identifier == RED_OUT || identifier == PIPE)
-		new_node(fsm->tokens, fsm_identified(identifier), identifier);
+		append_list(fsm->tokens, fsm_identified(identifier), identifier);
 	if (identifier == RED_APPEND || identifier == HEREDOC)
 	{
-		new_node(fsm->tokens, fsm_identified(identifier), identifier);
+		append_list(fsm->tokens, fsm_identified(identifier), identifier);
 		fsm->index++;
 	}
 }

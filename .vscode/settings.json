@@ -38,7 +38,8 @@
         "minishell_define.h": "c",
         "minishell_struct.h": "c",
         "minishell_colors.h": "c",
-        "minishell_enum.h": "c"
+        "minishell_enum.h": "c",
+        "minishell_prototypes.h": "c"
     },
     "files.exclude": {
         "**/.git": true,

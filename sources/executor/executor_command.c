@@ -49,35 +49,38 @@ char	*get_path_command(t_list *list, char **paths)
 	}
 }
 
-t_command	*create_cmd_list(t_minishell *data)
+t_command	*new_cmd(t_minishell *data)
 {
-	int			index;
-	t_command	*list_cmd;
+	t_command	*new_cmd;
 
-	index = 0;
-	list_cmd = NULL;
-	while (index < ft_lsttlen(data->tokens, BAR) + 1)
+	new_cmd = malloc(sizeof(t_command));
+	if (new_cmd == NULL)
 	{
-		ft_lstadd_back(&list_cmd, data);
-		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
-			data->tokens_aux = data->tokens_aux->next;
-		if (data->tokens_aux != NULL)
-			data->tokens_aux = data->tokens_aux->next;
-		index++;
+		perror("malloc");
+		return (NULL);
 	}
-	return (list_cmd);
+	new_cmd->pathname = get_path_command(data->tokens_aux, data->paths);
+	new_cmd->args = create_arguments(data->tokens_aux);
+	new_cmd->infile = STDIN_FILENO;
+	new_cmd->outfile = STDOUT_FILENO;
+	new_cmd->next = NULL;
+	return (new_cmd);
 }
 
-void	destroy_cmd_list(t_command *list_cmd)
+void	ft_lstadd_back(t_command **list_cmd, t_minishell *data)
 {
 	t_command	*aux;
 
-	while (list_cmd)
+	aux = *list_cmd;
+	if (*list_cmd == NULL)
 	{
-		aux = list_cmd;
-		list_cmd = list_cmd->next;
-		free(aux->pathname);
-		free(aux->args);
-		free(aux);
+		*list_cmd = new_cmd(data);
+		return ;
+	}
+	else
+	{
+		while (aux->next)
+			aux = aux->next;
+		aux->next = new_cmd(data);
 	}
 }

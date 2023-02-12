@@ -2,7 +2,7 @@
 
 int	size_args(t_list *list)
 {
-	int	count;
+	int count;
 
 	count = 0;
 	while (list != NULL && list->type != PIPE)
@@ -36,38 +36,39 @@ char	**create_arguments(t_list *list)
 	return (args);
 }
 
-t_command	*new_cmd(t_minishell *data)
-{
-	t_command	*new_cmd;
 
-	new_cmd = malloc(sizeof(t_command));
-	if (new_cmd == NULL)
+t_command	*create_cmd_list(t_minishell *data)
+{
+	int			index;
+	t_command	*list_cmd;
+
+	index = 0;
+	list_cmd = NULL;
+	while (index < ft_lsttlen(data->tokens, BAR) + 1)
 	{
-		perror("malloc");
-		return (NULL);
+		ft_lstadd_back(&list_cmd, data);
+		while (data->tokens_aux != NULL && data->tokens_aux->type != PIPE)
+			data->tokens_aux = data->tokens_aux->next;
+		if (data->tokens_aux != NULL)
+			data->tokens_aux = data->tokens_aux->next;
+		index++;
 	}
-	new_cmd->pathname = get_path_command(data->tokens_aux, data->paths);
-	new_cmd->args = create_arguments(data->tokens_aux);
-	new_cmd->infile = STDIN_FILENO;
-	new_cmd->outfile = STDOUT_FILENO;
-	new_cmd->next = NULL;
-	return (new_cmd);
+	return (list_cmd);
 }
 
-void	ft_lstadd_back(t_command **list_cmd, t_minishell *data)
+void	create_executor(t_minishell *data)
 {
-	t_command	*aux;
+	int	index;
+	int	size;
 
-	aux = *list_cmd;
-	if (*list_cmd == NULL)
+	index = 0;
+	size = ft_lsttlen(data->tokens, BAR);
+	data->exec.count_cmd = size + 1;
+	data->exec.pipe = malloc(sizeof(int *) * size);
+	data->exec.pid = malloc(sizeof(int) * data->exec.count_cmd);
+	while (index < size)
 	{
-		*list_cmd = new_cmd(data);
-		return ;
-	}
-	else
-	{
-		while (aux->next)
-			aux = aux->next;
-		aux->next = new_cmd(data);
+		data->exec.pipe[index] = malloc(sizeof(int) * 2);
+		index++;
 	}
 }

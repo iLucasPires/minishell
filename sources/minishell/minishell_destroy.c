@@ -5,6 +5,9 @@ void free_all(char **pointer)
 	int	index;
 
 	index = 0;
+	if (pointer == NULL)
+		return ;
+
 	while (pointer[index])
 	{
 		free(pointer[index]);
