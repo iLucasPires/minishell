@@ -11,7 +11,7 @@ static t_list	*create_node(char *value, int type)
 	return (new_node);
 }
 
-void	new_node(t_list **head, char *value, int type)
+void	append_list(t_list **head, char *value, int type)
 {
 	t_list	*node;
 

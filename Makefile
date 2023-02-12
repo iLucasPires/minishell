@@ -23,9 +23,10 @@ BUILTIN +=	builtin_cd.c builtin_echo.c builtin_pwd.c builtin_exit.c \
 			builtin_env.c builtin_export.c builtin_unset.c exec_builtins.c \
 			exec_builtins_aux.c
 
-REDIRECTION += heredoc.c choose_red.c redin.c aux_redirect.c
+REDIRECTION += heredoc.c redirections.c redirections_aux.c
 EXECUTOR += executor_command.c executor_command_aux.c \
-			executor_system.c executor_system_aux.c
+			executor_system.c executor_system_aux.c \
+			executor_destroy.c
 
 MESSAGE += message_executor.c
 

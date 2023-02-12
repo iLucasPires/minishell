@@ -10,7 +10,9 @@ void	update_pwd(t_minishell *data)
 	old_path = my_getenv(&data->envs, "PWD");
 	string_aux = ft_strjoin("OLDPWD=", old_path);
 	substitute_env(get_node(&data->envs, "OLDPWD"), string_aux);
-	substitute_env(get_node(&data->envs, "PWD"), path);
+	free(string_aux);
+	string_aux = ft_strjoin("PWD=", path);
+	substitute_env(get_node(&data->envs, "PWD"), string_aux);
 	free(string_aux);
 	free(old_path);
 	free(path);

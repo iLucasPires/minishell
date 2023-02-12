@@ -42,9 +42,9 @@ void	export_add(t_minishell *data, char *value)
 	if (ft_isalnum(*value) || *value == UNDERSCORE)
 	{
 		if (ft_strchr(value, EQUAL) != NULL)
-			new_node(&data->envs, value, TRUE);
+			append_list(&data->envs, value, TRUE);
 		else
-			new_node(&data->envs, value, FALSE);
+			append_list(&data->envs, value, FALSE);
 		data->exit_code = 0;
 	}
 	else

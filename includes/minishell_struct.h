@@ -53,7 +53,6 @@ typedef struct s_command
 typedef struct s_repl
 {
 	char				*line;
-	char				*home;
 	char				**paths;
 	char				**envp;
 	t_list				*envs;
@@ -62,23 +61,17 @@ typedef struct s_repl
 	u_int8_t			exit_code;
 }						t_repl;
 
-// structs
 typedef struct s_minishell
 {
 	char				*line;
-	char				*home;
 	char				**paths;
 	char				**envp;
+	u_int8_t			exit_code;
 	t_list				*envs;
 	t_list				*tokens;
 	t_list				*tokens_aux;
-	u_int8_t			exit_code;
-	int					status;
-	int					count_cmd;
-	int					**pipe;
-	pid_t				*pid;
-	int					aux_in;
-	int					aux_out;
+	t_executor			exec;
+	t_command			*cmd_list;
 }						t_minishell;
 
 #endif
