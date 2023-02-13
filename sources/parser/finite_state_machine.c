@@ -14,17 +14,6 @@ void	fsm_is_inside_quote(t_fsm *fsm)
 	}
 }
 
-int	fsm_is_expander(char *line, char quote_type)
-{
-	if (ft_strchr(line, DOLLAR) && quote_type != SQUOTE
-		&& !ft_isalpha(quote_type))
-		return (1);
-	else if ((ft_strchr(line, DOLLAR) && quote_type == SQUOTE)
-			|| (quote_type == DQUOTE) || (quote_type == SQUOTE))
-		return (2);
-	return (0);
-}
-
 void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 {
 	if (line_temp[expander->index] == DQUOTE
@@ -36,10 +25,10 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 			{
 				expander->act_squote = FALSE;
 				expander->expand = TRUE;
-				return;
+				return ;
 			}
 			if (expander->act_dquote == TRUE)
-				return;
+				return ;
 			expander->act_squote = TRUE;
 			expander->expand = !expander->expand;
 		}
@@ -48,10 +37,10 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 			if (expander->act_dquote == TRUE)
 			{
 				expander->act_dquote = FALSE;
-				return;
+				return ;
 			}
 			if (expander->act_squote == TRUE)
-				return;
+				return ;
 			expander->act_dquote = TRUE;
 			expander->expand = TRUE;
 		}
@@ -90,15 +79,26 @@ void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 {
 	char	quote_char[2];
 
-	(void)quote_char;
 	if (fsm->limit > 0)
 	{
+		ft_strlcpy(quote_char, fsm->line + fsm->index - 1, 2);
 		fsm->line_aux = ft_substr(fsm->line, fsm->index - fsm->limit,
 				fsm->limit);
 		if (ft_strchr(fsm->line_aux, DOLLAR))
 			fsm_expander(fsm->line_aux, data);
+		else if (quote_char[0] == DQUOTE)
+		{
+			ft_rmchr(fsm->line_aux, quote_char);
+			append_list(fsm->tokens, fsm->line_aux, WORD);
+		}
+		else if (quote_char[0] == SQUOTE)
+		{
+			ft_rmchr(fsm->line_aux, quote_char);
+			append_list(fsm->tokens, fsm->line_aux, WORD);
+		}
 		else
 			append_list(fsm->tokens, fsm->line_aux, WORD);
+		fsm->limit = 0;
 	}
 }
 

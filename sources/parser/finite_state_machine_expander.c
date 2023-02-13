@@ -38,7 +38,7 @@ void	expander_env(t_fsm *var, char *line)
 
 	line_aux = ft_strrchar(&line[var->index + 1], '$');
 	line_aux2 = my_getenv(var->tokens, line_aux);
-	var->line = ft_strfjoin(var->line, line_aux2);
+	var->line = ft_strfjoin(ft_strtrim(var->line, "\""), line_aux2);
 	var->index += ft_strlen(line_aux);
 	free(line_aux);
 }
