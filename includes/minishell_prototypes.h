@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_prototypes.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:35:32 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 17:12:44 by lsantana         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:21:12 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int			syntax_error_pipe(t_list *tokens);
 void		handle_sigint(int signum);
 void		handle_sigquit(t_minishell *data);
 
-// builtins prototypes
 int			builtin_cd(char **args, t_minishell *data);
 int			builtin_echo(char **args, t_minishell *data);
 int			builtin_pwd(char **args, t_minishell *data);
@@ -30,11 +29,9 @@ int			builtin_env(char **args, t_minishell *data);
 int			builtin_export(char **args, t_minishell *data);
 int			builtin_unset(char **args, t_minishell *data);
 
-// builtins utils prototypes
 void		export_add(t_minishell *data, char *value);
 void		export_update(t_list *token_current, char *value);
 
-//parser prototypes
 void		finite_state_machine(t_minishell *data);
 void		fsm_expander(char *line_temp, t_minishell *data);
 void		fsm_clean_quote(char *line);
@@ -42,11 +39,10 @@ void		fsm_expander_quote(t_fsm *expander, char *line_temp);
 void		fsm_expander_special(t_fsm *var, char *string);
 void		fsm_expander_env(t_fsm *var, char *line);
 
-//executor prototypes
 void		destroy_pathname_not_found(t_minishell *data, int child_index);
 void		execute_builtin(t_command *cmd, t_minishell *data);
 void		create_executor(t_minishell *data);
-
+void		stat_file(char *pathname, u_int8_t *exit_code);
 void		append_list(t_list **head, char *value, int type);
 void		destroy_list(t_list **head);
 
@@ -62,6 +58,7 @@ char		*fsm_identified(int identifier);
 void		finite_state_machine(t_minishell *data);
 void		fsm_expander_word(t_fsm *expander, char *string);
 void		fsm_expander_dollar(t_fsm *expander, char *string);
+void		fsm_expander_loop(t_fsm *var, char *line);
 
 int			ft_lstlen(t_list *lst);
 int			ft_lstnlen(t_list *lst, int target);

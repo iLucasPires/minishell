@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:27 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:01:00 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:11:15 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,30 @@ void	create_executor(t_minishell *data)
 	{
 		data->exec.pipe[index] = malloc(sizeof(int) * 2);
 		index++;
+	}
+}
+
+void	stat_file(char *pathname, u_int8_t *exit_code)
+{
+	struct stat	sb;
+
+	if (stat(pathname, &sb) == -1)
+		perror("stat");
+	if (S_ISREG(sb.st_mode))
+	{
+		if (access(pathname, X_OK) == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(pathname, 2);
+			ft_putstr_fd(": permission denied\n", 2);
+			*exit_code = 126;
+		}
+	}
+	else if (S_ISDIR(sb.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(pathname, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		*exit_code = 126;
 	}
 }

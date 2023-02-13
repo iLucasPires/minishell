@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   fsmachine.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:07 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 17:16:38 by lsantana         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:17:50 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+void	fsm_expander_loop(t_fsm *var, char *line)
+{
+	while (TRUE)
+	{
+		fsm_expander_quote(var, line);
+		if (line[var->index] == DOLLAR && var->expand)
+		{
+			fsm_expander_word(var, line);
+			fsm_expander_dollar(var, line);
+		}
+		else
+			var->limit++;
+		if (line[var->index] == NULL_CHAR)
+		{
+			var->limit--;
+			fsm_expander_word(var, line);
+			if (var->line != NULL)
+			{
+				fsm_clean_quote(var->line);
+				append_list(&g_data.tokens, var->line, WORD);
+			}
+			return (free(var->line));
+		}
+		var->index++;
+	}
+}
 
 void	fsm_is_inside_quote(t_fsm *fsm)
 {
@@ -43,7 +70,10 @@ void	fsm_filter_word(t_fsm *fsm, t_minishell *data)
 			append_list(fsm->tokens, fsm->line_aux, WORD);
 		}
 		else
+		{
+			ft_rmchr(fsm->line_aux, "\"\'");
 			append_list(fsm->tokens, fsm->line_aux, WORD);
+		}
 		fsm->limit = 0;
 		free(fsm->line_aux);
 	}
