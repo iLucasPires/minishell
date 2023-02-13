@@ -30,13 +30,30 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 	if (line_temp[expander->index] == DQUOTE
 		|| line_temp[expander->index] == SQUOTE)
 	{
-		if (expander->check_quote
-			&& line_temp[expander->index] == expander->quote_type)
-			expander->check_quote = FALSE;
-		else if (!expander->check_quote)
+		if (line_temp[expander->index] == SQUOTE)
 		{
-			expander->check_quote = TRUE;
-			expander->quote_type = line_temp[expander->index];
+			if (expander->act_squote == TRUE)
+			{
+				expander->act_squote = FALSE;
+				expander->expand = TRUE;
+				return;
+			}
+			if (expander->act_dquote == TRUE)
+				return;
+			expander->act_squote = TRUE;
+			expander->expand = !expander->expand;
+		}
+		else if (line_temp[expander->index] == DQUOTE)
+		{
+			if (expander->act_dquote == TRUE)
+			{
+				expander->act_dquote = FALSE;
+				return;
+			}
+			if (expander->act_squote == TRUE)
+				return;
+			expander->act_dquote = TRUE;
+			expander->expand = TRUE;
 		}
 	}
 }
