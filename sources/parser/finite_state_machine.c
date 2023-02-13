@@ -50,7 +50,8 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 void cleaning_str(t_fsm *expander)
 {
 	int index = 0;
-
+	while (expander->line[index] != SQUOTE && expander->line[index] != DQUOTE)
+		index++;
 	if (expander->line[index] == SQUOTE)
 		ft_rmchr(expander->line, "\'");
 	else if (expander->line[index] == DQUOTE)
