@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:21 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:37:28 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:31:57 by lsantana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	execute_builtin_child(t_command *cmd, t_minishell *data,
 	exec_builtins(cmd->args, data);
 	close_files(cmd);
 	close_pipe_fds(&data->exec, child_index);
+	destroy_executor(&data->exec, data->tokens);
 	destroy_execute_system(data);
 	destroy_minishell(data);
 	exit(data->exit_code);
