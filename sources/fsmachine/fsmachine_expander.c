@@ -73,7 +73,7 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 			fsm_expander_word(&expander, line_temp);
 			fsm_clean_quote(&expander);
 			append_list(&data->tokens, expander.line, WORD);
-			return (free(line_temp), free(expander.line));
+			return (free(expander.line));
 		}
 		expander.index++;
 	}

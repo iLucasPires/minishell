@@ -23,7 +23,7 @@ void	write_in_file(t_minishell *data, char *file_name)
 			free(line);
 			free(file_name);
 			close(data->cmd_list->infile);
-			return ;
+			break ;
 		}
 		ft_putendl_fd(line, data->cmd_list->infile);
 		free(line);
@@ -36,7 +36,9 @@ void	heredoc_child(t_command *cmd, char *file_name, t_minishell *data)
 	cmd->infile = open_file(HERE_FILE, O_CREAT | O_RDWR, 0664,
 			&data->exit_code);
 	write_in_file(data, file_name);
-	destroy_execute_system(data);
+	destroy_cmd_list(data->cmd_list);
+	free_all(data->paths);
+	free(data->envp);
 	destroy_minishell(data);
 	exit(EXIT_SUCCESS);
 }
