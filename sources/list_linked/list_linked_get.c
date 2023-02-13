@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_linked_get.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:22 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:05:12 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 static int	ft_two_strncmp(char *string, char *string2)
 {
-	return (!ft_strncmp(string, string2, ft_strtlen(string, EQUAL)) &&
-			!ft_strncmp(string2, string, ft_strtlen(string2, EQUAL)));
+	if ((!ft_strncmp(string, string2, ft_strtlen(string, EQUAL))) && \
+		(!ft_strncmp(string2, string, ft_strtlen(string2, EQUAL))))
+		return (TRUE);
+	return (FALSE);
 }
 
 t_list	*get_node(t_list **head, char *target)

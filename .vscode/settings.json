@@ -55,6 +55,8 @@
         "readline.txt": true,
         "**/a.out": true,
         ".vscode": true,
-    }
+    },
+    "42header.email": " lpires-n@student.42sp.org.br",
+    "42header.username": "lpires-n"
     
 }

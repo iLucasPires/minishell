@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_define.h                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:36:57 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:57:12 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_DEFINE_H
 # define MINISHELL_DEFINE_H
-
-# define PROMPT BHBLUE "minishell " BHCYAN "$> " RESET
 
 // error define
 # define ERROR_ARGUMENTS "\033[1;31mminishell: too many arguments\033[0m\n"

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:37:54 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:54:14 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	builtin_pwd(char **args, t_minishell *data)
 {
-	char *path;
+	char	*path;
 
 	(void)args;
 	path = getcwd(NULL, 0);

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:37:41 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:53:51 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	builtin_env(char **args, t_minishell *data)
 {
-	t_list *token_current;
+	t_list	*token_current;
 
 	token_current = data->envs;
 	if (args[1] == NULL)

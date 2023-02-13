@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fsmachine_expander.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:04 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:35:51 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	fsm_expander_env(t_fsm *var, char *line)
@@ -48,6 +60,23 @@ void	fsm_expander_dollar(t_fsm *var, char *line)
 		else
 			fsm_expander_env(var, line);
 	}
+}
+
+void	fsm_expander_special(t_fsm *var, char *string)
+{
+	char	*string_aux;
+
+	if (var->line == NULL)
+	{
+		var->line = string;
+		var->index++;
+		return ;
+	}
+	string_aux = var->line;
+	var->line = ft_strjoin(var->line, string);
+	var->index++;
+	free(string_aux);
+	free(string);
 }
 
 void	fsm_expander(char *line_temp, t_minishell *data)

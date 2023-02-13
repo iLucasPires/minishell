@@ -1,10 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:45 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 14:39:46 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	handle_sigint_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
-		destroy_execute_system(&g_data);
+		destroy_cmd_list(g_data.cmd_list);
+		free_all(g_data.paths);
+		free(g_data.envp);
+		free(g_data.file_name);
 		destroy_minishell(&g_data);
 		exit(EXIT_SUCCESS);
 	}

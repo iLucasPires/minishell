@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putlstr_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 01:12:01 by lucas             #+#    #+#             */
-/*   Updated: 2023/01/03 01:12:51 by lucas            ###   ########.fr       */
+/*   Updated: 2023/02/13 15:55:08 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void  ft_putlstr_fd(char *s, int len, int fd)
+void	ft_putlstr_fd(char *s, int len, int fd)
 {
-    if (s)
-        write(fd, s, len);
+	if (s)
+		write(fd, s, len);
 }

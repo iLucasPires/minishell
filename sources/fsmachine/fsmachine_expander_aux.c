@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fsmachine_expander_aux.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:02 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:36:21 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
-char *rm_char_index(char *str, int position);
+char	*rm_char_index(char *str, int position);
 
 void	fsm_expander_squote(t_fsm *expander, char *line_temp)
 {
@@ -45,84 +57,52 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 	}
 }
 
-void	fsm_clean_quote(t_fsm *expander)
+void	fsm_clean_quote(t_fsm *exp)
 {
-	int	index;
-	int size_line;
-	char keep_quote;
-	char left;
-	char right;
+	t_clean_quote	var;
 
-	index = 0;
-	size_line = ft_strlen(expander->line);
-	left = 0;
-	right = 0;
-	keep_quote = 0;
-	while (index < size_line)
+	ft_bzero(&var, sizeof(t_clean_quote));
+	var.size = ft_strlen(exp->line);
+	while (var.index < var.size)
 	{
-		if (expander->line[index] == SQUOTE || expander->line[index] == DQUOTE)
+		if (exp->line[var.index] == SQUOTE || exp->line[var.index] == DQUOTE)
 		{
-			right = DQUOTE;
-			left = expander->line[index];
-			if (left == DQUOTE)
-				right = SQUOTE;
+			var.right = DQUOTE;
+			var.left = exp->line[var.index];
+			if (var.left == DQUOTE)
+				var.right = SQUOTE;
 		}
-		if (expander->line[index] == left && keep_quote != right)
+		if (exp->line[var.index] == var.left && var.keep_quote != var.right)
 		{
-			if (keep_quote == left)
-			{
-				keep_quote = 0;
-				expander->line = rm_char_index(expander->line, index);
-				index--;
-				size_line--;
-			}
+			if (var.keep_quote == var.left)
+				var.keep_quote = 0;
 			else
-			{
-				keep_quote = left;
-				expander->line = rm_char_index(expander->line, index);
-				index--;
-				size_line--;
-			}
+				var.keep_quote = var.left;
+			exp->line = rm_char_index(exp->line, var.index);
+			var.index--;
+			var.size--;
 		}
-		index++;
+		var.index++;
 	}
 }
 
-char *rm_char_index(char *str, int position)
+char	*rm_char_index(char *str, int position)
 {
-	char *new_str;
-	int new_index;
-	int index;
+	char	*new_str;
+	int		new_index;
+	int		index;
 
 	new_str = ft_calloc(ft_strlen(str), sizeof(char));
 	index = 0;
 	new_index = 0;
-	while(str[new_index])
+	while (str[new_index])
 	{
-		if(position == index)
+		if (position == index)
 			index++;
 		new_str[new_index] = str[index];
 		index++;
 		new_index++;
 	}
 	free(str);
-	return(new_str);
+	return (new_str);
 }
-
-void	fsm_expander_special(t_fsm *var, char *string)
-{
-	char	*string_aux;
-
-	if (var->line == NULL)
-	{
-		var->line = string;
-		var->index++;
-		return ;
-	}
-	string_aux = var->line;
-	var->line = ft_strjoin(var->line, string);
-	var->index++;
-	free(string_aux);
-	free(string);
-}
-

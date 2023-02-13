@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_destroy.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:26 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:06:04 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
-void free_all(char **pointer)
+void	free_all(char **pointer)
 {
 	int	index;
 
 	index = 0;
 	if (pointer == NULL)
 		return ;
-
 	while (pointer[index])
 	{
 		free(pointer[index]);

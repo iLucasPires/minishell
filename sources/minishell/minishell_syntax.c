@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_syntax.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:33 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:05:34 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	syntax_quotes(char *line)
@@ -41,4 +53,3 @@ int	syntax_error_pipe(t_list *tokens)
 	}
 	return (EXIT_SUCCESS);
 }
-

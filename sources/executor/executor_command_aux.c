@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_command_aux.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:38:27 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:01:00 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	size_args(t_list *list)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (list != NULL && list->type != PIPE)
@@ -35,7 +47,6 @@ char	**create_arguments(t_list *list)
 	args[index] = NULL;
 	return (args);
 }
-
 
 t_command	*create_cmd_list(t_minishell *data)
 {
