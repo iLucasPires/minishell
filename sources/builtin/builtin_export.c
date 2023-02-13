@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:37:52 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:52:23 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:10:54 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	builtin_export(char **args, t_minishell *data)
 			else
 			{
 				export(data, args[index]);
-				data->exit_code = 0;
 			}
 			index++;
 		}

@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:35:32 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 16:01:46 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:42:58 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		export_update(t_list *token_current, char *value);
 //parser prototypes
 void		finite_state_machine(t_minishell *data);
 void		fsm_expander(char *line_temp, t_minishell *data);
-void		fsm_clean_quote(t_fsm *expander);
+void		fsm_clean_quote(char *line);
 void		fsm_expander_quote(t_fsm *expander, char *line_temp);
 void		fsm_expander_special(t_fsm *var, char *string);
 void		fsm_expander_env(t_fsm *var, char *line);

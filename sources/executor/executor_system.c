@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:40 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:28:42 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:39:00 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 		data->exit_code = 0;
 		close_files(cmd);
 		close_pipe_fds(&data->exec, child_index);
-		execve(cmd->pathname, cmd->args, data->envp);
+		if (execve(cmd->pathname, cmd->args, data->envp) == -1)
+		{
+			perror("execve");
+			destroy_executor(&data->exec, data->tokens);
+			destroy_execute_system(data);
+			destroy_minishell(data);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
@@ -114,6 +121,7 @@ int	system_command(t_minishell *data)
 	check_redirected(data, data->cmd_list);
 	create_executor(data);
 	execute_childrens(data);
+	destroy_executor(&data->exec, data->tokens);
 	destroy_execute_system(data);
 	return (data->exit_code);
 }

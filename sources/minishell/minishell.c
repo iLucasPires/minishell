@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:36 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:57:27 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:27:01 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ void	handle_line(t_minishell *data)
 		{
 			syntax_quotes(data->line);
 			finite_state_machine(data);
-			typing_tokens(data->tokens);
-			if (data->tokens->value)
+			if (data->tokens != NULL)
+			{
+				typing_tokens(data->tokens);
 				data->exit_code = system_command(data);
+			}
 			destroy_list(&data->tokens);
 		}
 	}

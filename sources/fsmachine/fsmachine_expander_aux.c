@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:02 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:36:21 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:42:27 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,28 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 	}
 }
 
-void	fsm_clean_quote(t_fsm *exp)
+void	fsm_clean_quote(char *line)
 {
 	t_clean_quote	var;
 
 	ft_bzero(&var, sizeof(t_clean_quote));
-	var.size = ft_strlen(exp->line);
+	var.size = ft_strlen(line);
 	while (var.index < var.size)
 	{
-		if (exp->line[var.index] == SQUOTE || exp->line[var.index] == DQUOTE)
+		if (line[var.index] == SQUOTE || line[var.index] == DQUOTE)
 		{
 			var.right = DQUOTE;
-			var.left = exp->line[var.index];
+			var.left = line[var.index];
 			if (var.left == DQUOTE)
 				var.right = SQUOTE;
 		}
-		if (exp->line[var.index] == var.left && var.keep_quote != var.right)
+		if (line[var.index] == var.left && var.keep_quote != var.right)
 		{
 			if (var.keep_quote == var.left)
 				var.keep_quote = 0;
 			else
 				var.keep_quote = var.left;
-			exp->line = rm_char_index(exp->line, var.index);
+			line = rm_char_index(line, var.index);
 			var.index--;
 			var.size--;
 		}
