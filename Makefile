@@ -28,10 +28,8 @@ EXECUTOR += executor_command.c executor_command_aux.c \
 			executor_system.c executor_system_aux.c \
 			executor_destroy.c
 
-MESSAGE += message_executor.c
-
 SOURCES +=  $(MAIN) $(MINISHELL) $(FSMACHINE) $(BUILTIN)
-SOURCES +=  $(LIST_LINKED) $(REDIRECTION) $(MESSAGE) $(EXECUTOR)
+SOURCES +=  $(LIST_LINKED) $(REDIRECTION) $(EXECUTOR)
 
 OBJECTS = $(addprefix $(OBJECTS_DIR)/, $(SOURCES:.c=.o))
 

@@ -43,14 +43,13 @@ int	ft_lstnlen(t_list *lst, int target)
 }
 
 char	**list_to_array_string(t_list *list)
-{ 
+{
 	int		index;
-	int 	size;
+	int		size;
 	t_list	*tmp;
 	char	**array_string;
 
 	tmp = list;
-
 	if (!tmp)
 		return (NULL);
 	size = ft_lstlen(tmp);
