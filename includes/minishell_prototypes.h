@@ -30,7 +30,6 @@ t_list		*get_node(t_list **head, char *target);
 char		*get_value(t_list **head, char *target);
 char		*my_getenv(t_list **head, char *target);
 void		substitute_env(t_list *token_current, char *value);
-void		delete_just_node(t_list **head, t_list *item);
 
 int			fsm_is_state(char *str, int index);
 int			fsm_is_space(char *str, int index);

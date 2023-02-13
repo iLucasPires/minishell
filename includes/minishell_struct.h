@@ -24,6 +24,7 @@ typedef struct s_fsm
 	int					limit;
 	int					begin;
 	int					check_quote;
+	int 				expand;
 	char				quote_type;
 	char				*line;
 	char 				*line_aux;

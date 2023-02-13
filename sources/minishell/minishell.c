@@ -36,6 +36,21 @@ void	typing_tokens(t_list *tokens)
 	}
 }
 
+void print_tokens(t_list *tokens)
+{
+	t_list	*token_temp;
+
+	token_temp = tokens;
+	if (tokens == NULL)
+		return ;
+	while (token_temp != NULL)
+	{
+		printf("type: %d, value: %s	\n", token_temp->type, token_temp->value);
+		token_temp = token_temp->next;
+	}
+	printf("\n");
+}
+
 void	handle_line(t_minishell *data)
 {
 	handle_sigquit(data);
@@ -48,8 +63,10 @@ void	handle_line(t_minishell *data)
 			syntax_quotes(data->line);
 			finite_state_machine(data);
 			typing_tokens(data->tokens);
-			if (data->tokens->value)
-				data->exit_code = system_command(data);
+
+			print_tokens(data->tokens);
+			// if (data->tokens->value)
+			// 	data->exit_code = system_command(data);
 			destroy_list(&data->tokens);
 		}
 	}

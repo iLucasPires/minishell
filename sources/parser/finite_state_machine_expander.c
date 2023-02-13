@@ -21,12 +21,12 @@ void	expander_special(t_fsm *var, char *string)
 	if (var->line == NULL)
 	{
 		var->line = string;
-		var->index = var->index + 1;
+		var->index++;
 		return ;
 	}
 	string_aux = var->line;
 	var->line = ft_strjoin(var->line, string);
-	var->index = var->index + 1;
+	var->index++;
 	free(string_aux);
 	free(string);
 }

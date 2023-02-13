@@ -1,11 +1,13 @@
 #ifndef MINISHELL_DEFINE_H
 # define MINISHELL_DEFINE_H
 
-# define PROMPT BHBLACK "minishell " BHCYAN "$> " RESET
+# define PROMPT BHBLUE "minishell " BHCYAN "$> " RESET
 
 // error define
 # define ERROR_ARGUMENTS "\033[1;31mminishell: too many arguments\033[0m\n"
 # define ERROR_SYNTAX "\033[1;31mminishell: syntax error\033[0m\n"
+# define ERROR_EXIT "\033[1;31mexit: too many arguments\033[0m\n"
+# define ERROR_EXIT_CODE "\033[1;31mexit: numeric argument required\033[0m\n"
 
 # define TOKENS_VIEW "%.*s= \" %s\"\n"
 
