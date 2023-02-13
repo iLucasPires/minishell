@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsmachine_expander.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:04 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 17:13:48 by lsantana         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:15:49 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,5 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 	ft_bzero(&expander, sizeof(t_fsm));
 	expander.expand = TRUE;
 	expander.tokens = &data->envs;
-	while (TRUE)
-	{
-		fsm_expander_quote(&expander, line_temp);
-		if (line_temp[expander.index] == DOLLAR && expander.expand)
-		{
-			fsm_expander_word(&expander, line_temp);
-			fsm_expander_dollar(&expander, line_temp);
-		}
-		else
-			expander.limit++;
-		if (line_temp[expander.index] == NULL_CHAR)
-		{
-			expander.limit--;
-			fsm_expander_word(&expander, line_temp);
-			if (expander.line != NULL)
-			{
-				fsm_clean_quote(expander.line);
-				append_list(&data->tokens, expander.line, WORD);
-			}
-			return (free(expander.line));
-		}
-		expander.index++;
-	}
+	fsm_expander_loop(&expander, line_temp);
 }

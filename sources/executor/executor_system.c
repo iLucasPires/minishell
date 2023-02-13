@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_system.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:40 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 17:49:15 by lsantana         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:25:27 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 		close_pipe_fds(&data->exec, child_index);
 		if (execve(cmd->pathname, cmd->args, data->envp) == -1)
 		{
-			perror("execve");
+			stat_file(cmd->pathname, &data->exit_code);
 			destroy_executor(&data->exec, data->tokens);
 			destroy_execute_system(data);
 			destroy_minishell(data);
