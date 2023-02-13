@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_prototypes.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:35:32 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 16:42:58 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:12:44 by lsantana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
