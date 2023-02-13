@@ -21,6 +21,16 @@ int			builtin_env(char **args, t_minishell *data);
 int			builtin_export(char **args, t_minishell *data);
 int			builtin_unset(char **args, t_minishell *data);
 
+//parser prototypes
+void	finite_state_machine(t_minishell *data);
+void	fsm_expander(char *line_temp, t_minishell *data);
+void	fsm_clean_quote(t_fsm *expander);
+void	fsm_expander_quote(t_fsm *expander, char *line_temp);
+void	fsm_expander_special(t_fsm *var, char *string);
+void	fsm_expander_env(t_fsm *var, char *line);
+void	fsm_clean_quote(t_fsm *expander);
+void	fsm_expander_quote(t_fsm *expander, char *line_temp);
+
 
 void		append_list(t_list **head, char *value, int type);
 void		destroy_list(t_list **head);
@@ -36,8 +46,8 @@ int			fsm_is_space(char *str, int index);
 int			fsm_is_special(char *str, int index);
 char		*fsm_identified(int identifier);
 void		finite_state_machine(t_minishell *data);
-void		expander_word(t_fsm *expander, char *string);
-void		expander_dollar(t_fsm *expander, char *string);
+void		fsm_expander_word(t_fsm *expander, char *string);
+void		fsm_expander_dollar(t_fsm *expander, char *string);
 
 int			ft_lstlen(t_list *lst);
 int			ft_lstnlen(t_list *lst, int target);
@@ -67,7 +77,7 @@ int			is_builtin(char *str);
 
 void		dup_fds(t_command *cmd);
 void		close_fds(t_command *cmd);
-pid_t		my_getpid(void);
+pid_t		ft_getpid(void);
 void		ft_lstadd_back(t_command **list_cmd, t_minishell *data);
 void		close_pipe_fds(t_executor *exec, int child_index);
 void		destroy_executor(t_executor *exec, t_list *tokens);
