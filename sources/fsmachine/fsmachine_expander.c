@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:04 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:35:51 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:43:25 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,11 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 		{
 			expander.limit--;
 			fsm_expander_word(&expander, line_temp);
-			fsm_clean_quote(&expander);
-			append_list(&data->tokens, expander.line, WORD);
+			if (expander.line != NULL)
+			{
+				fsm_clean_quote(expander.line);
+				append_list(&data->tokens, expander.line, WORD);
+			}
 			return (free(expander.line));
 		}
 		expander.index++;

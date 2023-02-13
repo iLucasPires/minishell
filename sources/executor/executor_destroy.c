@@ -6,7 +6,7 @@
 /*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:34 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 15:00:11 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:32:37 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	destroy_execute_system(t_minishell *data)
 		free(aux->args);
 		free(aux);
 	}
-	destroy_executor(&data->exec, data->tokens);
 	free_all(data->paths);
 	free(data->envp);
 }
