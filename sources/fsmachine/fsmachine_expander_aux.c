@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsmachine_expander_aux.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:39:02 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 16:42:27 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:12:38 by lsantana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
