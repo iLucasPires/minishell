@@ -63,5 +63,6 @@ void	execute_builtin_child(t_command *cmd, t_minishell *data,
 	close_files(cmd);
 	close_pipe_fds(&data->exec, child_index);
 	destroy_execute_system(data);
+	destroy_minishell(data);
 	exit(data->exit_code);
 }

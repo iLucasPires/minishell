@@ -16,7 +16,8 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		destroy_execute_system( data);
+		destroy_execute_system(data);
+		destroy_minishell(data);
 		exit(127);
 	}
 }
@@ -32,7 +33,6 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 	}
 	if (data->exec.pid[child_index] == 0)
 	{
-		clear_history();
 		signal(SIGINT, handle_sigint);
 		if (cmd->infile != FAILURE && cmd->outfile != FAILURE)
 		{

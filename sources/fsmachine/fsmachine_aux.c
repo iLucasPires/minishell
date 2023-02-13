@@ -49,7 +49,7 @@ char	*fsm_identified(int identifier)
 	return ("");
 }
 
-pid_t	my_getpid(void)
+pid_t	ft_getpid(void)
 {
 	int		fd;
 	char	buffer[256];
