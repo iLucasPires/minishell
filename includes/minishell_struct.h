@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_struct.h                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:35:20 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:57:39 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_STRUCT_H
 # define MINISHELL_STRUCT_H
 
@@ -18,18 +30,28 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_list;
 
+typedef struct s_clean_quote
+{
+	int					index;
+	int					size;
+	char				keep_quote;
+	char				right;
+	char				left;
+	char				*line;
+}						t_clean_quote;
+
 typedef struct s_fsm
 {
 	int					index;
 	int					limit;
 	int					begin;
 	int					check_quote;
-	int 				expand;
+	int					expand;
 	int					act_squote;
 	int					act_dquote;
 	char				quote_type;
 	char				*line;
-	char 				*line_aux;
+	char				*line_aux;
 	t_list				**tokens;
 	t_list				*expanders;
 }						t_fsm;
@@ -69,6 +91,7 @@ typedef struct s_minishell
 	char				*line;
 	char				**paths;
 	char				**envp;
+	char				*file_name;
 	u_int8_t			exit_code;
 	t_list				*envs;
 	t_list				*tokens;

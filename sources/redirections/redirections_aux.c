@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_aux.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:50 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:06:33 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	open_file(char *file, int flags, int other_flags, u_int8_t *exit_code)
@@ -29,6 +41,6 @@ int	open_file(char *file, int flags, int other_flags, u_int8_t *exit_code)
 
 int	is_redirect(int identifier)
 {
-	return (identifier == RED_IN || identifier == RED_OUT ||
-			identifier == RED_APPEND || identifier == HEREDOC);
+	return (identifier == RED_IN || identifier == RED_OUT || \
+	identifier == RED_APPEND || identifier == HEREDOC);
 }

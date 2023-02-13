@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:35:38 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 16:01:59 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -19,8 +31,6 @@
 # include "./minishell_enum.h"
 # include "./minishell_struct.h"
 # include "./minishell_prototypes.h"
-
-extern t_minishell	g_data;
-
+# include "./minishell_global.h"
 
 #endif

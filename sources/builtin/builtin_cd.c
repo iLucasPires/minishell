@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:37:30 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:50:29 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	update_pwd(t_minishell *data)
@@ -9,10 +21,10 @@ void	update_pwd(t_minishell *data)
 	path = getcwd(NULL, 0);
 	old_path = my_getenv(&data->envs, "PWD");
 	string_aux = ft_strjoin("OLDPWD=", old_path);
-	substitute_env(get_node(&data->envs, "OLDPWD"), string_aux);
+	export_update(get_node(&data->envs, "OLDPWD"), string_aux);
 	free(string_aux);
 	string_aux = ft_strjoin("PWD=", path);
-	substitute_env(get_node(&data->envs, "PWD"), string_aux);
+	export_update(get_node(&data->envs, "PWD"), string_aux);
 	free(string_aux);
 	free(old_path);
 	free(path);

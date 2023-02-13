@@ -1,13 +1,25 @@
-#ifndef MINISHELL_ENUM_H
-#define MINISHELL_ENUM_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_enum.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:36:50 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 14:36:53 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-enum					e_bool
+#ifndef MINISHELL_ENUM_H
+# define MINISHELL_ENUM_H
+
+enum	e_bool
 {
 	FALSE,
 	TRUE
 };
 
-enum					e_type
+enum	e_type
 {
 	WORD,
 	RED_IN,

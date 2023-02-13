@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:38:21 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:37:28 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	is_builtin(char *str)
 {
-	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "pwd") ||
-		!ft_strcmp(str, "echo") || !ft_strcmp(str, "env") ||
-		!ft_strcmp(str, "export") || !ft_strcmp(str, "unset") ||
+	if (!ft_strcmp(str, "cd") || !ft_strcmp(str, "pwd") || \
+		!ft_strcmp(str, "echo") || !ft_strcmp(str, "env") || \
+		!ft_strcmp(str, "export") || !ft_strcmp(str, "unset") || \
 		!ft_strcmp(str, "exit"))
 		return (TRUE);
 	else

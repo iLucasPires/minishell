@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 16:35:29 by lucas             #+#    #+#             */
-/*   Updated: 2023/01/27 01:53:26 by lucas            ###   ########.fr       */
+/*   Updated: 2023/02/13 16:03:12 by lpires-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strrchar(char *string, char c)
 {
-	int index;
-	char *string_temp;
+	int		index;
+	char	*string_temp;
 
 	index = 1;
 	string_temp = NULL;

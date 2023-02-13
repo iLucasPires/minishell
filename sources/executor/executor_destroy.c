@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_destroy.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:38:34 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:00:11 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	destroy_cmd_list(t_command *list_cmd)
@@ -33,8 +45,8 @@ void	destroy_execute_system(t_minishell *data)
 
 void	destroy_executor(t_executor *exec, t_list *tokens)
 {
-	int index;
-	int size;
+	int	index;
+	int	size;
 
 	index = 0;
 	size = ft_lsttlen(tokens, BAR);
@@ -45,4 +57,12 @@ void	destroy_executor(t_executor *exec, t_list *tokens)
 	}
 	free(exec->pipe);
 	free(exec->pid);
+}
+
+void	destroy_pathname_not_found(t_minishell *data, int child_index)
+{
+	close_files(data->cmd_list);
+	close_pipe_fds(&data->exec, child_index);
+	destroy_execute_system(data);
+	destroy_minishell(data);
 }

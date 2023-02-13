@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_system_aux.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:38:37 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:00:32 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	make_redirects(t_command *cmd, int child_index, t_executor *exec)
@@ -30,4 +42,3 @@ void	close_pipe_fds(t_executor *exec, int child_index)
 	if (child_index < exec->count_cmd - 1)
 		close(exec->pipe[child_index][STDOUT_FILENO]);
 }
-

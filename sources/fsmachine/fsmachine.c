@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fsmachine.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:39:07 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:37:05 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	fsm_is_inside_quote(t_fsm *fsm)
@@ -53,7 +65,7 @@ void	fsm_filter_special(t_fsm *fsm)
 
 void	finite_state_machine(t_minishell *data)
 {
-	t_fsm fsm;
+	t_fsm	fsm;
 
 	ft_bzero(&fsm, sizeof(t_fsm));
 	fsm.line = data->line;

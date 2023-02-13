@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:37:52 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:52:23 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	show_env(t_list *tokens)
@@ -37,40 +49,20 @@ int	verify_identifier(char *value)
 	return (TRUE);
 }
 
-void	export_add(t_minishell *data, char *value)
+void	export(t_minishell *data, char *value)
 {
-	if (ft_isalnum(*value) || *value == UNDERSCORE)
-	{
-		if (ft_strchr(value, EQUAL) != NULL)
-			append_list(&data->envs, value, TRUE);
-		else
-			append_list(&data->envs, value, FALSE);
-		data->exit_code = 0;
-	}
-	else
-	{
-		ft_putstr_fd("export: ", STDERR_FILENO);
-		ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
-		data->exit_code = 1;
-	}
-}
+	t_list	*token_current;
 
-void	substitute_env(t_list *token_current, char *value)
-{
-	if (ft_strchr(value, EQUAL) != NULL)
-	{
-		free(token_current->value);
-		token_current->value = ft_strdup(value);
-		if (token_current->type == FALSE)
-			token_current->type = TRUE;
-			
-	}
+	token_current = get_node(&data->envs, value);
+	if (token_current == NULL)
+		export_add(data, value);
+	else if (token_current != NULL)
+		export_update(token_current, value);
 }
 
 int	builtin_export(char **args, t_minishell *data)
 {
-	int		index;
-	t_list	*token_current;
+	int	index;
 
 	index = 1;
 	if (args[1] == NULL)
@@ -81,17 +73,13 @@ int	builtin_export(char **args, t_minishell *data)
 		{
 			if (verify_identifier(args[index]) == FALSE)
 			{
-				ft_putstr_fd("export: ", STDERR_FILENO);
-				ft_putstr_fd("not a valid identifier\n", STDERR_FILENO);
+				ft_putstr_fd("export: not a valid identifier\n", 2);
 				data->exit_code = 1;
 			}
 			else
 			{
-				token_current = get_node(&data->envs, args[index]);
-				if (token_current == NULL)
-					export_add(data, args[index]);
-				else if (token_current != NULL)
-					substitute_env(token_current, args[index]);
+				export(data, args[index]);
+				data->exit_code = 0;
 			}
 			index++;
 		}

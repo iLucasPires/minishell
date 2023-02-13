@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 14:37:57 by lpires-n          #+#    #+#             */
+/*   Updated: 2023/02/13 15:37:58 by lpires-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 int	builtin_unset(char **args, t_minishell *data)
 {
-	int index;
-	t_list *token_current;
+	int		index;
+	t_list	*token_current;
 
 	index = 1;
 	while (args[index])

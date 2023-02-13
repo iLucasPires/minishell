@@ -24,7 +24,8 @@ FSMACHINE =		fsmachine.c fsmachine_aux.c fsmachine_expander.c \
 
 BUILTIN =		builtin_cd.c builtin_echo.c builtin_pwd.c \
 				builtin_exit.c builtin_env.c builtin_export.c \
-				builtin_unset.c exec_builtins.c exec_builtins_aux.c
+				builtin_unset.c exec_builtins.c exec_builtins_aux.c \
+				builtin_aux.c
 
 REDIRECTION =	heredoc.c redirections.c redirections_aux.c
 
