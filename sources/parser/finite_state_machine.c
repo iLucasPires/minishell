@@ -47,6 +47,16 @@ void	fsm_expander_quote(t_fsm *expander, char *line_temp)
 	}
 }
 
+void cleaning_str(t_fsm *expander)
+{
+	int index = 0;
+
+	if (expander->line[index] == SQUOTE)
+		ft_rmchr(expander->line, "\'");
+	else if (expander->line[index] == DQUOTE)
+		ft_rmchr(expander->line, "\"");
+}
+
 void	fsm_expander(char *line_temp, t_minishell *data)
 {
 	t_fsm	expander;
@@ -68,6 +78,7 @@ void	fsm_expander(char *line_temp, t_minishell *data)
 		{
 			expander.limit--;
 			expander_word(&expander, line_temp);
+			cleaning_str(&expander);
 			append_list(&data->tokens, expander.line, WORD);
 			return (free(line_temp), free(expander.line));
 		}

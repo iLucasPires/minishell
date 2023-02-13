@@ -64,9 +64,9 @@ void	handle_line(t_minishell *data)
 			finite_state_machine(data);
 			typing_tokens(data->tokens);
 
-			print_tokens(data->tokens);
-			// if (data->tokens->value)
-			// 	data->exit_code = system_command(data);
+			// print_tokens(data->tokens);
+			if (data->tokens->value)
+				data->exit_code = system_command(data);
 			destroy_list(&data->tokens);
 		}
 	}
