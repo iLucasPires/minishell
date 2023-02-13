@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_destroy.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lsantana <lsantana@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:34 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 16:32:37 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/13 19:28:42 by lsantana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	destroy_pathname_not_found(t_minishell *data, int child_index)
 {
 	close_files(data->cmd_list);
 	close_pipe_fds(&data->exec, child_index);
+	destroy_executor(&data->exec, data->tokens);
 	destroy_execute_system(data);
 	destroy_minishell(data);
 }
