@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	execute_system(t_command *cmd, t_minishell *data, int child_index)
+void execute_system(t_command *cmd, t_minishell *data, int child_index)
 {
 	if (cmd->pathname)
 	{
@@ -22,7 +22,7 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 	}
 }
 
-void	execute_children(t_command *cmd, t_minishell *data, int child_index)
+void execute_children(t_command *cmd, t_minishell *data, int child_index)
 {
 	signal(SIGINT, SIG_IGN);
 	data->exec.pid[child_index] = fork();
@@ -44,14 +44,21 @@ void	execute_children(t_command *cmd, t_minishell *data, int child_index)
 				else
 					execute_system(cmd, data, child_index);
 			}
+			else
+			{
+				close_files(cmd);
+				close_pipe_fds(&data->exec, child_index);
+				destroy_execute_system(data);
+				destroy_minishell(data);
+			}
 		}
 		exit(data->exit_code);
 	}
 }
 
-void	wait_childrens(t_executor *exec, u_int8_t *exit_code)
+void wait_childrens(t_executor *exec, u_int8_t *exit_code)
 {
-	int	index;
+	int index;
 
 	index = 0;
 	while (index < exec->count_cmd)
@@ -63,19 +70,18 @@ void	wait_childrens(t_executor *exec, u_int8_t *exit_code)
 	}
 }
 
-void	execute_childrens(t_minishell *data)
+void execute_childrens(t_minishell *data)
 {
-	int			index;
-	t_command	*cmd;
+	int index;
+	t_command *cmd;
 
 	index = 0;
 	cmd = data->cmd_list;
-	if (*cmd->args != NULL && (is_builtin(*cmd->args)
-			&& data->exec.count_cmd == 1 && cmd->infile != FAILURE
-			&& cmd->outfile != FAILURE))
+	if (*cmd->args != NULL && (is_builtin(*cmd->args) && data->exec.count_cmd == 1 && cmd->infile != FAILURE && cmd->outfile != FAILURE))
 		execute_builtin(cmd, data);
 	else
 	{
+		dprintf(2, "CMD COUNT: %d\n", data->exec.count_cmd);
 		while (index < data->exec.count_cmd)
 		{
 			if (index < data->exec.count_cmd - 1)
@@ -89,7 +95,7 @@ void	execute_childrens(t_minishell *data)
 	}
 }
 
-int	system_command(t_minishell *data)
+int system_command(t_minishell *data)
 {
 	if (syntax_error_pipe(data->tokens) != 0)
 		return (2);
