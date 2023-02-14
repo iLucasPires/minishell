@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_system.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpires-n < lpires-n@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lucas <lucas@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:38:40 by lpires-n          #+#    #+#             */
-/*   Updated: 2023/02/13 19:25:27 by lpires-n         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:16:06 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	execute_system(t_command *cmd, t_minishell *data, int child_index)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
+		destroy_executor(&data->exec, data->tokens);
 		destroy_execute_system(data);
 		destroy_minishell(data);
 		exit(127);
