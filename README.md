@@ -44,8 +44,8 @@ Minishell is a project from [42 Network](https://www.42.us.org/). The goal of th
 
 ## Bonus part
 
-- [x] You must implement the following logical operators: &&, ||.
-- [x] You must implement the wildcard: *.
+- [ ] You must implement the following logical operators: &&, ||.
+- [ ] You must implement the wildcard: *.
 - [x] You must implement the syntax of quotes: ’ and ”.
 
 ## Example
